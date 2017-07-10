@@ -14,10 +14,6 @@ import javax.net.ssl.TrustManager;
 import org.json.JSONObject;
 
 
-
-
-
-
 /**
  * 
  * @author weicc
@@ -105,6 +101,6 @@ public class HttpRequestUtil {
 		return jsonObject;
 	}
 	public static void main(String[] args) {
-		System.out.println(httpRequest("https://127.0.0.1:8080/MIGU_CREDIT/creditAcount/getFundConigInfo","GET",null));
+		System.out.println(httpRequest("https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code","GET",null));
 	}
 }
