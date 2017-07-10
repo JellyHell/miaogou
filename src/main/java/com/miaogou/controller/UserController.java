@@ -2,6 +2,7 @@ package com.miaogou.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -61,9 +62,27 @@ public class UserController {
 			
 			if(!obj.has("errcode")){
 				
+				//获取接口返回的openid 和 session_key
+				String openid=obj.getString("openid");
+				String session_key=obj.getString("session_key");
+				
+				//生成第三方session key
+				String _3rd_session=UUID.randomUUID().toString();
+				Map<String,String> map=new HashMap<String,String>();
+				map.put("openid", openid);
+				map.put("session_key", session_key);
+				
+				//存入session  并设置超时时间为  一个小时
+				request.getSession().setAttribute(_3rd_session, map);
+				request.getSession().setMaxInactiveInterval(60*60);
+				
+				retMap.put("errcode", "0");
+				retMap.put("errmsg", "ok");
+				retMap.put("_3rd_session", _3rd_session);
+				
 			}else{
-				retMap.put("errcode", "-2");
-				retMap.put("errmsg", "系统异常请稍后重试!");
+				retMap.put("errcode", obj.getInt("errcode"));
+				retMap.put("errmsg", obj.getString("errmsg"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,5 +90,9 @@ public class UserController {
 			retMap.put("errmsg", "系统异常请稍后重试!");
 		}
 		return retMap;
+	}
+	public static void main(String[] args) {
+		UUID uuid = UUID.randomUUID();
+		System.out.println(uuid);
 	}
 }
