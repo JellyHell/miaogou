@@ -80,7 +80,7 @@
 
 	<!-- scan for mappers and let them be autowired -->
 	<bean id="mappers" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.zd.dao" />
+		<property name="basePackage" value="com.miaogou.dao" />
 	</bean>
 	
 	
