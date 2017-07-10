@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true">
+	<property name="log.base" value="../migu_logs/" />
+	<jmxConfigurator />
+
+	<appender name="blout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>%msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="logfile"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<File>${log.base}logfile.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}logfile.log.%d{yyyy-MM-dd}.zip
+			</FileNamePattern>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>%date [%thread] %-5level %logger{70} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="bl_log"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<File>${log.base}bl.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.base}bl.log.%d{yyyy-MM-dd}
+			</fileNamePattern>
+			<maxHistory>10</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%msg%n</pattern>
+		</encoder>
+		<append>true</append>
+	</appender>
+
+
+	<appender name="bl_error"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<File>${log.base}bl_error.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}bl_error.log.%d{yyyy-MM-dd}.zip
+			</FileNamePattern>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>%date [%thread] %-5level %logger{70} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="bl_log">
+		<level value="INFO" />
+		<appender-ref ref="migu_sts" />
+	</logger>
+
+	<logger name="com.miaogou">
+		<level value="INFO" />
+		<appender-ref ref="logfile" />
+	</logger>
+
+
+ 
+    <logger name="com.ibatis" additivity="true">
+        <level value="DEBUG" />
+        <appender-ref ref="blout" /> 
+    </logger> 
+	<logger name="java.sql.Connection" additivity="true">
+        <level value="DEBUG"/>
+        <appender-ref ref="blout" /> 
+    </logger>
+    <logger name="java.sql.Statement" additivity="true">
+        <level value="DEBUG" />
+        <appender-ref ref="blout" /> 
+    </logger>
+    <logger name="java.sql.PreparedStatement" additivity="true">
+        <level value="DEBUG" />
+        <appender-ref ref="blout" /> 
+    </logger>
+    <logger name="java.sql" additivity="true">
+        <level value="DEBUG" />
+        <appender-ref ref="blout" /> 
+    </logger>
+    <logger name="com.miaogou.dao" additivity="true">
+        <level value="DEBUG" />
+        <appender-ref ref="blout" /> 
+    </logger>
+
+	<root level="ERROR">
+		<appender-ref ref="bl_error" />
+	</root>
+	<root>
+		<level value="debug" />
+		<appender-ref ref="blout" />
+		<appender-ref ref="logfile" />
+	</root>
+</configuration>

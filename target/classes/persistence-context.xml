@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+     http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
+     http://www.springframework.org/schema/osgi-compendium 
+     http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd" >
+
+	<description>spring-persistence配置</description>
+   
+	<bean id="DataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${db.driverClassName}"></property>
+		<property name="url" value="${db.url}"></property>
+		<property name="username" value="${db.username}"></property>
+		<property name="password" value="${db.password}"></property>
+		<property name="defaultAutoCommit" value="${db.defaultAutoCommit}"></property>
+		<property name="initialSize" value="${db.initialSize}"></property>
+		<property name="maxActive" value="${db.maxActive}"></property>
+		<property name="minIdle" value="${db.minIdle}"></property>
+		<property name="maxIdle" value="${db.maxIdle}"></property>
+		<property name="maxWait" value="${db.maxWait}"></property>
+		<property name="removeAbandoned" value="${db.removeAbandoned}"></property>
+		<property name="removeAbandonedTimeout" value="${db.removeAbandonedTimeout}"></property>
+		<property name="testWhileIdle" value="${db.testWhileIdle}"></property>
+		<property name="testOnBorrow" value="${db.testOnBorrow}"></property>
+		<property name="testOnReturn" value="${db.testOnReturn}"></property>
+		<property name="timeBetweenEvictionRunsMillis" value="${db.timeBetweenEvictionRunsMillis}"></property>
+		<property name="numTestsPerEvictionRun" value="${db.numTestsPerEvictionRun}"></property>
+		<property name="minEvictableIdleTimeMillis" value="${db.minEvictableIdleTimeMillis}"></property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	    <property name="dataSource" ref="DataSource" />
+	</bean>
+	
+	
+	<bean id="jdbcTemplate" 
+	class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="DataSource">
+		</property>
+	</bean>
+
+
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" />
+
+	<!-- define the SqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- ww -->
+		<property name="configLocation" value="classpath:/mybatis/mybatis-config.xml"></property>
+		<!-- ww end -->
+		<property name="dataSource" ref="DataSource" />
+		<property name="mapperLocations" value="classpath*:mybatis/mapper_*.xml" />
+		
+		<!-- ww start -->
+		<!-- <property name="plugins"> 
+		<list> 
+		<bean class="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor"> 
+			<property name="dialectClass" value="com.github.miemiedev.mybatis.paginator.dialect.OracleDialect"></property> 
+		</bean> 
+		</list> 
+		</property>  -->
+		<!-- ww end -->
+	</bean>
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+		<!-- <constructor-arg index="1" value="BATCH" /> 如果想要进行批量操作可加入这个属性 -->
+	</bean>
+
+	<!-- scan for mappers and let them be autowired -->
+	<bean id="mappers" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.zd.dao" />
+	</bean>
+	
+	
+</beans>

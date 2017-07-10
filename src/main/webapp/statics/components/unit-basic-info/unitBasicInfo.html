@@ -1,0 +1,342 @@
+<div class="root">
+    <div class="tc fw-600 txt-name">基本信息</div>
+    <!--只能查看-->
+    <table class="table table-bordered" ng-if="type == 1">
+        <tbody>
+        <tr>
+            <td class="tc table-name">员工编号</td>
+            <td class="tc table-value" ng-bind="userInfo.userId"></td>
+            <td class="tc table-name">年龄</td>
+            <td class="tc table-value" ng-bind="userInfo.age"></td>
+        </tr>
+        <tr>
+            <td class="tc table-name">出生日期</td>
+            <td class="tc table-value" ng-bind="userInfo.birthday"></td>
+            <td class="tc table-name">身份证号</td>
+            <td class="tc table-value" ng-bind="userInfo.id"></td>
+        </tr>
+        <tr>
+            <td class="tc table-name">民族</td>
+            <td class="tc table-value" ng-bind="userInfo.nation"></td>
+            <td class="tc table-name">政治面貌</td>
+            <td class="tc table-value" ng-bind="userInfo.politics | politics"></td>
+        </tr>
+        <tr>
+            <td class="tc table-name">籍贯</td>
+            <td class="tc table-value" ng-bind="userInfo.origin"></td>
+            <td class="tc table-name">现居住地</td>
+            <td class="tc table-value" ng-bind="userInfo.livePlace"></td>
+        </tr>
+        <tr>
+            <td class="tc table-name">婚姻状况</td>
+            <td class="tc table-value" ng-bind="userInfo.marrageStatus | marrage_status"></td>
+            <td class="tc table-name">结婚日期</td>
+            <td class="tc table-value" ng-bind="userInfo.marrageDate"></td>
+        </tr>
+        <tr>
+            <td class="tc table-name">生育情况</td>
+            <td class="tc table-value" ng-bind="userInfo.bearStatus | bear_status"></td>
+            <td class="tc table-name">生育日期</td>
+            <td class="tc table-value" ng-bind="userInfo.bearDate"></td>
+        </tr>
+        <tr>
+            <td class="tc table-name">参加工作时间</td>
+            <td class="tc table-value" ng-bind="userInfo.startWorkDate"></td>
+            <td class="tc table-name">户口所在地</td>
+            <td class="tc table-value" ng-bind="userInfo.idPlace"></td>
+        </tr>
+        <tr>
+            <td class="tc table-name">户籍地址</td>
+            <td class="tc table-value" ng-bind="userInfo.originPlace"></td>
+            <td class="tc table-name">联系电话</td>
+            <td class="tc table-value" ng-bind="userInfo.phone"></td>
+        </tr>
+        <tr>
+            <td class="tc table-name">紧急联络人</td>
+            <td class="tc table-value" ng-bind="userInfo.contactName"></td>
+            <td class="tc table-name">紧急联络电话</td>
+            <td class="tc table-value" ng-bind="userInfo.contactPhone"></td>
+        </tr>
+        <tr>
+            <td class="tc table-name">工资卡开户行</td>
+            <td class="tc table-value" ng-bind="userInfo.bankName"></td>
+            <td class="tc table-name">银行卡号</td>
+            <td class="tc table-value" ng-bind="userInfo.bankCode"></td>
+        </tr>
+        <tr>
+            <td class="tc table-name">个人邮箱</td>
+            <td class="tc table-value" ng-bind="userInfo.email"></td>
+            <td class="tc table-name">公司邮箱</td>
+            <td class="tc table-value" ng-bind="userInfo.emailCompany"></td>
+        </tr>
+        </tbody>
+    </table>
+    <!--可以编辑-->
+    <div class="row document" ng-if="type == 2">
+        <!--左侧员工档案-->
+        <div class="col-lg-8 col-md-8 col-sm-8">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <td class="tc table-name pdt-12">姓名</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" ng-model="userInfo.userName" readonly>
+                    </td>
+                    <td class="tc table-name pdt-12">员工编号</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" ng-model="userInfo.userId" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tc table-name pdt-12">性别</td>
+                    <td class="tc table-value">
+                        <div class="form-radio">
+                            <input type="radio" name="sex" value="0" ng-model="userInfo.sex"> 男
+                        </div>
+                        <div class="form-radio">
+                            <input type="radio" name="sex" value="1" ng-model="userInfo.sex"> 女
+                        </div>
+                    </td>
+                    <td class="tc table-name pdt-12">年龄</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" ng-model="userInfo.age">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tc table-name pdt-12">出生日期</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" wdate-picker ng-model="userInfo.birthday">
+                    </td>
+                    <td class="tc table-name pdt-12">身份证号</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" ng-model="userInfo.id">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tc table-name pdt-12">民族</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" ng-model="userInfo.nation">
+                    </td>
+                    <td class="tc table-name pdt-12">政治面貌</td>
+                    <td class="tc table-value">
+                        <select class="form-control input-sm" ng-model="userInfo.politics">
+                            <option value="0">群众</option>
+                            <option value="1">共青团员</option>
+                            <option value="2">预备党员</option>
+                            <option value="3">党员</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tc table-name pdt-12">籍贯</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" ng-model="userInfo.origin">
+                    </td>
+                    <td class="tc table-name pdt-12">现居住地</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" ng-model="userInfo.livePlace">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tc table-name pdt-12">婚姻状况</td>
+                    <td class="tc table-value">
+                        <div class="form-radio">
+                            <input type="radio" value="1" name="marrageStatus" ng-model="userInfo.marrageStatus"> 已婚
+                        </div>
+                        <div class="form-radio">
+                            <input type="radio" value="0" name="marrageStatus" ng-model="userInfo.marrageStatus"> 未婚
+                        </div>
+                    </td>
+                    <td class="tc table-name pdt-12">结婚日期</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" wdate-picker ng-model="userInfo.marrageDate">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tc table-name pdt-12">生育情况</td>
+                    <td class="tc table-value">
+                        <select class="form-control input-sm" ng-model="userInfo.bearStatus">
+                            <option value="0">未生育</option>
+                            <option value="1">已生育（一胎）</option>
+                            <option value="2">已生育（二胎）</option>
+                            <option value="3">已生育（三胎）</option>
+                            <option value="4">已生育（四胎）</option>
+                        </select>
+                    </td>
+                    <td class="tc table-name pdt-12">生育日期</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" wdate-picker ng-model="userInfo.bearDate">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tc table-name pdt-12">参加工作时间</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" wdate-picker ng-model="userInfo.startWorkDate">
+                    </td>
+                    <td class="tc table-name pdt-12">户口所在地</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" wdate-picker ng-model="userInfo.idPlace">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tc table-name pdt-12">户籍地址</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" ng-model="userInfo.originPlace">
+                    </td>
+                    <td class="tc table-name pdt-12">联系电话</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" ng-model="userInfo.phone">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tc table-name pdt-12">紧急联络人</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" ng-model="userInfo.contactName">
+                    </td>
+                    <td class="tc table-name pdt-12">紧急联络电话</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" ng-model="userInfo.contactPhone">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tc table-name pdt-12">工资卡开户行</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" ng-model="userInfo.bankName">
+                    </td>
+                    <td class="tc table-name pdt-12">银行卡号</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" ng-model="userInfo.bankCode">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tc table-name pdt-12">个人邮箱</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" ng-model="userInfo.email">
+                    </td>
+                    <td class="tc table-name pdt-12">公司邮箱</td>
+                    <td class="tc table-value">
+                        <input type="text" class="form-control input-sm" ng-model="userInfo.emailCompany">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--右侧员工照片等信息-->
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            <!--图片-->
+            <div class="tc">
+                <img ng-src="{{userInfo.imgUrl}}" alt="头像" class="head-photo">
+            </div>
+            <div class="tc pd-10">
+                <form method="POST" id="userPhoto" enctype="multipart/form-data" novalidate>
+                    <button class="btn btn-info pr">
+                        <i class="glyphicon glyphicon-upload"></i> 上传图片
+                        <input type="file" name="file">
+                        <input type="hidden" name="userId" value="{{userInfo.userId}}">
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--员工档案（基本信息）-->
+    <div class="row document" ng-if="type == 3">
+        <!--左侧员工档案-->
+        <div class="col-lg-8 col-md-8 col-sm-8">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <td class="tc table-name">姓名</td>
+                    <td class="tc table-value" ng-bind="userInfo.userName"></td>
+                    <td class="tc table-name">员工编号</td>
+                    <td class="tc table-value" ng-bind="userInfo.userId"></td>
+                </tr>
+                <tr>
+                    <td class="tc table-name">性别</td>
+                    <td class="tc table-value" ng-bind="userInfo.sex | sex"></td>
+                    <td class="tc table-name">年龄</td>
+                    <td class="tc table-value" ng-bind="userInfo.age"></td>
+                </tr>
+                <tr>
+                    <td class="tc table-name">出生日期</td>
+                    <td class="tc table-value" ng-bind="userInfo.birthday"></td>
+                    <td class="tc table-name">身份证号</td>
+                    <td class="tc table-value" ng-bind="userInfo.id"></td>
+                </tr>
+                <tr>
+                    <td class="tc table-name">民族</td>
+                    <td class="tc table-value" ng-bind="userInfo.nation"></td>
+                    <td class="tc table-name">政治面貌</td>
+                    <td class="tc table-value" ng-bind="userInfo.politics | politics"></td>
+                </tr>
+                <tr>
+                    <td class="tc table-name">籍贯</td>
+                    <td class="tc table-value" ng-bind="userInfo.origin"></td>
+                    <td class="tc table-name">现居住地</td>
+                    <td class="tc table-value" ng-bind="userInfo.livePlace"></td>
+                </tr>
+                <tr>
+                    <td class="tc table-name">婚姻状况</td>
+                    <td class="tc table-value" ng-bind="userInfo.marrageStatus | marrage_status"></td>
+                    <td class="tc table-name">结婚日期</td>
+                    <td class="tc table-value" ng-bind="userInfo.marrageDate"></td>
+                </tr>
+                <tr>
+                    <td class="tc table-name">生育情况</td>
+                    <td class="tc table-value" ng-bind="userInfo.bearStatus | bear_status"></td>
+                    <td class="tc table-name">生育日期</td>
+                    <td class="tc table-value" ng-bind="userInfo.bearDate"></td>
+                </tr>
+                <tr>
+                    <td class="tc table-name">参加工作时间</td>
+                    <td class="tc table-value" ng-bind="userInfo.startWorkDate"></td>
+                    <td class="tc table-name">户口所在地</td>
+                    <td class="tc table-value" ng-bind="userInfo.idPlace"></td>
+                </tr>
+                <tr>
+                    <td class="tc table-name">户籍地址</td>
+                    <td class="tc table-value" ng-bind="userInfo.originPlace"></td>
+                    <td class="tc table-name">联系电话</td>
+                    <td class="tc table-value" ng-bind="userInfo.phone"></td>
+                </tr>
+                <tr>
+                    <td class="tc table-name">紧急联络人</td>
+                    <td class="tc table-value" ng-bind="userInfo.contactName"></td>
+                    <td class="tc table-name">紧急联络电话</td>
+                    <td class="tc table-value" ng-bind="userInfo.contactPhone"></td>
+                </tr>
+                <tr>
+                    <td class="tc table-name">工资卡开户行</td>
+                    <td class="tc table-value" ng-bind="userInfo.bankName"></td>
+                    <td class="tc table-name">银行卡号</td>
+                    <td class="tc table-value" ng-bind="userInfo.bankCode"></td>
+                </tr>
+                <tr>
+                    <td class="tc table-name">个人邮箱</td>
+                    <td class="tc table-value" ng-bind="userInfo.email"></td>
+                    <td class="tc table-name">公司邮箱</td>
+                    <td class="tc table-value" ng-bind="userInfo.emailCompany"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--右侧员工照片等信息-->
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            <!--图片-->
+            <div class="tc">
+                <img ng-src="{{userInfo.imgUrl}}" alt="头像" class="head-photo">
+            </div>
+            <div class="label-container">
+                <div class="label-header tc">个人标签</div>
+                <div class="label-content">
+                    <span class="label-item">唱歌</span>
+                    <span class="label-item">跳舞</span>
+                    <span class="label-item">唱歌</span>
+                    <span class="label-item">唱歌</span>
+                    <span class="label-item">唱歌</span>
+                    <span class="label-item">唱歌</span>
+                    <span class="label-item edit">编辑</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

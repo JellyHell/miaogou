@@ -1,0 +1,802 @@
+<div class="root">
+
+    <!--绩效考核等tab页信息-->
+    <ul class="nav nav-tabs" ng-if="type == 1 || type == 2">
+        <li role="presentation" ng-class="{active: $tabIndex == 0}" ng-click="showTabAndContent(0)"><a href="javascript: void(0)">绩效考核</a></li>
+        <li role="presentation" ng-class="{active: $tabIndex == 1}" ng-click="showTabAndContent(1)"><a href="javascript: void(0)">教育经历</a></li>
+        <li role="presentation" ng-class="{active: $tabIndex == 2}" ng-click="showTabAndContent(2)"><a href="javascript: void(0)">资格证书</a></li>
+        <li role="presentation" ng-class="{active: $tabIndex == 3}" ng-click="showTabAndContent(3)"><a href="javascript: void(0)">岗位调整</a></li>
+        <li role="presentation" ng-class="{active: $tabIndex == 4}" ng-click="showTabAndContent(4)"><a href="javascript: void(0)">薪资变动</a></li>
+        <li role="presentation" ng-class="{active: $tabIndex == 5}" ng-click="showTabAndContent(5)"><a href="javascript: void(0)">工作经历</a></li>
+        <li role="presentation" ng-class="{active: $tabIndex == 6}" ng-click="showTabAndContent(6)"><a href="javascript: void(0)">培训经历</a></li>
+        <li role="presentation" ng-class="{active: $tabIndex == 7}" ng-click="showTabAndContent(7)"><a href="javascript: void(0)">其他附件</a></li>
+    </ul>
+
+    <!--待审核，待完善等tab页信息-->
+    <ul class="nav nav-tabs" ng-if="type == 3">
+        <li role="presentation" ng-class="{active: $tabIndex == 0}" ng-click="showTabAndContent(0)"><a href="javascript: void(0)">待审核（3）</a></li>
+        <li role="presentation" ng-class="{active: $tabIndex == 1}" ng-click="showTabAndContent(1)"><a href="javascript: void(0)">待完善（3）</a></li>
+    </ul>
+
+    <!--每个tab页签下面的内容（绩效考核等）-->
+    <div class="tab-container" ng-if="type == 1 || type == 2">
+        <!--新增按钮-->
+        <div class="col-md-12 col-sm-12 col-lg-12 ob" ng-if="showAddBtn()">
+            <button class="btn btn-info btn-sm" ng-click="addTabItem()">
+                <i class="glyphicon glyphicon-plus"></i> 新增
+            </button>
+        </div>
+        <!--绩效考核-->
+        <div ng-show="$tabIndex == 0">
+            <!--绩效考核的数据-->
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                <tr>
+                    <td>考核期</td><td>个人绩效系数</td><td>组织绩效系数</td><td>最终绩效系数</td><td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tab in tabInfos[0]">
+                    <td ng-bind="tab.khdate"></td>
+                    <td ng-bind="tab.personPerformance"></td>
+                    <td ng-bind="tab.companyPerformance"></td>
+                    <td ng-bind="tab.finnalPerformance"></td>
+                    <td>
+                    	<button class="btn btn-default btn-xs" ng-if="type == 1" ng-click="showTabItem(tab)">
+                    		<i class="glyphicon glyphicon-th-list"></i> 详情
+                    	</button>
+                    </td>
+                </tr>
+                <tr ng-if="!tabInfos[0] || tabInfos[0].length == 0">
+                	<td colspan="10">暂无数据</td>
+                </tr>
+                </tbody>
+            </table>
+            <!--分页的内容-->
+            <!-- <div class="tcdPageCode" id="tcdPageCode0"></div> -->
+        </div>
+        <!--教育经历-->
+        <div ng-show="$tabIndex == 1">
+            <table class="table table-bordered table-hover table-striped" >
+                <thead>
+                <tr>
+                    <td>毕业日期</td><td>毕业院校</td><td>专业</td><td>学历</td><td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tab in tabInfos[1]">
+                    <td ng-bind="tab.graduationDate"></td>
+                    <td ng-bind="tab.school"></td>
+                    <td ng-bind="tab.professional"></td>
+                    <td ng-bind="tab.education"></td>
+                    <td>
+                    	<button class="btn btn-default btn-xs" ng-if="type == 1" ng-click="showTabItem(tab)">
+                    		<i class="glyphicon glyphicon-th-list"></i> 详情
+                    	</button>
+                    	<button class="btn btn-warning btn-xs" ng-if="type == 2" ng-click="editTabItem(tab, 1)">
+                            <i class="glyphicon glyphicon-edit"></i> 编辑
+                        </button>
+                    	<button class="btn btn-danger btn-xs" ng-if="type == 2" ng-click="deleteTabItem('zd_education', tab.code, 1)">
+                            <i class="glyphicon glyphicon-trash"></i> 删除
+                        </button>
+                    </td>
+                </tr>
+                <tr ng-if="!tabInfos[1] || tabInfos[1].length == 0">
+                	<td colspan="10">暂无数据</td>
+                </tr>
+                </tbody>
+            </table>
+            <!--分页的内容-->
+            <!-- <div class="tcdPageCode" id="tcdPageCode1"></div> -->
+        </div>
+        <!--资格证书-->
+        <div ng-show="$tabIndex == 2">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                <tr>
+                    <td>取得日期</td><td>资格证书名称</td><td>等级/级别</td><td>资格证书编号</td><td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tab in tabInfos[2]">
+                    <td ng-bind="tab.obtainDate"></td>
+                    <td ng-bind="tab.name"></td>
+                    <td ng-bind="tab.level"></td>
+                    <td ng-bind="tab.code"></td>
+                    <td>
+                    	<button class="btn btn-default btn-xs" ng-if="type == 1" ng-click="showTabItem(tab)">
+                    		<i class="glyphicon glyphicon-th-list"></i> 详情
+                    	</button>
+                    	<button class="btn btn-warning btn-xs" ng-if="type == 2" ng-click="editTabItem(tab, 2)">
+                            <i class="glyphicon glyphicon-edit"></i> 编辑
+                        </button>
+                    	<button class="btn btn-danger btn-xs" ng-if="type == 2" ng-click="deleteTabItem('zd_qualification', tab.code, 2)">
+                            <i class="glyphicon glyphicon-trash"></i> 删除
+                        </button>
+                    </td>
+                </tr>
+                <tr ng-if="!tabInfos[2] || tabInfos[2].length == 0">
+                	<td colspan="10">暂无数据</td>
+                </tr>
+                </tbody>
+            </table>
+            <!--分页的内容-->
+            <!-- <div class="tcdPageCode" id="tcdPageCode2"></div> -->
+        </div>
+        <!--岗位调整-->
+        <div ng-show="$tabIndex == 3">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                <tr>
+                    <td>岗位变动类型</td><td>变动执行时间</td><td>变动前部门</td><td>变动前岗位名称</td><td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tab in tabInfos[3]">
+                    <td ng-bind="tab.type"></td>
+                    <td ng-bind="tab.date"></td>
+                    <td ng-bind="tab.deptBefore"></td>
+                    <td ng-bind="tab.postBefore"></td>
+                    <td>
+                    	<button class="btn btn-default btn-xs" ng-if="type == 1" ng-click="showTabItem(tab)">
+                    		<i class="glyphicon glyphicon-th-list"></i> 详情
+                    	</button>
+                    </td>
+                </tr>
+                <tr ng-if="!tabInfos[3] || tabInfos[3].length == 0">
+                	<td colspan="10">暂无数据</td>
+                </tr>
+                </tbody>
+            </table>
+            <!--分页的内容-->
+            <div class="tcdPageCode" id="tcdPageCode3"></div>
+        </div>
+        <!--薪资变动-->
+        <div ng-show="$tabIndex == 4">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                <tr>
+                    <td>变动时间</td><td>薪资</td><td>幅度</td><td>变动原因</td><td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tab in tabInfos[4]">
+                    <td ng-bind="tab.date"></td>
+                    <td ng-bind="tab.money"></td>
+                    <td ng-bind="tab.moneyChange"></td>
+                    <td ng-bind="tab.reason"></td>
+                    <td>
+                    	<button class="btn btn-default btn-xs" ng-if="type == 1" ng-click="showTabItem(tab)">
+                    		<i class="glyphicon glyphicon-th-list"></i> 详情
+                    	</button>
+                    </td>
+                </tr>
+                <tr ng-if="!tabInfos[4] || tabInfos[4].length == 0">
+                	<td colspan="10">暂无数据</td>
+                </tr>
+                </tbody>
+            </table>
+            <!--分页的内容-->
+            <!-- <div class="tcdPageCode" id="tcdPageCode4"></div> -->
+        </div>
+        <!--工作经历-->
+        <div ng-show="$tabIndex == 5">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                <tr>
+                    <td>工作时间</td><td>公司名称</td><td>职位</td><td>工作职责描述</td><td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tab in tabInfos[5]">
+                    <td ng-bind="tab.startDate + ' - ' + tab.endDate"></td>
+                    <td ng-bind="tab.companyName"></td>
+                    <td ng-bind="tab.post"></td>
+                    <td ng-bind="tab.info"></td>
+                    <td>
+                    	<button class="btn btn-default btn-xs" ng-if="type == 1" ng-click="showTabItem(tab)">
+                    		<i class="glyphicon glyphicon-th-list"></i> 详情
+                    	</button>
+                    	<button class="btn btn-warning btn-xs" ng-if="type == 2" ng-click="editTabItem(tab, 5)">
+                            <i class="glyphicon glyphicon-edit"></i> 编辑
+                        </button>
+                    	<button class="btn btn-danger btn-xs" ng-if="type == 2" ng-click="deleteTabItem('zd_workexperience', tab.code, 5)">
+                            <i class="glyphicon glyphicon-trash"></i> 删除
+                        </button>
+                    </td>
+                </tr>
+                <tr ng-if="!tabInfos[5] || tabInfos[5].length == 0">
+                	<td colspan="10">暂无数据</td>
+                </tr>
+                </tbody>
+            </table>
+            <!--分页的内容-->
+            <!-- <div class="tcdPageCode" id="tcdPageCode5"></div> -->
+        </div>
+        <!--培训经历-->
+        <div ng-show="$tabIndex == 6">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                <tr>
+                    <td>培训日期</td><td>组织部门</td><td>培训主题</td><td>培训内容</td><td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tab in tabInfos[6]">
+                    <td ng-bind="tab.date"></td>
+                    <td ng-bind="tab.dept"></td>
+                    <td ng-bind="tab.title"></td>
+                    <td ng-bind="tab.content"></td>
+                    <td>
+                    	<button class="btn btn-default btn-xs" ng-if="type == 1" ng-click="showTabItem(tab)">
+                    		<i class="glyphicon glyphicon-th-list"></i> 详情
+                    	</button>
+                    </td>
+                </tr>
+                <tr ng-if="!tabInfos[6] || tabInfos[6].length == 0">
+                	<td colspan="10">暂无数据</td>
+                </tr>
+                </tbody>
+            </table>
+            <!--分页的内容-->
+            <!-- <div class="tcdPageCode" id="tcdPageCode6"></div> -->
+        </div>
+        <!--其他附件-->
+        <div ng-show="$tabIndex == 7">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                <tr>
+                    <td>附件名称</td><td>上传时间</td><td>备注</td><td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tab in tabInfos[7]">
+                    <td ng-bind="tab.attachmentName"></td>
+                    <td ng-bind="tab.date"></td>
+                    <td ng-bind="tab.backupInfo"></td>
+                    <td>
+                    	<button class="btn btn-default btn-xs" ng-if="type == 1" ng-click="showTabItem(tab)">
+                    		<i class="glyphicon glyphicon-th-list"></i> 详情
+                    	</button>
+                    	<button class="btn btn-warning btn-xs" ng-if="type == 2" ng-click="editTabItem(tab, 7)">
+                            <i class="glyphicon glyphicon-edit"></i> 编辑
+                        </button>
+                    	<button class="btn btn-danger btn-xs" ng-if="type == 2" ng-click="deleteTabItem('zd_otherattachment', tab.code, 7)">
+                            <i class="glyphicon glyphicon-trash"></i> 删除
+                        </button>
+                    </td>
+                </tr>
+                <tr ng-if="!tabInfos[7] || tabInfos[7].length == 0">
+                	<td colspan="10">暂无数据</td>
+                </tr>
+                </tbody>
+            </table>
+            <!--分页的内容-->
+            <!-- <div class="tcdPageCode" id="tcdPageCode7"></div> -->
+        </div>
+    </div>
+
+    <!--待审核、待完善也签-->
+    <div class="tab-container" ng-if="type == 3">
+        <!--待审核列表-->
+        <div ng-show="$tabIndex == 0">
+            <!--绩效考核的数据-->
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                <tr>
+                    <td>姓名</td><td>编号</td><td>部门</td><td>岗位</td><td>状态</td><td>入职日期</td><td>标签</td><td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>郑晨晨</td><td>AS160512</td><td>产品部</td><td>开发工程师</td><td>在职</td><td>2016-02-12</td><td>唱歌、跳舞、篮球、游泳</td><td>详情 审核</td>
+                </tr>
+                <tr>
+                    <td>郑晨晨</td><td>AS160512</td><td>产品部</td><td>开发工程师</td><td>在职</td><td>2016-02-12</td><td>唱歌、跳舞、篮球、游泳</td><td>详情 审核</td>
+                </tr>
+                <tr>
+                    <td>郑晨晨</td><td>AS160512</td><td>产品部</td><td>开发工程师</td><td>在职</td><td>2016-02-12</td><td>唱歌、跳舞、篮球、游泳</td><td>详情 审核</td>
+                </tr>
+                </tbody>
+            </table>
+            <!--分页的内容-->
+            <div class="tcdPageCode" id="tcdPageCode30"></div>
+        </div>
+
+        <!--绩效考核-->
+        <div ng-show="$tabIndex == 1">
+            <!--绩效考核的数据-->
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                <tr>
+                    <td>姓名</td><td>编号</td><td>部门</td><td>岗位</td><td>状态</td><td>入职日期</td><td>标签</td><td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>郑晨晨</td><td>AS160512</td><td>产品部</td><td>开发工程师</td><td>在职</td><td>2016-02-12</td><td>唱歌、跳舞、篮球、游泳</td><td>详情</td>
+                </tr>
+                <tr>
+                    <td>郑晨晨</td><td>AS160512</td><td>产品部</td><td>开发工程师</td><td>在职</td><td>2016-02-12</td><td>唱歌、跳舞、篮球、游泳</td><td>详情</td>
+                </tr>
+                <tr>
+                    <td>郑晨晨</td><td>AS160512</td><td>产品部</td><td>开发工程师</td><td>在职</td><td>2016-02-12</td><td>唱歌、跳舞、篮球、游泳</td><td>详情</td>
+                </tr>
+                </tbody>
+            </table>
+            <!--分页的内容-->
+            <div class="tcdPageCode" id="tcdPageCode31"></div>
+        </div>
+    </div>
+
+    <!-- 新增的弹出框 -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        <span ng-if="isEdit == 0">新增</span>
+                        <span ng-if="isEdit == 1 && !onlyShow">编辑</span>
+                        <span ng-if="isEdit == 1 && onlyShow">查看</span>
+                        {{$tabIndex | tab_name}}
+                    </h4>
+                </div>
+                <!-- 模态框主题内容 -->
+                <div class="modal-body">
+                    <!-- 绩效考核 -->
+                    <div ng-show="$tabIndex == 0">
+                        <form action="" novalidate="novalidate" enctype="multipart/form-data">
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">姓名</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="userid" ng-model="editItem.userid">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">编号</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="code" ng-model="editItem.code">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">考核月份</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="khDate" ng-model="editItem.khDate">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">个人绩效系数</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="personPerformance" ng-model="editItem.personPerformance">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">组织绩效系数</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="companyPerformance" ng-model="editItem.companyPerformance">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">最终绩效系数</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="finnalPerformance" ng-model="editItem.finnalPerformance">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">备注</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <textarea name="backupInfo" ng-disabled="onlyShow" ng-model="editItem.backupInfo" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="row pd-10" ng-hide="onlyShow">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">附件</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input type="file" multiple="multiple" name="file" ng-disabled="onlyShow">
+                                    <input type="hidden" name="userId" value="{{loginUser.userId}}">
+                                </div>
+                            </div>
+                            <div class="row pd-10" ng-show="isEdit == 1">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">已上传附件</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tl">
+                                    <input type="hidden" name="tabCode" value="{{editItem.code}}">
+                                    <div class="file-lists" ng-repeat="file in editItem.attachmentList">
+                                        <span ng-bind="file.name"></span>
+                                        <a ng-href="{{file.url}}" target="_blank">下载</a>
+                                        <button type="button" class="close" aria-label="Close" ng-click="deleteUploadFile(file.code, editItem.code)" ng-hide="onlyShow">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- 新增教育经历 -->
+                    <div ng-show="$tabIndex == 1" id="index1">
+                    	<form id="education" action="" novalidate="novalidate" enctype="multipart/form-data">
+	                        <div class="row pd-10">
+	                            <div class="col-md-3 col-sm-3 col-lg-3 tr">毕业日期</div>
+	                            <div class="col-md-9 col-sm-9 col-lg-9 tc">
+	                                <input class="form-control" ng-disabled="onlyShow" type="text" name="graduationDate" ng-model="editItem.graduationDate" wdate-picker>
+	                            </div>
+	                        </div>
+	                        <div class="row pd-10">
+	                            <div class="col-md-3 col-sm-3 col-lg-3 tr">毕业院校</div>
+	                            <div class="col-md-9 col-sm-9 col-lg-9 tc">
+	                                <input class="form-control" ng-disabled="onlyShow" type="text" name="school" ng-model="editItem.school">
+	                            </div>
+	                        </div>
+	                        <div class="row pd-10">
+	                            <div class="col-md-3 col-sm-3 col-lg-3 tr">专业</div>
+	                            <div class="col-md-9 col-sm-9 col-lg-9 tc">
+	                                <input class="form-control" ng-disabled="onlyShow" type="text" name="professional" ng-model="editItem.professional">
+	                            </div>
+	                        </div>
+	                        <div class="row pd-10">
+	                            <div class="col-md-3 col-sm-3 col-lg-3 tr">学历</div>
+	                            <div class="col-md-9 col-sm-9 col-lg-9 tc">
+	                                <input class="form-control" ng-disabled="onlyShow" type="text" name="education" ng-model="editItem.education">
+	                            </div>
+	                        </div>
+	                        <div class="row pd-10">
+	                            <div class="col-md-3 col-sm-3 col-lg-3 tr">备注</div>
+	                            <div class="col-md-9 col-sm-9 col-lg-9 tc">
+	                                <textarea name="backupInfo" ng-disabled="onlyShow" ng-model="editItem.backupInfo" class="form-control"></textarea>
+	                            </div>
+	                        </div>
+	                        <div class="row pd-10" ng-hide="onlyShow">
+	                            <div class="col-md-3 col-sm-3 col-lg-3 tr">附件</div>
+	                            <div class="col-md-9 col-sm-9 col-lg-9 tc">
+	                                <input type="file" multiple="multiple" name="file" ng-disabled="onlyShow">
+	                                <input type="hidden" name="userId" value="{{loginUser.userId}}">
+	                            </div>
+	                        </div>
+                            <div class="row pd-10" ng-show="isEdit == 1">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">已上传附件</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tl">
+                                    <input type="hidden" name="tabCode" value="{{editItem.code}}">
+                                    <div class="file-lists" ng-repeat="file in editItem.attachmentList">
+                                        <span ng-bind="file.name"></span>
+                                        <a ng-href="{{file.url}}" target="_blank">下载</a>
+                                        <button type="button" class="close" aria-label="Close" ng-click="deleteUploadFile(file.code, editItem.code)" ng-hide="onlyShow">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+	                    </form>
+                    </div>
+                    <!-- 新增资格证书 -->
+                    <div ng-show="$tabIndex == 2" id="index2">
+                        <form id="qc" action="" novalidate="novalidate" enctype="multipart/form-data">
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">取得日期</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" type="text" name="obtainDate" ng-disabled="onlyShow" ng-model="editItem.obtainDate" wdate-picker>
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">资格证书名称</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" type="text" name="name" ng-model="editItem.name" ng-disabled="onlyShow">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">等级/级别</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" type="text" name="level" ng-model="editItem.level" ng-disabled="onlyShow">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">资格证书编号</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" type="text" name="qualificationCode" ng-model="editItem.qualificationCode" ng-disabled="onlyShow">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">备注</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <textarea class="form-control" name="backupInfo" ng-model="editItem.backupInfo" ng-disabled="onlyShow"></textarea>
+                                </div>
+                            </div>
+                            <div class="row pd-10" ng-hide="onlyShow">
+	                            <div class="col-md-3 col-sm-3 col-lg-3 tr">附件</div>
+	                            <div class="col-md-9 col-sm-9 col-lg-9 tc">
+	                                <input type="file" multiple="multiple" name="file" ng-disabled="onlyShow">
+	                                <input type="hidden" name="userId" value="{{loginUser.userId}}">
+	                            </div>
+	                        </div>
+                            <div class="row pd-10" ng-show="isEdit == 1">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">已上传附件</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tl">
+                                    <input type="hidden" name="tabCode" value="{{editItem.code}}">
+                                    <div class="file-lists" ng-repeat="file in editItem.attachmentList">
+                                        <span ng-bind="file.name"></span>
+                                        <a ng-href="{{file.url}}" target="_blank">下载</a>
+                                        <button type="button" class="close" aria-label="Close" ng-hide="onlyShow" ng-click="deleteUploadFile(file.code, editItem.code)">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- 岗位调整 -->
+                    <div ng-show="$tabIndex == 3">
+                        <form action="" novalidate="novalidate" enctype="multipart/form-data">
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">岗位变动类型</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="type" ng-model="editItem.type">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">变动执行时间</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="date" ng-model="editItem.date">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">变动前部门</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="deptBefore" ng-model="editItem.deptBefore">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">变动前岗位名称</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="postBefore" ng-model="editItem.postBefore">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">备注</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <textarea name="backupInfo" ng-disabled="onlyShow" ng-model="editItem.backupInfo" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="row pd-10" ng-hide="onlyShow">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">附件</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input type="file" multiple="multiple" name="file" ng-disabled="onlyShow">
+                                    <input type="hidden" name="userId" value="{{loginUser.userId}}">
+                                </div>
+                            </div>
+                            <div class="row pd-10" ng-show="isEdit == 1">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">已上传附件</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tl">
+                                    <input type="hidden" name="tabCode" value="{{editItem.code}}">
+                                    <div class="file-lists" ng-repeat="file in editItem.attachmentList">
+                                        <span ng-bind="file.name"></span>
+                                        <a ng-href="{{file.url}}" target="_blank">下载</a>
+                                        <button type="button" class="close" aria-label="Close" ng-click="deleteUploadFile(file.code, editItem.code)" ng-hide="onlyShow">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- 岗位调整 -->
+                    <div ng-show="$tabIndex == 4">
+                        <form action="" novalidate="novalidate" enctype="multipart/form-data">
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">变动时间</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="date" ng-model="editItem.date">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">薪资</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="money" ng-model="editItem.money">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">幅度</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="moneyChange" ng-model="editItem.moneyChange">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">变动原因</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="reason" ng-model="editItem.reason">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">备注</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <textarea name="backupInfo" ng-disabled="onlyShow" ng-model="editItem.backupInfo" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="row pd-10" ng-hide="onlyShow">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">附件</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input type="file" multiple="multiple" name="file" ng-disabled="onlyShow">
+                                    <input type="hidden" name="userId" value="{{loginUser.userId}}">
+                                </div>
+                            </div>
+                            <div class="row pd-10" ng-show="isEdit == 1">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">已上传附件</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tl">
+                                    <input type="hidden" name="tabCode" value="{{editItem.code}}">
+                                    <div class="file-lists" ng-repeat="file in editItem.attachmentList">
+                                        <span ng-bind="file.name"></span>
+                                        <a ng-href="{{file.url}}" target="_blank">下载</a>
+                                        <button type="button" class="close" aria-label="Close" ng-click="deleteUploadFile(file.code, editItem.code)" ng-hide="onlyShow">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- 新增工作经历 -->
+                    <div ng-show="$tabIndex == 5" id="index5">
+                        <form id="we" action="" novalidate="novalidate" enctype="multipart/form-data">
+                            <div class="row pd-10 form-inline">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">工作时间</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9">
+                                    <input class="form-control" type="text" name="startDate" ng-model="editItem.startDate" wdate-picker ng-disabled="onlyShow"> - 
+                                    <input class="form-control" type="text" name="endDate" ng-model="editItem.endDate" wdate-picker ng-disabled="onlyShow">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">公司名称</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" type="text" name="companyName" ng-model="editItem.companyName" ng-disabled="onlyShow">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">职位</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" type="text" name="post" ng-model="editItem.post" ng-disabled="onlyShow">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">工作描述</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" type="text" name="info" ng-model="editItem.info" ng-disabled="onlyShow">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">备注</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <textarea class="form-control" name="backupInfo" ng-model="editItem.backupInfo" ng-disabled="onlyShow"></textarea>
+                                </div>
+                            </div>
+                            <div class="row pd-10" ng-hide="onlyShow">
+	                            <div class="col-md-3 col-sm-3 col-lg-3 tr">附件</div>
+	                            <div class="col-md-9 col-sm-9 col-lg-9 tc">
+	                                <input type="file" multiple="multiple" name="file" ng-disabled="onlyShow">
+	                                <input type="hidden" name="userId" value="{{loginUser.userId}}">
+	                            </div>
+	                        </div>
+                            <div class="row pd-10" ng-show="isEdit == 1">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">已上传附件</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tl">
+                                    <input type="hidden" name="tabCode" value="{{editItem.code}}">
+                                    <div class="file-lists" ng-repeat="file in editItem.attachmentList">
+                                        <span ng-bind="file.name"></span>
+                                        <a ng-href="{{file.url}}" target="_blank">下载</a>
+                                        <button type="button" class="close" aria-label="Close" ng-click="deleteUploadFile(file.code, editItem.code)" ng-hide="onlyShow">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- 培训经历 -->
+                    <div ng-show="$tabIndex == 6">
+                        <form action="" novalidate="novalidate" enctype="multipart/form-data">
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">培训日期</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="date" ng-model="editItem.date">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">培训部门</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="dept" ng-model="editItem.dept">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">培训地点</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="place" ng-model="editItem.place">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">培训主题</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="title" ng-model="editItem.title">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">培训内容</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="content" ng-model="editItem.content">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">参加人</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" ng-disabled="onlyShow" type="text" name="userList" value="{{editItem.userList.join(',')}}">
+                                </div>
+                            </div>
+                            <div class="row pd-10" ng-hide="onlyShow">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">附件</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input type="file" multiple="multiple" name="file" ng-disabled="onlyShow">
+                                    <input type="hidden" name="userId" value="{{loginUser.userId}}">
+                                </div>
+                            </div>
+                            <div class="row pd-10" ng-show="isEdit == 1">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">已上传附件</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tl">
+                                    <input type="hidden" name="tabCode" value="{{editItem.code}}">
+                                    <div class="file-lists" ng-repeat="file in editItem.attachmentList">
+                                        <span ng-bind="file.name"></span>
+                                        <a ng-href="{{file.url}}" target="_blank">下载</a>
+                                        <button type="button" class="close" aria-label="Close" ng-click="deleteUploadFile(file.code, editItem.code)" ng-hide="onlyShow">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- 新增其他附件 -->
+                    <div ng-show="$tabIndex == 7" id="index7">
+                        <form id="oa" action="" novalidate="novalidate" enctype="multipart/form-data">
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">附件名称</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input class="form-control" type="text" name="attachmentName" ng-model="editItem.attachmentName" ng-disabled="onlyShow">
+                                </div>
+                            </div>
+                            <div class="row pd-10">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">备注</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <textarea class="form-control" name="backupInfo" ng-model="editItem.backupInfo" ng-disabled="onlyShow"></textarea>
+                                </div>
+                            </div>
+                            <div class="row pd-10" ng-hide="onlyShow">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">附件</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                    <input type="file" multiple="multiple" name="file" ng-disabled="onlyShow">
+                                    <input type="hidden" name="userId" value="{{loginUser.userId}}">
+                                    <input type="hidden" name="date" value="{{getCurrentDate()}}">
+                                </div>
+                            </div>
+                            <div class="row pd-10" ng-show="isEdit == 1">
+                                <div class="col-md-3 col-sm-3 col-lg-3 tr">已上传附件</div>
+                                <div class="col-md-9 col-sm-9 col-lg-9 tl">
+                                    <input type="hidden" name="tabCode" value="{{editItem.code}}">
+                                    <div class="file-lists" ng-repeat="file in editItem.attachmentList">
+                                        <span ng-bind="file.name"></span>
+                                        <a ng-href="{{file.url}}" target="_blank">下载</a>
+                                        <button type="button" class="close" aria-label="Close" ng-hide="onlyShow" ng-click="deleteUploadFile(file.code, editItem.code)">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- 按钮组 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" ng-click="saveAddInfo($tabIndex)" ng-disabled="onlyShow" ng-if="isEdit == 0">保存</button>
+                    <button type="button" class="btn btn-primary" ng-click="saveEditInfo($tabIndex)" ng-disabled="onlyShow" ng-if="isEdit == 1">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

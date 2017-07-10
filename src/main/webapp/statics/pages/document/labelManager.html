@@ -1,0 +1,133 @@
+<div class="container-user">
+    <!--组织架构-->
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <div class="bg-w">
+            <div class="label-header"><i class="glyphicon glyphicon-th-list label-color"></i> 标签分类</div>
+            <div class="label-menu">
+                <div class="row pd-10">
+                    <button class="btn btn-info" style="width: 100%;" ng-click="addNewTag()">
+                    	<i class="glyphicon glyphicon-plus"></i> 新增
+                    </button>
+                </div>
+                <div class="menu-item" ng-class="{'active': tagClassCode == ''}">
+                	<div ng-click="selectTagClass({})">
+                    	<span>全部</span>
+                    </div>
+                </div>
+                <div class="menu-item" ng-repeat="tag in tags" ng-class="{'active': tag.code == tagClassCode}">
+                	<!-- 正常展示状态 -->
+                    <div ng-show="!tag.isEdit && !tag.isAdd" ng-click="selectTagClass(tag)">
+                    	<span ng-bind="tag.tagClassName"></span>
+	                    <i class="glyphicon glyphicon-remove fr cr pd-4 dn" title="删除" ng-click="removeTag(tag)"></i>
+	                    <i class="glyphicon glyphicon-edit fr co pd-4 dn" title="重命名" ng-click="renameTag(tag)"></i>
+                    </div>
+                    <!-- 修改状态状态 -->
+                    <div ng-show="tag.isEdit || tag.isAdd">
+                    	<input type="text" ng-model="tag.tagClassName">
+	                    <i class="glyphicon glyphicon-remove fr cr pd-4" title="取消" ng-click="removeNewTagClass($index)"></i>
+	                    <i class="glyphicon glyphicon-ok fr cb pd-4" title="确定" ng-click="addNewTagToRemote(tag)"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--主题内容-->
+    <div class="col-lg-10 col-md-10 col-sm-10">
+        <!--搜索条件框-->
+        <div class="bg-w pd-10">
+            <form class="form-inline" ng-submit="searchTagsByName()">
+                <div class="form-group col-lg-3 col-md-3 col-sm-4 pd-10">
+                    <label>标签名称：</label>
+                    <input type="text" class="form-control" ng-model="tagName">
+                </div>
+                <!--按钮组-->
+                <div class="form-group col-lg-12 col-md-12 col-sm-12 tc">
+                    <button type="submit" class="btn btn-info"><i class="glyphicon glyphicon-search"></i> 查询</button>
+                    <button type="reset" class="btn btn-warning"><i class="glyphicon glyphicon-repeat"></i> 重置</button>
+                </div>
+                <div class="cf"></div>
+            </form>
+        </div>
+        <!--搜索结果框-->
+        <div class="bg-w pd-10">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 tr pd-15">
+                    <button class="btn btn-default" ng-click="openModal(0)">
+                    	<i class="glyphicon glyphicon-plus"></i> 新增
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <td>标签名称</td>
+                            <td>添加时间</td>
+                            <td>添加人</td>
+                            <td>备注</td>
+                            <td>操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="tag in tagList">
+                            <td ng-bind="tag.tagName"></td>
+                            <td ng-bind="tag.operTime"></td>
+                            <td ng-bind="tag.operName"></td>
+                            <td ng-bind="tag.backupInfo"></td>
+                            <td>
+                            	<button class="btn btn-warning btn-xs" ng-click="openModal(1, tag)"><i class="glyphicon glyphicon-edit"></i> 编辑</button>
+                            	<button class="btn btn-danger btn-xs" ng-click="deleteTagInfo(tag)"><i class="glyphicon glyphicon-trash"></i> 删除</button>
+                            </td>
+                        </tr>
+                        <tr ng-if="!tagList || tagList.length == 0">
+                        	<td colspan="5">暂无数据</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 模态弹框 -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        <span ng-if="isEdit == 0">新增标签</span>
+                        <span ng-if="isEdit == 1">编辑标签</span>
+                    </h4>
+                </div>
+                <!-- 模态框主题内容 -->
+                <div class="modal-body">
+                	<form action="" novalidate="novalidate" enctype="multipart/form-data">
+                        <div class="row pd-10">
+                            <div class="col-md-3 col-sm-3 col-lg-3 tr">标签名称</div>
+                            <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                <input class="form-control" type="text" name="tagName" ng-model="editTagInfo.tagName">
+                            </div>
+                        </div>
+                        <div class="row pd-10">
+                            <div class="col-md-3 col-sm-3 col-lg-3 tr">备注</div>
+                            <div class="col-md-9 col-sm-9 col-lg-9 tc">
+                                <textarea name="backupInfo" ng-model="editTagInfo.backupInfo" name="backupInfo" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- 按钮组 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" ng-click="saveTagInfo(0)" ng-if="isEdit == 0">提交</button>
+                    <button type="button" class="btn btn-primary" ng-click="saveTagInfo(1)" ng-if="isEdit == 1">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

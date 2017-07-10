@@ -1,0 +1,23 @@
+<div class="container-user pd-10">
+    <!--主要信息-->
+    <div class="container-fluid bg-w">
+        <div class="header row">操作记录</div>
+        <!--基本信息-->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 pd-10">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <td>时间</td><td>操作人</td><td>操作</td><td>备注</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="info in backupInfos">
+                            <td ng-bind="info.operTime"></td><td ng-bind="info.operatorId"></td><td ng-bind="info.operatorType"></td><td ng-bind="info.backupInfo"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

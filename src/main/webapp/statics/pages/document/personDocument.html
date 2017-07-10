@@ -1,0 +1,40 @@
+<div class="container-user">
+    <!--头部-->
+    <div class="big-header">
+        <div class="operation">
+            <div class="pad-r-40">
+                <a class="pad-r-40" href="#/operationRecord" ng-click="operationRecord()">操作记录</a>
+                <a href="#/editDocument" ng-click="editPersonInfo()">编辑</a>
+            </div>
+            <div class="head-photo">
+                <img style="height: 120px;" ng-src="{{userInfo.imgUrl}}">
+                <span class="sex" ng-if="userInfo.sex == 0">♀</span>
+                <span class="sex" ng-if="userInfo.sex == 1">♂</span>
+            </div>
+            <div class="tc fw-600 txt1" ng-bind="userInfo.userName"></div>
+            <div class="tc txt2" ng-bind="userInfo.dept + ' —— ' + userInfo.post"></div>
+        </div>
+    </div>
+    <!--主要信息-->
+    <div class="container bg-w">
+        <!--基本信息-->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div unit-basic-info type="1" user-info="userInfo"></div>
+            </div>
+        </div>
+        <!--在职信息-->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div unit-on-job-info type="1" on-job-info="onJobInfo" basic-info="basicInfo"></div>
+            </div>
+        </div>
+    </div>
+
+    <!--个人详情tab页-->
+    <div class="container tab-top">
+        <div class="row">
+            <div unit-tab type="1"></div>
+        </div>
+    </div>
+</div>
