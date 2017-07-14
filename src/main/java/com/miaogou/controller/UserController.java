@@ -53,7 +53,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/Login", method = RequestMethod.GET)
-	public Map<String, Object> getDeptList(String code,HttpServletRequest request,HttpServletResponse response){
+	public Map<String, Object> Login(String code,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		try {
 			
