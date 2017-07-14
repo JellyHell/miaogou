@@ -57,7 +57,7 @@ public class UserController {
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		try {
 			
-			String url=jscode2session.replace("APPID", appid).replace("SECRET", secret);
+			String url=jscode2session.replace("APPID", appid).replace("SECRET", secret).replace("JSCODE", code);
 			JSONObject obj=HttpRequestUtil.httpRequest(url, "GET", null);
 			
 			if(!obj.has("errcode")){
@@ -69,8 +69,8 @@ public class UserController {
 				//生成第三方session key
 				String _3rd_session=UUID.randomUUID().toString();
 				Map<String,String> map=new HashMap<String,String>();
-				map.put("openid", openid);
-				map.put("session_key", session_key);
+				map.put("openid", openid); //oYk__0HbSPT3uWpCyLcEkOfRT2LA
+				map.put("session_key", session_key);  //mnbwt+r+pt6n6J5Aq+Lpug==
 				
 				//存入session  并设置超时时间为  一个小时
 				request.getSession().setAttribute(_3rd_session, map);
@@ -80,6 +80,7 @@ public class UserController {
 				retMap.put("errmsg", "ok");
 				retMap.put("_3rd_session", _3rd_session);
 				
+				Map<String,String> t=(Map<String, String>) request.getSession().getAttribute(_3rd_session);
 			}else{
 				retMap.put("errcode", obj.getInt("errcode"));
 				retMap.put("errmsg", obj.getString("errmsg"));
@@ -94,5 +95,11 @@ public class UserController {
 	public static void main(String[] args) {
 		UUID uuid = UUID.randomUUID();
 		System.out.println(uuid);
+		System.out.println("013Ar3IQ1TErC61xVGJQ1uNMHQ1Ar3IU");
+		String url=jscode2session.replace("APPID", "wxf044dd5db8e29d36").
+				     replace("SECRET", "eccb013f72f3882394c40eba57cfc7bd").
+				     replace("JSCODE", "013JN7cA1Pjs7h066HcA1HVocA1JN7cJ");
+		JSONObject obj=HttpRequestUtil.httpRequest(url, "GET", null);
+		System.out.println(obj);
 	}
 }
