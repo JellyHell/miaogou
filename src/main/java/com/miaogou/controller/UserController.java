@@ -76,7 +76,7 @@ public class UserController {
 				
 				//存入session  并设置超时时间为  一个小时
 				request.getSession().setAttribute(_3rd_session, map);
-				request.getSession().setMaxInactiveInterval(60*60);
+				//request.getSession().setMaxInactiveInterval(60*60);
 				
 				retMap.put("errcode", "0");
 				retMap.put("errmsg", "ok");
