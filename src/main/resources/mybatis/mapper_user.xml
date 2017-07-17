@@ -10,4 +10,34 @@
 	<select id="getBannerAd" resultType="Map">
 	 select * from mg_banner_ad where status='1' order by banner_index
 	</select>
+	
+	<select id="nextval" parameterType="java.lang.String" resultType="java.lang.String">
+     select nextval(#{_parameter}) from dual
+    </select>
+    
+    <insert id="addDeliveryAddress" parameterType="Map">
+    INSERT INTO mg_delivery_address 
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+         <if test="code !=null and code !=''">code,</if>
+         <if test="openId !=null and openId !=''">openId,</if>
+         <if test="name !=null and name !=''">name,</if>
+         <if test="phone !=null and phone !=''">phone,</if>
+         <if test="area !=null and area !=''">area,</if>
+         <if test="address !=null and address !=''">address,</if>
+         <if test="postCode !=null and postCode !=''">postCode,</if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+         <if test="code !=null and code !=''">#{code},</if>
+         <if test="openId !=null and openId !=''">#{openId},</if>
+         <if test="name !=null and name !=''">#{name},</if>
+         <if test="phone !=null and phone !=''">#{phone},</if>
+         <if test="area !=null and area !=''">#{area},</if>
+         <if test="address !=null and address !=''">#{address},</if>
+         <if test="postCode !=null and postCode !=''">#{postCode},</if>
+      </trim>
+    </insert>
+    
+    <select id="getDeliveryAddress" parameterType="Map">
+     select * from mg_delivery_address where openId=#{openId}
+    </select>
 </mapper>

@@ -12,6 +12,12 @@ public interface IUserDao {
 
 	List<Map<String, String>> getBannerAd();
 
+	String nextval(String string);
+
+	int addDeliveryAddress(Map<String, Object> pa);
+
+	List<Map<String, String>> getDeliveryAddress(Map<String, Object> pa);
+
 
 
 }

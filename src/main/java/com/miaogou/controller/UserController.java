@@ -80,7 +80,7 @@ public class UserController {
 				retMap.put("errmsg", "ok");
 				retMap.put("_3rd_session", _3rd_session);
 				
-				Map<String,String> t=(Map<String, String>) request.getSession().getAttribute(_3rd_session);
+				
 			}else{
 				retMap.put("errcode", obj.getInt("errcode"));
 				retMap.put("errmsg", obj.getString("errmsg"));
@@ -119,7 +119,7 @@ public class UserController {
 	
 	
 	/**
-	 * 
+	 * 获取首页banner广告
 	 * @param request
 	 * @param response
 	 * @return
@@ -138,6 +138,79 @@ public class UserController {
 		
 		return retMap;
 	}
+	
+	/**
+	 * 增加收货地址
+	 * @param _3rd_session user/login  接口返回的后台维护的第三方session   里面保存了这个用户的openId
+	 * @param name  收件人姓名
+	 * @param phone 收件人电话
+	 * @param area 收件人地区
+	 * @param address 收件人详细地址
+	 * @param postCode 收件人邮编
+	 * @param request
+	 * @param response
+	 * @return  如果errcode 为-5  则说明session过期需要重新 调用user/login 接口重新获取 _3rd_session
+	 */
+	@ResponseBody
+	@RequestMapping(value = "addDeliveryAddress", method = RequestMethod.POST)
+	public Map<String, Object> addDeliveryAddress(
+			 String _3rd_session,String name,String phone,String area,String address,String postCode,
+			HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		String openId=new String("");
+		try {
+			Map<String,String> t=(Map<String, String>) request.getSession().getAttribute(_3rd_session);
+			openId=t.get("openid");
+		} catch (Exception e) {
+			retMap.put("errcode", "-5");
+			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
+			return retMap;
+		}
+		
+		try {
+			retMap=UserService.addDeliveryAddress(openId,name,phone,area,address,postCode);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		
+		return retMap;
+	}
+	
+	/**
+	 * 获取收货地址列表
+	 * @param _3rd_session
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "getDeliveryAddress", method = RequestMethod.GET)
+	public Map<String, Object> getDeliveryAddress(
+			 String _3rd_session,
+			HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		String openId=new String("");
+		try {
+			@SuppressWarnings("unchecked")
+			Map<String,String> t=(Map<String, String>) request.getSession().getAttribute(_3rd_session);
+			openId=t.get("openid");
+		} catch (Exception e) {
+			retMap.put("errcode", "-5");
+			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
+			return retMap;
+		}
+		
+		try {
+			retMap=UserService.getDeliveryAddress(openId);
+		} catch (Exception e) {
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
+	}
+	
 	public static void main(String[] args) {
 		UUID uuid = UUID.randomUUID();
 		System.out.println(uuid);

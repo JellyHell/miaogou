@@ -68,5 +68,46 @@ public class UserImpl implements IUserService{
 			
 		    return retMap;
 		}
+
+
+		@Override
+		@Transactional
+		public Map<String, Object> addDeliveryAddress(String openId,
+				String name, String phone, String area, String address,
+				String postCode) throws Exception{
+			Map<String,Object> retMap=new HashMap<String,Object>();
+			
+			Map<String,Object> pa=new HashMap<String,Object>();
+			pa.put("code", "s_addr"+userDao.nextval("s_addr"));
+			pa.put("name", name);
+			pa.put("phone", phone);
+			pa.put("area", area);
+			pa.put("address", address);
+			pa.put("postCode", postCode);
+			
+			if(userDao.addDeliveryAddress(pa)!=1) throw new Exception();
+			
+			
+			retMap.put("errcode", "0");
+			retMap.put("errmsg", "OK");
+			return retMap;
+		}
+
+
+		@Override
+		@Transactional
+		public Map<String, Object> getDeliveryAddress(String openId)
+				throws Exception {
+            Map<String,Object> retMap=new HashMap<String,Object>();
+			
+			Map<String,Object> pa=new HashMap<String,Object>();
+			pa.put("openId", openId);
+			
+			List<Map<String,String>> li=userDao.getDeliveryAddress(pa);
+			retMap.put("errcode", "0");
+			retMap.put("errmsg", "OK");
+			retMap.put("data", li);
+			return retMap;
+		}
 		
 }
