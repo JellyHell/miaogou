@@ -1,5 +1,6 @@
 package com.miaogou.controller;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -7,6 +8,7 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,7 +67,7 @@ public class UserController {
 				//获取接口返回的openid 和 session_key
 				String openid=obj.getString("openid");
 				String session_key=obj.getString("session_key");
-				
+				System.out.println("openid:============"+openid);
 				//生成第三方session key
 				String _3rd_session=UUID.randomUUID().toString();
 				Map<String,String> map=new HashMap<String,String>();
@@ -151,6 +153,7 @@ public class UserController {
 	 * @param response
 	 * @return  如果errcode 为-5  则说明session过期需要重新 调用user/login 接口重新获取 _3rd_session
 	 */
+	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@RequestMapping(value = "addDeliveryAddress", method = RequestMethod.POST)
 	public Map<String, Object> addDeliveryAddress(
@@ -193,6 +196,7 @@ public class UserController {
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		String openId=new String("");
 		try {
+			
 			@SuppressWarnings("unchecked")
 			Map<String,String> t=(Map<String, String>) request.getSession().getAttribute(_3rd_session);
 			openId=t.get("openid");
