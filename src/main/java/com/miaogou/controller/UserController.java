@@ -25,7 +25,7 @@ import com.miaogou.util.HttpRequestUtil;
  *
  */
 @Controller
-@RequestMapping(value = "User")
+@RequestMapping(value = "")
 public class UserController {
 	
 	
@@ -52,7 +52,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/Login", method = RequestMethod.GET)
+	@RequestMapping(value = "User/Login", method = RequestMethod.GET)
 	public Map<String, Object> Login(String code,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		try {
@@ -92,6 +92,31 @@ public class UserController {
 		}
 		return retMap;
 	}
+	
+	/**
+	 * 根据商品分类查询相对应的商品列表
+	 * @param goodsClass 商品分类code
+	 * @param pageSize 每页大小
+	 * @param pageNum 第几页
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "goods/findGoodsByClass", method = RequestMethod.GET)
+	public Map<String, Object> findGoodsByClass(String goodsClass,int pageSize,int pageNum,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		try {
+			retMap=UserService.findGoodsByClass(goodsClass,pageSize,pageNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		
+		return retMap;
+	}
+	
 	public static void main(String[] args) {
 		UUID uuid = UUID.randomUUID();
 		System.out.println(uuid);

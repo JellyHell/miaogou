@@ -3,5 +3,7 @@
 
 <mapper namespace="com.miaogou.dao.IUserDao">
 
-	
+	<select id="findGoodsByClass" parameterType="Map" resultType="Map">
+	 select * from mg_goods where goods_class=#{goods_class}
+	</select>
 </mapper>
