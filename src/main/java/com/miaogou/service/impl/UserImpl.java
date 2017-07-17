@@ -53,8 +53,20 @@ public class UserImpl implements IUserService{
 			
 			return retMap;
 		}
-        
-		
-		
+
+
+		@Override
+		@Transactional
+		public Map<String, Object> getBannerAd() throws Exception{
+			Map<String,Object> retMap=new HashMap<String,Object>();
+			
+			List<Map<String,String>> li=userDao.getBannerAd();
+			
+	    	retMap.put("errcode", "0");
+		    retMap.put("errmsg", "OK");
+		    retMap.put("data", li);
+			
+		    return retMap;
+		}
 		
 }

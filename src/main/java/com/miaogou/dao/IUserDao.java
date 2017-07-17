@@ -10,6 +10,8 @@ public interface IUserDao {
 
 	List<Map<String, String>> findGoodsByClass(Map<String, Object> pa);
 
+	List<Map<String, String>> getBannerAd();
+
 
 
 }

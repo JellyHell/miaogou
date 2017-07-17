@@ -6,4 +6,8 @@
 	<select id="findGoodsByClass" parameterType="Map" resultType="Map">
 	 select * from mg_goods where goods_class=#{goods_class}
 	</select>
+	
+	<select id="getBannerAd" resultType="Map">
+	 select * from mg_banner_ad where status='1' order by banner_index
+	</select>
 </mapper>
