@@ -110,6 +110,8 @@ public class RedisUtils {
             	for(String k:set){
             		retMap.put(k, jedis.hmget(key, k).get(0));
             	}
+            }else{
+            	return null;
             }
             return retMap;
         } catch (Exception e) {
@@ -215,5 +217,5 @@ public class RedisUtils {
 	  // RedisUtils.addMap("map", map,100);
 	   System.out.println(RedisUtils.findMap("map"));
 	   System.out.println(RedisUtils.getttl("map"));
-}
+ }
 }

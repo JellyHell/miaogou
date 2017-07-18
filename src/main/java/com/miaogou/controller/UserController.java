@@ -1,6 +1,5 @@
 package com.miaogou.controller;
 
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -8,7 +7,6 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.miaogou.service.IUserService;
 import com.miaogou.util.HttpRequestUtil;
+import com.miaogou.util.RedisUtils;
 
 
 /**
@@ -74,9 +73,9 @@ public class UserController {
 				map.put("openid", openid); //oYk__0HbSPT3uWpCyLcEkOfRT2LA
 				map.put("session_key", session_key);  //mnbwt+r+pt6n6J5Aq+Lpug==
 				
-				//存入session  并设置超时时间为  一个小时
-				request.getSession().setAttribute(_3rd_session, map);
-				//request.getSession().setMaxInactiveInterval(60*60);
+				//存入redis  并设置超时时间为  一个小时
+				RedisUtils.addMap(_3rd_session, map, 60*60);
+				
 				
 				retMap.put("errcode", "0");
 				retMap.put("errmsg", "ok");
@@ -162,7 +161,7 @@ public class UserController {
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		String openId=new String("");
 		try {
-			Map<String,String> t=(Map<String, String>) request.getSession().getAttribute(_3rd_session);
+			Map<String,String> t=RedisUtils.findMap(_3rd_session);
 			openId=t.get("openid");
 		} catch (Exception e) {
 			retMap.put("errcode", "-5");
@@ -197,8 +196,7 @@ public class UserController {
 		String openId=new String("");
 		try {
 			
-			@SuppressWarnings("unchecked")
-			Map<String,String> t=(Map<String, String>) request.getSession().getAttribute(_3rd_session);
+			Map<String,String> t=RedisUtils.findMap(_3rd_session);
 			openId=t.get("openid");
 		} catch (Exception e) {
 			retMap.put("errcode", "-5");
@@ -216,13 +214,15 @@ public class UserController {
 	}
 	
 	public static void main(String[] args) {
-		UUID uuid = UUID.randomUUID();
+		/*UUID uuid = UUID.randomUUID();
 		System.out.println(uuid);
 		System.out.println("013Ar3IQ1TErC61xVGJQ1uNMHQ1Ar3IU");
 		String url=jscode2session.replace("APPID", "wxf044dd5db8e29d36").
 				     replace("SECRET", "eccb013f72f3882394c40eba57cfc7bd").
 				     replace("JSCODE", "013JN7cA1Pjs7h066HcA1HVocA1JN7cJ");
 		JSONObject obj=HttpRequestUtil.httpRequest(url, "GET", null);
-		System.out.println(obj);
+		System.out.println(obj);*/
+		Map<String,String> map=new HashMap<String,String>();
+		System.out.println(map.get("111"));
 	}
 }
