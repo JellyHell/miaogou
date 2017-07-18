@@ -17,6 +17,8 @@ public interface IUserService {
 
 	Map<String, Object> delDeliveryAddress(String openId, String code) throws Exception;
 
+	Map<String, Object> setDefaultDeliveryAddress(String openId, String code) throws Exception;
+
 
 
 }

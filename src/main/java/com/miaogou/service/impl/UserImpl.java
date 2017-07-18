@@ -125,7 +125,28 @@ public class UserImpl implements IUserService{
 		    
 		    retMap.put("errcode", "0");
 			retMap.put("errmsg", "OK");
-			return null;
+			return retMap;
+		}
+
+
+		@Override
+		@Transactional
+		public Map<String, Object> setDefaultDeliveryAddress(String openId,
+				String code) throws Exception {
+			Map<String,Object> retMap=new HashMap<String,Object>();
+			
+		    Map<String,Object> pa=new HashMap<String,Object>();
+		    pa.put("openId", openId);
+		    pa.put("code", code);
+		    
+		    //首先设置所有的收货地址都不为默认的  isdefault=0
+		    
+		    if(userDao.setAllNotDefaultAddress(pa)<=0) throw new Exception("操作失败!");
+		    if(userDao.setDefaultDeliveryAddress(pa)!=1)  throw new Exception("操作失败!");
+		    
+		    retMap.put("errcode", "0");
+			retMap.put("errmsg", "OK");
+			return retMap;
 		}
 		
 }

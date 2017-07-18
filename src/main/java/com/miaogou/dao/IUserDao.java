@@ -20,6 +20,10 @@ public interface IUserDao {
 
 	int delDeliveryAddress(Map<String, Object> pa);
 
+	int setAllNotDefaultAddress(Map<String, Object> pa);
+
+	int setDefaultDeliveryAddress(Map<String, Object> pa);
+
 
 
 }
