@@ -22,6 +22,8 @@ public interface IUserService {
 
 	Map<String, Object> register(String openId) throws Exception;
 
+	Map<String, Object> getRegisterStatus(String openId) throws Exception;
+
 
 
 }

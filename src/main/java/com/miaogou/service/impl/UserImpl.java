@@ -198,5 +198,26 @@ public class UserImpl implements IUserService{
 			retMap.put("errmsg", "OK");
 			return retMap;
 		}
+
+
+		@Override
+		@Transactional
+		public Map<String, Object> getRegisterStatus(String openId)
+				throws Exception {
+			  Map<String,Object> retMap=new HashMap<String,Object>();
+				
+			  Map<String,Object> pa=new HashMap<String,Object>();
+	          pa.put("openId", openId);
+			    
+			  String status="0";
+			  //首先查看是否已经签到了 今天
+			  if(userDao.isRegister(pa)>=1){
+			   status="1";
+			  }
+			  retMap.put("errcode", "0");
+		      retMap.put("errmsg", "OK");
+			  retMap.put("status", status);
+			  return retMap;
+		}
 		
 }
