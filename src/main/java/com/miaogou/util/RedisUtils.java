@@ -173,15 +173,15 @@ public class RedisUtils {
     /**
      * 增加map  
      * @param key
-     * @param userMap
+     * @param map
      * @param expire  过期时间  -1 位不过期  单位秒
      * @return
      */
-    public static int addMap(String key,Map<String,String> userMap,int expire){
+    public static int addMap(String key,Map<String,String> map,int expire){
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
-            jedis.hmset(key,userMap);
+            jedis.hmset(key,map);
             if(expire!=-1) jedis.expire(key, expire);
             return 0;
         } catch (Exception e) {
