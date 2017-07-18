@@ -111,7 +111,7 @@
 	<import resource="classpath*:persistence-context.xml" />
     
     <!--redis 单机配置 -->
-    <!-- <bean id="redisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+     <bean id="redisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxIdle" value="${redis.maxIdle}"/>
         <property name="maxWaitMillis" value="${redis.maxWait}"/>
         <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
@@ -130,7 +130,7 @@
 
     <bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
         <property name="connectionFactory" ref="connectionFactory"/>
-    </bean> -->
+    </bean> 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 	     <property name="maxUploadSize" value="104857600" />
 	     <property name="maxInMemorySize" value="4096" />
