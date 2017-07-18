@@ -24,6 +24,8 @@ public interface IUserDao {
 
 	int setDefaultDeliveryAddress(Map<String, Object> pa);
 
+	List<Map<String, String>> getBestSalesGoods();
+
 
 
 }

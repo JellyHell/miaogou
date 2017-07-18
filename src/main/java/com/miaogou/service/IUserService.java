@@ -19,6 +19,8 @@ public interface IUserService {
 
 	Map<String, Object> setDefaultDeliveryAddress(String openId, String code) throws Exception;
 
+	Map<String, Object> getBestSalesGoods(int pageSize, int pageNum) throws Exception;
+
 
 
 }

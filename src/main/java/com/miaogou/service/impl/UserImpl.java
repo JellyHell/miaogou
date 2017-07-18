@@ -148,5 +148,26 @@ public class UserImpl implements IUserService{
 			retMap.put("errmsg", "OK");
 			return retMap;
 		}
+
+
+		@Override
+		@Transactional
+		public Map<String, Object> getBestSalesGoods(int pageSize, int pageNum)
+				throws Exception {
+			Map<String,Object> retMap=new HashMap<String,Object>();
+			PageHelper.startPage(pageNum,pageSize);
+			List<Map<String,String>> li=userDao.getBestSalesGoods();
+			
+			PageInfo<Map<String,String>> pageInfo = new PageInfo<Map<String,String>>(li);
+	        long total = pageInfo.getTotal(); //获取总条数
+	        int pages=pageInfo.getPages(); //获取总页数
+	        
+	        retMap.put("errcode", "0");
+	        retMap.put("errmsg", "OK");
+	        retMap.put("data", li);
+	        retMap.put("total", total);
+	        retMap.put("pages", pages);
+	        return retMap;
+		}
 		
 }

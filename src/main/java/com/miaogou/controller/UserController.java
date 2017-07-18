@@ -118,6 +118,29 @@ public class UserController {
 		return retMap;
 	}
 	
+	/**
+	 * 获取销量榜
+	 * @param pageSize 每页大小
+	 * @param pageNum  页数
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "goods/getBestSalesGoods", method = RequestMethod.GET)
+	public Map<String, Object> getBestSalesGoods(int pageSize,int pageNum,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		try {
+			retMap=UserService.getBestSalesGoods(pageSize,pageNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		
+		return retMap;
+	}
+	
 	
 	/**
 	 * 获取首页banner广告

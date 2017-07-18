@@ -40,6 +40,7 @@
     <select id="getDeliveryAddress" parameterType="Map" resultType="Map">
      select * from mg_delivery_address where openId=#{openId}
     </select>
+    
     <update id="delDeliveryAddress" parameterType="Map">
      delete from mg_delivery_address where code=#{code} and openId=#{openId}
     </update>
@@ -47,7 +48,12 @@
     <update id="setAllNotDefaultAddress" parameterType="Map" >
      update mg_delivery_address set isDefault='0' where openId=#{openId}
     </update>
+    
     <update id="setDefaultDeliveryAddress" parameterType="Map">
      update mg_delivery_address set isDefault='1' where code=#{code} and openId=#{openId}
     </update>
+    
+    <select id="getBestSalesGoods" parameterType="Map" resultType="Map">
+     select * from mg_goods order by goods_salenum desc
+    </select>
 </mapper>
