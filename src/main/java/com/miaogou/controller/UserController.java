@@ -149,7 +149,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "getBannerAd", method = RequestMethod.GET)
+	@RequestMapping(value = "ad/getBannerAd", method = RequestMethod.GET)
 	public Map<String, Object> getBannerAd(HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		try {
@@ -177,7 +177,7 @@ public class UserController {
 	 */
 	@SuppressWarnings("unchecked")
 	@ResponseBody
-	@RequestMapping(value = "addDeliveryAddress", method = RequestMethod.POST)
+	@RequestMapping(value = "addr/addDeliveryAddress", method = RequestMethod.POST)
 	public Map<String, Object> addDeliveryAddress(
 			 String _3rd_session,String name,String phone,String area,String address,String postCode,
 			HttpServletRequest request,HttpServletResponse response){
@@ -211,7 +211,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "getDeliveryAddress", method = RequestMethod.GET)
+	@RequestMapping(value = "addr/getDeliveryAddress", method = RequestMethod.GET)
 	public Map<String, Object> getDeliveryAddress(
 			 String _3rd_session,
 			HttpServletRequest request,HttpServletResponse response){
@@ -247,7 +247,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "delDeliveryAddress", method = RequestMethod.GET)
+	@RequestMapping(value = "addr/delDeliveryAddress", method = RequestMethod.GET)
 	public Map<String, Object> delDeliveryAddress(
 			 String _3rd_session,String code,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
@@ -281,7 +281,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "setDefaultDeliveryAddress", method = RequestMethod.GET)
+	@RequestMapping(value = "addr/setDefaultDeliveryAddress", method = RequestMethod.POST)
 	public Map<String, Object> setDefaultDeliveryAddress(
 			 String _3rd_session,String code,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
