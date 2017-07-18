@@ -277,7 +277,7 @@ public class UserController {
 	 * @param code   收货地址主键
 	 * @param request
 	 * @param response
-	 * @return
+	 * @return errcode=-5 session 过期
 	 */
 	@ResponseBody
 	@RequestMapping(value = "addr/setDefaultDeliveryAddress", method = RequestMethod.POST)
@@ -304,6 +304,40 @@ public class UserController {
 		}
 		return retMap;
 	}
+	
+	/**
+	 * 签到
+	 * @param _3rd_session
+	 * @param request
+	 * @param response
+	 * @return   errcode=-5 session 过期  ，errcode=-1 已经签过了
+	 */
+	@ResponseBody
+	@RequestMapping(value = "register", method = RequestMethod.POST)
+	public Map<String, Object> register(
+			 String _3rd_session,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		
+		String openId=new String("");
+		try {
+			Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");
+		} catch (Exception e) {
+			retMap.put("errcode", "-5");
+			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
+			return retMap;
+		}
+		
+		try {
+			retMap=UserService.register(openId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
+	}
+	
 	
 	public static void main(String[] args) throws Exception {
 		/*UUID uuid = UUID.randomUUID();

@@ -56,4 +56,17 @@
     <select id="getBestSalesGoods" parameterType="Map" resultType="Map">
      select * from mg_goods order by goods_salenum desc
     </select>
+    
+    <insert id="register" parameterType="Map">
+    INSERT INTO `mg_register` (`openId`, `register_time`) VALUES (#{openId}, SYSDATE())
+    </insert>
+    
+    <select id="isRegister" parameterType="Map" resultType="java.lang.Integer">
+      select count(1) from mg_register where openId=#{openId} and TO_DAYS(register_time)=TO_DAYS(SYSDATE())
+    </select>
+    
+    <insert id="addScore" parameterType="Map">
+	    INSERT INTO `mg_score` (`code`, `openId`, `score`, `reason`, `score_time`) 
+	    VALUES (#{score}, #{openId}, #{score}, #{reason}, SYSDATE())
+    </insert>
 </mapper>

@@ -26,6 +26,12 @@ public interface IUserDao {
 
 	List<Map<String, String>> getBestSalesGoods();
 
+	int register(Map<String, Object> pa);
+
+	int isRegister(Map<String, Object> pa);
+
+	int addScore(Map<String, Object> pa);
+
 
 
 }

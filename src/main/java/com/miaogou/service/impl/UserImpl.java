@@ -166,5 +166,37 @@ public class UserImpl implements IUserService{
 	        retMap.put("pages", pages);
 	        return retMap;
 		}
+
+
+		@Override
+		@Transactional
+		public Map<String, Object> register(String openId) throws Exception {
+            Map<String,Object> retMap=new HashMap<String,Object>();
+			
+		    Map<String,Object> pa=new HashMap<String,Object>();
+		    pa.put("openId", openId);
+		    
+		    
+		    //首先查看是否已经签到了 今天
+		    if(userDao.isRegister(pa)>=1){
+		    	retMap.put("errcode", "-1");
+				retMap.put("errmsg", "今天已经签到过了 ,大哥！");
+			    return retMap;
+		    }
+		    
+		    //签到
+		    if(userDao.register(pa)!=1)  throw new Exception("操作失败!");
+		    
+		    //签到获取积分
+		    pa.put("code", "s_score"+userDao.nextval("s_score"));
+		    pa.put("score", "1");
+		    pa.put("reason", "签到奖励");
+
+		    if(userDao.addScore(pa)!=1) throw new Exception("增加签到积分失败!");
+		    
+		    retMap.put("errcode", "0");
+			retMap.put("errmsg", "OK");
+			return retMap;
+		}
 		
 }

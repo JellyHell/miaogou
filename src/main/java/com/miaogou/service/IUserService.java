@@ -20,6 +20,8 @@ public interface IUserService {
 
 	Map<String, Object> getBestSalesGoods(int pageSize, int pageNum) throws Exception;
 
+	Map<String, Object> register(String openId) throws Exception;
+
 
 
 }
