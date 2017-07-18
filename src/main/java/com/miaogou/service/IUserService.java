@@ -24,6 +24,8 @@ public interface IUserService {
 
 	Map<String, Object> getRegisterStatus(String openId) throws Exception;
 
+	Map<String, Object> getScoreList(String openId, int pageSize, int pageNum) throws Exception;
+
 
 
 }

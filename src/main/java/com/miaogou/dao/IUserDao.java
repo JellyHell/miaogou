@@ -32,6 +32,8 @@ public interface IUserDao {
 
 	int addScore(Map<String, Object> pa);
 
+	List<Map<String, String>> getScoreList(Map<String, Object> pa);
+
 
 
 }
