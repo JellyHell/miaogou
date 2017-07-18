@@ -372,8 +372,10 @@ public class UserController {
 	}
 	
 	/**
-	 * 获取获取积分列表
+	 * 获取积分列表信息
 	 * @param _3rd_session
+	 * @param pageSize
+	 * @param pageNum
 	 * @param request
 	 * @param response
 	 * @return
