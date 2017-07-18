@@ -175,7 +175,6 @@ public class UserController {
 	 * @param response
 	 * @return  如果errcode 为-5  则说明session过期需要重新 调用user/login 接口重新获取 _3rd_session
 	 */
-	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@RequestMapping(value = "addr/addDeliveryAddress", method = RequestMethod.POST)
 	public Map<String, Object> addDeliveryAddress(
@@ -315,7 +314,6 @@ public class UserController {
 				     replace("JSCODE", "013JN7cA1Pjs7h066HcA1HVocA1JN7cJ");
 		JSONObject obj=HttpRequestUtil.httpRequest(url, "GET", null);
 		System.out.println(obj);*/
-		Map<String,String> map=new HashMap<String,String>();
 		System.out.println(RedisUtils.getttl("c3666e5d-9169-44c6-832b-0a7e17182f57"));
 	}
 }
