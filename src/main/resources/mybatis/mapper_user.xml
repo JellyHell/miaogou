@@ -71,6 +71,6 @@
     </insert>
     
     <select id="getScoreList" parameterType="Map" resultType="Map">
-     select * from mg_score where openId=#{openId} order by score_time desc
+     select reason,score from mg_score where openId=#{openId} order by score_time desc
     </select>
 </mapper>
