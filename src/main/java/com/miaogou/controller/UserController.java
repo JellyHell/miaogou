@@ -194,6 +194,7 @@ public class UserController {
 			HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		String openId=new String("");
+		
 		try {
 			
 			Map<String,String> t=RedisUtils.findMap(_3rd_session);
@@ -207,13 +208,48 @@ public class UserController {
 		try {
 			retMap=UserService.getDeliveryAddress(openId);
 		} catch (Exception e) {
+			e.printStackTrace();
 			retMap.put("errcode", "-2");
 			retMap.put("errmsg", "系统异常请稍后重试!");
 		}
 		return retMap;
 	}
 	
-	public static void main(String[] args) {
+	/**
+	 * 删除收货地址
+	 * @param _3rd_session session key
+	 * @param code   收货地址主键
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "delDeliveryAddress", method = RequestMethod.GET)
+	public Map<String, Object> delDeliveryAddress(
+			 String _3rd_session,String code,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		
+		String openId=new String("");
+		try {
+			Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");
+		} catch (Exception e) {
+			retMap.put("errcode", "-5");
+			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
+			return retMap;
+		}
+		
+		try {
+			retMap=UserService.delDeliveryAddress(openId,code);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
+	}
+	
+	public static void main(String[] args) throws Exception {
 		/*UUID uuid = UUID.randomUUID();
 		System.out.println(uuid);
 		System.out.println("013Ar3IQ1TErC61xVGJQ1uNMHQ1Ar3IU");
@@ -223,6 +259,6 @@ public class UserController {
 		JSONObject obj=HttpRequestUtil.httpRequest(url, "GET", null);
 		System.out.println(obj);*/
 		Map<String,String> map=new HashMap<String,String>();
-		System.out.println(map.get("111"));
+		System.out.println(RedisUtils.getttl("c3666e5d-9169-44c6-832b-0a7e17182f57"));
 	}
 }

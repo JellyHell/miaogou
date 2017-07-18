@@ -18,6 +18,8 @@ public interface IUserDao {
 
 	List<Map<String, String>> getDeliveryAddress(Map<String, Object> pa);
 
+	int delDeliveryAddress(Map<String, Object> pa);
+
 
 
 }

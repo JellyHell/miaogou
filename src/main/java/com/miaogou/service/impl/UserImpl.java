@@ -109,5 +109,23 @@ public class UserImpl implements IUserService{
 			retMap.put("data", li);
 			return retMap;
 		}
+
+
+		@Override
+		@Transactional
+		public Map<String, Object> delDeliveryAddress(String openId, String code)
+				throws Exception {
+			Map<String,Object> retMap=new HashMap<String,Object>();
+				
+		    Map<String,Object> pa=new HashMap<String,Object>();
+		    pa.put("openId", openId);
+		    pa.put("code", code);
+		    
+		    if(userDao.delDeliveryAddress(pa)!=1) throw new Exception("删除失败");
+		    
+		    retMap.put("errcode", "0");
+			retMap.put("errmsg", "OK");
+			return null;
+		}
 		
 }
