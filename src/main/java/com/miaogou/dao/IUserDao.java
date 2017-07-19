@@ -34,6 +34,10 @@ public interface IUserDao {
 
 	List<Map<String, String>> getScoreList(Map<String, Object> pa);
 
+	int insertAttachment(Map<String, Object> pa);
+
+	int insertWish(Map<String, Object> pa);
+
 
 
 }

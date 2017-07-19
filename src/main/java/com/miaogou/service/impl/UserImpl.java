@@ -8,11 +8,13 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.miaogou.dao.IUserDao;
 import com.miaogou.service.IUserService;
+import com.miaogou.util.FastdfsUtils;
 
 /**
  * 
@@ -241,6 +243,52 @@ public class UserImpl implements IUserService{
 	        retMap.put("data", li);
 	        retMap.put("total", total);
 	        retMap.put("pages", pages);
+	        return retMap;
+		}
+
+
+		@Override
+		@Transactional
+		public Map<String, Object> uploadWishList(String openId,
+				CommonsMultipartFile[] files, String goodsName, String url)
+				throws Exception {
+			Map<String,Object> retMap=new HashMap<String,Object>();
+			
+			Map<String,Object> pa=new HashMap<String,Object>();
+	        pa.put("openId", openId);
+	        
+	        String wishCode="s_wish"+userDao.nextval("s_wish");
+	        //先上传附件  新增至附件表  mg_attachment
+	        if(files!=null&&files.length>0){
+				for(int i=0;i<files.length;i++){
+					String filename=files[i].getOriginalFilename();
+					String [] arr=FastdfsUtils.uploadFile(files[i].getBytes(), filename.substring(filename.indexOf(".")+1), null);
+					
+					if(arr!=null&&arr.length==3){
+						pa.put("code", "s_atta"+userDao.nextval("s_atta"));
+						pa.put("tabCode", wishCode);
+						pa.put("groupName", arr[0]);
+						pa.put("remoteName", arr[1]);
+						pa.put("url", arr[2]);
+						
+						if(userDao.insertAttachment(pa)!=1) throw new Exception();
+					}
+				}
+			}else{
+				throw new Exception();
+			}
+	        
+	        //新增心愿表  mg_wish
+	        pa.put("code", wishCode);
+	        pa.put("openId", openId);
+	        pa.put("goodsName", goodsName);
+	        pa.put("goodsUrl", url);
+	        pa.put("state", "00");  //心愿单状态 00 未确认  01 已确认 02 已上架
+	         
+	        if(userDao.insertWish(pa)!=1) throw new Exception();
+	        
+	        retMap.put("errcode", "0");
+	        retMap.put("errmsg", "OK");
 	        return retMap;
 		}
 		

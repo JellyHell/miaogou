@@ -2,6 +2,8 @@ package com.miaogou.service;
 
 import java.util.Map;
 
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 
 public interface IUserService {
 
@@ -25,6 +27,9 @@ public interface IUserService {
 	Map<String, Object> getRegisterStatus(String openId) throws Exception;
 
 	Map<String, Object> getScoreList(String openId, int pageSize, int pageNum) throws Exception;
+
+	Map<String, Object> uploadWishList(String openId,
+			CommonsMultipartFile[] files, String goodsName, String url) throws Exception;
 
 
 

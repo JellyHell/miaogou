@@ -73,4 +73,46 @@
     <select id="getScoreList" parameterType="Map" resultType="Map">
      select reason,score from mg_score where openId=#{openId} order by score_time desc
     </select>
+    
+    <insert id="insertAttachment" parameterType="Map">
+    INSERT INTO mg_attachment 
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+         <if test="code !=null and code !=''">code,</if>
+         <if test="tabCode !=null and tabCode !=''">tabCode,</if>
+         <if test="groupName !=null and groupName !=''">groupName,</if>
+         <if test="remoteName !=null and remoteName !=''">remoteName,</if>
+         <if test="url !=null and url !=''">url,</if>
+         <if test="code !=null and code !=''">createTime,</if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+         <if test="code !=null and code !=''">#{code},</if>
+         <if test="tabCode !=null and tabCode !=''">#{tabCode},</if>
+         <if test="groupName !=null and groupName !=''">#{groupName},</if>
+         <if test="remoteName !=null and remoteName !=''">#{remoteName},</if>
+         <if test="url !=null and url !=''">#{url},</if>
+         <if test="code !=null and code !=''">SYSDATE(),</if>
+      </trim>
+    </insert>
+    
+    <insert id="insertWish" parameterType="Map">
+     INSERT INTO mg_wish
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+         <if test="code !=null and code !=''">code,</if>
+         <if test="openId !=null and openId !=''">openId,</if>
+         <if test="goodsName !=null and goodsName !=''">goodsName,</if>
+         <if test="goodsUrl !=null and goodsUrl !=''">goodsUrl,</if>
+         <if test="state !=null and state !=''">state,</if>
+         <if test="code !=null and code !=''">createTime,</if>
+         <if test="code !=null and code !=''">updateTime,</if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+         <if test="code !=null and code !=''">#{code},</if>
+         <if test="openId !=null and openId !=''">#{openId},</if>
+         <if test="goodsName !=null and goodsName !=''">#{goodsName},</if>
+         <if test="goodsUrl !=null and goodsUrl !=''">#{goodsUrl},</if>
+         <if test="state !=null and state !=''">#{state},</if>
+         <if test="code !=null and code !=''">SYSDATE(),</if>
+         <if test="code !=null and code !=''">SYSDATE(),</if>
+      </trim>
+    </insert>
 </mapper>

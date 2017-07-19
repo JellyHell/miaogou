@@ -13,9 +13,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.miaogou.service.IUserService;
+import com.miaogou.util.FastdfsUtils;
 import com.miaogou.util.HttpRequestUtil;
 import com.miaogou.util.RedisUtils;
 
@@ -404,6 +407,60 @@ public class UserController {
 			retMap.put("errmsg", "系统异常请稍后重试!");
 		}
 		return retMap;
+	}
+	
+	/**
+	 * 新增心愿单
+	 * @param files 附件
+	 * @param _3rd_session
+	 * @param goodsName 商品名称
+	 * @param url 商品示例url
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value = "upload/wishList", method = RequestMethod.POST)
+	public Map<String, Object> uploadWishList(@RequestParam("file") CommonsMultipartFile[] files,
+			 String _3rd_session,String  goodsName,String url,HttpServletRequest request,HttpServletResponse response) throws Exception{
+		
+        Map<String,Object> retMap=new HashMap<String,Object>();
+		
+		String openId=new String("");
+		try {
+			Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");
+		} catch (Exception e) {
+			retMap.put("errcode", "-5");
+			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
+			return retMap;
+		}
+		
+		try {
+			retMap=UserService.uploadWishList(openId,files,goodsName,url);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
+		
+		/*//上传附件
+		if(files!=null&&files.length>0){
+			for(int i=0;i<files.length;i++){
+				String filename=files[i].getOriginalFilename();
+				String [] arr=FastdfsUtils.uploadFile(files[i].getBytes(), filename.substring(filename.indexOf(".")+1), null);
+				
+				if(arr!=null&&arr.length==3){
+					
+					System.out.println(arr[0]+" "+arr[1]+" "+arr[2]);
+				}
+			}
+		}else{
+			throw new Exception();
+		}
+		return null;*/
 	}
 	
 	public static void main(String[] args) throws Exception {
