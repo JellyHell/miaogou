@@ -38,6 +38,10 @@ public interface IUserDao {
 
 	int insertWish(Map<String, Object> pa);
 
+	List<Map<String, Object>> getWishList(Map<String, Object> pa);
+
+	List<Map<String, String>> getAttachmentList(Map<String, Object> pa);
+
 
 
 }

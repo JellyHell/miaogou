@@ -246,7 +246,9 @@ public class UserImpl implements IUserService{
 	        return retMap;
 		}
 
-
+        /**
+         * 新增心愿单
+         */
 		@Override
 		@Transactional
 		public Map<String, Object> uploadWishList(String openId,
@@ -289,6 +291,39 @@ public class UserImpl implements IUserService{
 	        
 	        retMap.put("errcode", "0");
 	        retMap.put("errmsg", "OK");
+	        return retMap;
+		}
+
+
+		@Override
+		@Transactional
+		public Map<String, Object> getWishList(String openId, int pageSize,
+				int pageNum) throws Exception {
+			Map<String,Object> retMap=new HashMap<String,Object>();
+			
+			Map<String,Object> pa=new HashMap<String,Object>();
+	        pa.put("openId", openId);
+	        
+	        PageHelper.startPage(pageNum,pageSize);
+	        
+	        List<Map<String,Object>> li=userDao.getWishList(pa);
+			
+	        //获取每个心愿单的上传的照片
+	        if(li!=null&&li.size()>0){
+	        	for(int i=0;i<li.size();i++){
+	        		pa.put("tabCode", li.get(i).get("code"));
+	        		li.get(i).put("attachmentList", userDao.getAttachmentList(pa));
+	        	}
+	        }
+			PageInfo<Map<String,Object>> pageInfo = new PageInfo<Map<String,Object>>(li);
+	        long total = pageInfo.getTotal(); //获取总条数
+	        int pages=pageInfo.getPages(); //获取总页数
+	        
+	        retMap.put("errcode", "0");
+	        retMap.put("errmsg", "OK");
+	        retMap.put("data", li);
+	        retMap.put("total", total);
+	        retMap.put("pages", pages);
 	        return retMap;
 		}
 		

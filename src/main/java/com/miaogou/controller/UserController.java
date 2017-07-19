@@ -446,21 +446,41 @@ public class UserController {
 		}
 		return retMap;
 		
-		/*//上传附件
-		if(files!=null&&files.length>0){
-			for(int i=0;i<files.length;i++){
-				String filename=files[i].getOriginalFilename();
-				String [] arr=FastdfsUtils.uploadFile(files[i].getBytes(), filename.substring(filename.indexOf(".")+1), null);
-				
-				if(arr!=null&&arr.length==3){
-					
-					System.out.println(arr[0]+" "+arr[1]+" "+arr[2]);
-				}
-			}
-		}else{
-			throw new Exception();
+	}
+	
+	/**
+	 * 获取心愿单列表
+	 * @param _3rd_session
+	 * @param pageSize
+	 * @param pageNum
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "getWishList", method = RequestMethod.GET)
+	public Map<String, Object> getWishList(
+			 String _3rd_session,int pageSize,int pageNum,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		
+		String openId=new String("");
+		try {
+			Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");
+		} catch (Exception e) {
+			retMap.put("errcode", "-5");
+			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
+			return retMap;
 		}
-		return null;*/
+		
+		try {
+			retMap=UserService.getWishList(openId,pageSize,pageNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
 	}
 	
 	public static void main(String[] args) throws Exception {

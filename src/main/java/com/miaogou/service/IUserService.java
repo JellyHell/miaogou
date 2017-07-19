@@ -31,6 +31,8 @@ public interface IUserService {
 	Map<String, Object> uploadWishList(String openId,
 			CommonsMultipartFile[] files, String goodsName, String url) throws Exception;
 
+	Map<String, Object> getWishList(String openId, int pageSize, int pageNum) throws Exception;
+
 
 
 }

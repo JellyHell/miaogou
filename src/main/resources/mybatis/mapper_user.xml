@@ -115,4 +115,14 @@
          <if test="code !=null and code !=''">SYSDATE(),</if>
       </trim>
     </insert>
+    
+    <select id="getWishList" parameterType="Map" resultType="Map">
+     select code,openId,goodsName,goodsUrl,state,
+     DATE_FORMAT(createTime,'%Y-%c-%d %T') createTime,
+     DATE_FORMAT(updateTime,'%Y-%c-%d %T') updateTime from mg_wish order by updateTime desc
+    </select>
+    
+    <select id="getAttachmentList" parameterType="Map" resultType="Map">
+    select code,url from mg_attachment where tabCode=#{tabCode}
+    </select>
 </mapper>
