@@ -1,6 +1,0 @@
-/* category_detail.wxss */
-@import "../../../template/product-grid/product-grid-template.wxss";
-
-page{
-  background-color: #f9f9f9;
-}
