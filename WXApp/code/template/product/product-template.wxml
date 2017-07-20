@@ -1,9 +1,0 @@
-<template name="productTemplate">
-  <view class="produc-bg-container">
-    <view class="produc-container">
-      <image class="produc-image" src="{{coverageUrl}}" mode="aspectFill"></image>
-      <text class="produc-title">{{title}}</text>
-      <text class="produc-price">¥23.00</text>
-    </view>
-  </view>
-</template>
