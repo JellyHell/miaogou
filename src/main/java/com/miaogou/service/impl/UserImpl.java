@@ -347,5 +347,19 @@ public class UserImpl implements IUserService{
 	        retMap.put("errmsg", "OK");
 	        return retMap;
 		}
+
+
+		@Override
+		@Transactional
+		public Map<String, Object> getShoppingCartList(String openId)
+				throws Exception {
+			Map<String,Object> retMap=new HashMap<String,Object>();
+				
+			Map<String,Object> pa=new HashMap<String,Object>();
+		    pa.put("openId", openId);
+		    
+		    
+			return null;
+		}
 		
 }
