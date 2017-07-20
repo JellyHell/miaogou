@@ -518,6 +518,13 @@ public class UserController {
 		return retMap;
 	}
 	
+	/**
+	 * 获取购物车列表
+	 * @param _3rd_session
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "goods/getShoppingCartList", method = RequestMethod.POST)
 	public Map<String, Object> getShoppingCartList(
