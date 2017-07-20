@@ -483,6 +483,42 @@ public class UserController {
 		return retMap;
 	}
 	
+	/**
+	 * 放入购物车
+	 * @param _3rd_session
+	 * @param goodsCode  商品编码
+	 * @param goodsNum   商品数量
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "goods/addToShoppingCart", method = RequestMethod.POST)
+	public Map<String, Object> addToShoppingCart(
+			 String _3rd_session,String goodsCode,String goodsNum,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		
+		String openId=new String("");
+		try {
+			Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");
+		} catch (Exception e) {
+			retMap.put("errcode", "-5");
+			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
+			return retMap;
+		}
+		
+		try {
+			retMap=UserService.addToShoppingCart(openId,goodsCode,goodsNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
+	}
+	
+	
 	public static void main(String[] args) throws Exception {
 		/*UUID uuid = UUID.randomUUID();
 		System.out.println(uuid);

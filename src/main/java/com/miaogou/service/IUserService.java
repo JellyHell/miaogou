@@ -33,6 +33,9 @@ public interface IUserService {
 
 	Map<String, Object> getWishList(String openId, int pageSize, int pageNum) throws Exception;
 
+	Map<String, Object> addToShoppingCart(String openId, String goodsCode,
+			String goodsNum) throws Exception;
+
 
 
 }

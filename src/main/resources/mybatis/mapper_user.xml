@@ -125,4 +125,26 @@
     <select id="getAttachmentList" parameterType="Map" resultType="Map">
     select code,url from mg_attachment where tabCode=#{tabCode}
     </select>
+    
+    <insert id="addToShoppingCart" parameterType="Map">
+        INSERT INTO mg_shoppingcart
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+         <if test="code !=null and code !=''">code,</if>
+         <if test="openId !=null and openId !=''">openId,</if>
+         <if test="goodsCode !=null and goodsCode !=''">goodsCode,</if>
+         <if test="goodsNum !=null and goodsNum !=''">goodsNum,</if>
+         <if test="code !=null and code !=''">createTime,</if>
+         <if test="code !=null and code !=''">updateTime,</if>
+         <if test="state !=null and state !=''">state,</if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+         <if test="code !=null and code !=''">#{code},</if>
+         <if test="openId !=null and openId !=''">#{openId},</if>
+         <if test="goodsCode !=null and goodsCode !=''">#{goodsCode},</if>
+         <if test="goodsNum !=null and goodsNum !=''">#{goodsNum},</if>
+         <if test="code !=null and code !=''">SYSDATE(),</if>
+         <if test="code !=null and code !=''">SYSDATE(),</if>
+         <if test="state !=null and state !=''">#{state},</if>
+      </trim>
+    </insert>
 </mapper>

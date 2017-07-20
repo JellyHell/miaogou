@@ -42,6 +42,8 @@ public interface IUserDao {
 
 	List<Map<String, String>> getAttachmentList(Map<String, Object> pa);
 
+	int addToShoppingCart(Map<String, Object> pa);
+
 
 
 }

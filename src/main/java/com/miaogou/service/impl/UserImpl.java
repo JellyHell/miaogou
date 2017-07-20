@@ -326,5 +326,26 @@ public class UserImpl implements IUserService{
 	        retMap.put("pages", pages);
 	        return retMap;
 		}
+
+
+		@Override
+		@Transactional
+		public Map<String, Object> addToShoppingCart(String openId,
+				String goodsCode, String goodsNum) throws Exception {
+            Map<String,Object> retMap=new HashMap<String,Object>();
+			
+			Map<String,Object> pa=new HashMap<String,Object>();
+			pa.put("code", "s_shopcart"+userDao.nextval("s_shopcart"));
+	        pa.put("openId", openId);
+	        pa.put("goodsCode", goodsCode);
+	        pa.put("goodsNum", goodsNum);
+	        pa.put("state", "0");
+	        
+	        if(userDao.addToShoppingCart(pa)!=1) throw new Exception();
+	        
+	        retMap.put("errcode", "0");
+	        retMap.put("errmsg", "OK");
+	        return retMap;
+		}
 		
 }
