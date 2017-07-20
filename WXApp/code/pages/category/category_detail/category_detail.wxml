@@ -1,0 +1,17 @@
+<!--引入产品列表模板-->
+<import src="../../../template/product-grid/product-grid-template.wxml" />
+
+<!--posts.wxml-->
+<view style="background">
+ 
+  <view wx:if="{{products.length == 0}}" class="sk-double-bounce">
+    <view class="sk-child sk-double-bounce1"></view>
+    <view class="sk-child sk-double-bounce2"></view>
+  </view>
+
+  <!--商品列表-->
+  <view class="product-container">
+    <template is="productGridTemplate" data="{{products}}" />
+  </view>
+
+</view>

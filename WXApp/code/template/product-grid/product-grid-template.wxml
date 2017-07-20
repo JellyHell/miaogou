@@ -1,0 +1,10 @@
+<import src="../product/product-template.wxml" />
+<template name="productGridTemplate">
+  <view class="grid-view-container">
+    <block wx:for="{{products}}" wx:for-item="product">
+      <view bindtap="onToDetail" class="single-view-container">
+        <template is="productTemplate" data="{{...product}}" />
+      </view>
+    </block>
+  </view>
+</template>

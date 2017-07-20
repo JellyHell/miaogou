@@ -1,0 +1,49 @@
+/* integral-manager.wxss */
+@import "../../../template/integral-manager-cell/integral-manager-cell.wxss";
+
+page{
+  background-color: #f9f9f9;
+}
+
+
+.top-score-container{
+  display: flex;
+  flex-direction: column;
+  background: #FF4949;
+  width: 100%;
+  height: 260rpx;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.score{
+  color: #fff;
+  font-size: 70rpx;
+  font-style: bold;
+}
+
+.list-container{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 100rpx;
+  margin-top: 20rpx;
+}
+
+
+.botton-add-container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100rpx;
+  position: fixed;
+  background: #fff;
+  align-items: center;
+  justify-content: center;
+  bottom: -1rpx;
+}
+
+.add-dream {
+  color: #1F2D3D;
+  font-size: 28rpx;
+}

@@ -1,0 +1,30 @@
+<import src="../single-orderproduct-template/single-orderproduct-template.wxml" />
+<import src="../multi-orderproduct-template/multi-orderproduct-template.wxml" />
+
+<template name="orderManagerCell">
+  <view class="order-manager-cell-container">
+    <view class="header-container">
+      <text class="headet-title">喵喵代购</text>
+      <text wx:if="{{orderType == 0}}" class="headet-state">等待支付</text>
+    </view>
+
+    <view class="product-info-container">
+      <view wx:if="{{orderProducts.length == 1}}"> 
+        <template is="singleOrderProductTemplate" data="{{...orderProducts[0]}}" />
+      </view>
+      <view wx:else> 
+        <template is="multiOrderProduct" data="{{orderProducts}}" />
+      </view>
+    </view>
+
+    <text class="order-info">共{{orderProducts.length}}件商品 实付款¥{{totalPrice}}</text>
+
+    <view class="devider-linner"></view>
+
+    <view class="order-manager-bt-container">
+        <view class="dopay-container">
+            <text style="color:#FF4949;font-size:25rpx">{{managerTitle}}</text>
+        </view>
+    </view>
+  </view>
+</template>

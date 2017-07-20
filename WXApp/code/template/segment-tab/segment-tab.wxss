@@ -1,0 +1,55 @@
+.segment-tab-container{
+  background: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 100rpx;
+}
+
+.single-type-container{
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.type_title{
+  font-size: 28rpx;
+  color: #1F2D3D;
+  margin-top: 8rpx;
+}
+
+.type_title_selected{
+  font-size: 28rpx;
+  color: #FF4949;
+  margin-top: 8rpx;
+}
+
+.index-tab-container{
+  background: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 4rpx;
+}
+
+.index-type-container{
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.type_line_normal{
+  width: 100%;
+  height: 4rpx;
+  background: #FFFFFF;
+}
+
+.type_line_selected{
+  width: 100%;
+  height: 4rpx;
+  background: #FF4949;
+}
