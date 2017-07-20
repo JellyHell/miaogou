@@ -526,7 +526,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "goods/getShoppingCartList", method = RequestMethod.POST)
+	@RequestMapping(value = "goods/getShoppingCartList", method = RequestMethod.GET)
 	public Map<String, Object> getShoppingCartList(
 			 String _3rd_session,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
