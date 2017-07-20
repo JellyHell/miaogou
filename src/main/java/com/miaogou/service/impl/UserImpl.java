@@ -358,8 +358,13 @@ public class UserImpl implements IUserService{
 			Map<String,Object> pa=new HashMap<String,Object>();
 		    pa.put("openId", openId);
 		    
+		    List<Map<String,String>> li=userDao.getShoppingCartList(pa);
 		    
-			return null;
+		    retMap.put("errcode", "0");
+	        retMap.put("errmsg", "OK");
+	        retMap.put("data", li);
+	        return retMap;
+		    
 		}
 		
 }
