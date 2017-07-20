@@ -1,0 +1,25 @@
+<template name="dreamManagerCell">
+  <view class="dream-manager-cell-container">
+
+    <view class="product-container">
+      <image class="produc-image" src="{{productImg}}" mode="aspectFill"></image>
+
+      <view class="product-info-container">
+        <text class="product-name">{{productDesc}}</text>
+        <text class="create-time">创建时间：{{createTime}}</text>
+      </view>
+    </view>
+
+    <view class="devider-linner"></view>
+    <view class="contact-info-container">
+      <text style="color:#1F2D3D;font-size:25rpx;margin-left:30rpx">更新时间：{{contactTime}}</text>
+
+      <view wx:if="{{state == 2}}" class="delete-container">
+        <text style="color:#FF4949;font-size:25rpx">已上架</text>
+      </view>
+      <view wx:if="{{state == 0 || state == 1}}">
+        <text style="color:#1F2D3D;font-size:25rpx;margin-right:30rpx" >{{state == 1 ? "已确认" : "未确认"}}</text>
+      </view>
+    </view>
+  </view>
+</template>

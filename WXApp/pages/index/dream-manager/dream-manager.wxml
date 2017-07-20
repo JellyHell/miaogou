@@ -1,0 +1,19 @@
+<import src="../../../template/dream-manager-cell/dream-manager-cell-template.wxml" />
+
+<!--address-manager.wxml-->
+<view style="background">
+
+  <view class="dream-container">
+    <block wx:for="{{userDreams}}" wx:for-item="dream">
+      <view>
+        <template is="dreamManagerCell" data="{{...dream}}" />
+      </view>
+    </block>
+  </view>
+
+  <!--Bottom Add View-->
+  <view bindtap="addDream" class="botton-add-container">
+      <text class="add-dream">添加新愿望</text>
+  </view>
+
+</view>

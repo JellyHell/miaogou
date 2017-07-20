@@ -1,0 +1,10 @@
+<template name="singleOrderProductTemplate">
+  <view class="order-container">
+    <image class="produc-image" src="{{productImg}}" mode="aspectFill"></image>
+
+    <view class="product-info-container">
+      <text class="product-name">{{productName}}</text>
+      <text class="product-size">规格：{{productInfo}}</text>
+    </view>
+  </view>
+</template>

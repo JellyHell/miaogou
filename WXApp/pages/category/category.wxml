@@ -1,0 +1,14 @@
+<!--category.wxml-->
+<view style="background">
+
+   <view class="category-view-container">
+      <block wx:for="{{categorys}}" wx:for-item="category">
+        <view catchtap="onTapCategory" data-categoryId="{{category.category_title}}" data-categoryTitle="{{category.category_title}}" class="single-category-container">
+          <image class="category-image" src="{{category.category_img}}"></image>
+          <text class="category-title">{{category.category_title}}</text>
+        </view>
+      </block>
+    </view>
+
+  <image bindtap="onSearchTap" class="search-img" src="/images/icon/search.png"/>
+</view>

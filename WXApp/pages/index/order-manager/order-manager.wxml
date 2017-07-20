@@ -1,0 +1,21 @@
+<import src="../../../template/segment-tab/segment-tab.wxml" />
+
+<import src="../../../template/order-manager-cell/order-manager-cell.wxml" />
+
+<view class="parent-contaier">
+
+  <!--SegmentTab-->
+  <view class="segment-container">
+    <template is="segmentTab" data="{{orderTypes}}" />
+  </view>
+
+  <!--商品列表-->
+  <view class="product-container">
+    <block wx:for="{{orders}}" wx:for-item="order">
+      <view>
+        <template is="orderManagerCell" data="{{...order}}" />
+      </view>
+    </block>
+  </view>
+  
+</view>

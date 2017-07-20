@@ -1,0 +1,79 @@
+<!--index.wxml-->
+<view style="background">
+
+  <view class="userinfo">
+    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+    <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+
+    <view bindtap="onSignTap" class="sign-container">
+      <image class="sign-image" src="/images/avatar/sign.png"/>
+      <text class="sign-title">{{signState}}</text>
+    </view>
+
+  </view>
+
+  <view class="manager-list-container">
+    <view bindtap="orderManagerTap"  class="manager-cell">
+      <view>
+        <image class="manager-img-order" src="/images/avatar/1.png" />
+        <text class="manager-title">订单管理</text>
+      </view>
+
+      <image class="arror" src="/images/avatar/r.png" />
+    </view>
+
+    <view class="horital-line" />
+
+    <view bindtap="addressManagerTap"  class="manager-cell">
+      <view>
+        <image class="manager-img" src="/images/avatar/2.png" />
+        <text class="manager-title">地址管理</text>
+      </view>
+      <image class="arror" src="/images/avatar/r.png" />
+    </view>
+  </view>
+
+  <view class="manager-list-container">
+    <view bindtap="dreamManagerTap" class="manager-cell">
+      <view>
+        <image class="manager-img" src="/images/avatar/6.png" />
+        <text class="manager-title">我的心愿单</text>
+      </view>
+      <image class="arror" src="/images/avatar/r.png" />
+    </view>
+
+    <view class="horital-line" />
+
+    <view class="manager-cell">
+      <view>
+        <image class="manager-img" src="/images/avatar/3.png" />
+        <text class="manager-title">我的购物车</text>
+      </view>
+      <image class="arror" src="/images/avatar/r.png" />
+    </view>
+
+    <view class="horital-line" />
+
+    <view bindtap="integralManagerTap"  class="manager-cell">
+      <view>
+        <image class="manager-img" src="/images/avatar/4.png" />
+        <text class="manager-title">我的积分</text>
+      </view>
+      <image class="arror" src="/images/avatar/r.png" />
+    </view>
+
+  </view>
+
+
+  <view class="manager-list-container">
+    <view bindtap="aboutUsTap" class="manager-cell">
+      <view>
+        <image class="manager-img" src="/images/avatar/aboutus.png" />
+        <text class="manager-title">关于我们</text>
+      </view>
+      <image class="arror" src="/images/avatar/r.png" />
+    </view>
+  </view>
+
+
+</view>

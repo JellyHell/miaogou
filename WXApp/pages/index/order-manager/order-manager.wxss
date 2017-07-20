@@ -1,0 +1,27 @@
+/*引入模板样式*/
+@import "../../../template/segment-tab/segment-tab.wxss";
+@import "../../../template/order-manager-cell/order-manager-cell.wxss";
+
+page{
+  background-color: #f9f9f9;
+}
+
+.parent-contaier{
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9f9;
+}
+
+.segment-container{
+  background: #fff;
+  width: 100%;
+  height: 80rpx;
+  position: fixed;
+  margin-top: -1rpx;
+}
+
+.product-container{
+  margin-top: 120rpx;
+  display: flex;
+  flex-direction: column;
+}

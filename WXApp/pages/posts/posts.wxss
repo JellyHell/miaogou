@@ -1,0 +1,55 @@
+/*引入模板样式*/
+@import "../../template/product-grid/product-grid-template.wxss";
+
+/* posts.wxss */
+swiper{
+  width:100%;
+  height:340rpx;
+}
+
+swiper image{
+  width:100%;
+  height:340rpx;
+}
+
+.product-container{
+  margin-top: 0rpx;
+}
+
+page{
+  background-color: #f9f9f9;
+}
+
+.toptap-contaniner{
+  display: flex;
+  flex-direction: row;
+  height: 150rpx;
+  margin-left: 30rpx;
+  margin-right: 30rpx;
+  padding-right: -100rpx;
+  background: #fff;
+  margin-top: 20rpx;
+  border-radius: 5rpx;
+  justify-content: space-around;
+}
+
+.tapcell-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tapcell-img{
+  height: 80rpx;
+  width: 80rpx;
+  margin-top: 16rpx;
+}
+
+.tapcell-title{
+  font-size: 24rpx;
+  margin-top: 10rpx;
+  color: #1F2D3D;
+}
+
+
+

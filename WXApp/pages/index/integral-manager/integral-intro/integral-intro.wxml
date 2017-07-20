@@ -1,0 +1,26 @@
+<!--integral-intro.wxml-->
+<view style="background">
+
+  <view class="base-container">
+
+    <view class="block-container">
+      <text class="title">积分获取说明</text>
+      <view class="devider-linner"></view>
+      <text class="intro">1.每日签到可以获取一个积分；
+      2.每次购买商品将自动获取对应的积分；
+      3.每日分享一次获取5个积分；
+      4.每成功推荐一名新朋友使用，可获取50积分。
+      </text>
+    </view>
+
+    <view class="block-container">
+      <text class="title">积分使用说明</text>
+      <view class="devider-linner"></view>
+      <text class="intro">1.满300积分可换取玫瑰眼药水一只；
+      2.满600积分可换取DHC口红一只；
+      3.满1500积分可换取SK2礼瓶一只。
+      </text>
+    </view>
+  </view>
+
+</view>

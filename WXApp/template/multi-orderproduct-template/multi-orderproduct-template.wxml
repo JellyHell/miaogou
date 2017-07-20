@@ -1,0 +1,9 @@
+<template name="multiOrderProduct">
+  <view class="grid-view-container">
+    <block wx:for="{{orderProducts}}" wx:for-item="product">
+      <view bindtap="onToDetail" class="single-view-container">
+        <image class="multi-produc-image" src="{{product.productImg}}" mode="aspectFill"></image>
+      </view>
+    </block>
+  </view>
+</template>

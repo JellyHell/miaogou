@@ -1,0 +1,26 @@
+<import src="../../../template/product-grid/product-grid-template.wxml" />
+
+<view style="background">
+
+  <view class="parent-contaier">
+
+    <view class="search-container">
+      <input class="input-view" placeholder-style="placeholder-class" placeholder="请输入商品名、分类" confirm-type="search" bindconfirm="bindconfirm" bindblur="bindblur" />
+      <!--<view class="search-bt-container">
+        <text class="search-view">搜索</text>
+      </view>-->
+    </view>
+
+    <view wx:if="{{products.length == 0 && isSearching}}" class="sk-double-bounce">
+      <view class="sk-child sk-double-bounce1"></view>
+      <view class="sk-child sk-double-bounce2"></view>
+    </view>
+
+    <!--商品列表-->
+    <view class="product-container">
+      <template is="productGridTemplate" data="{{products}}" />
+    </view>
+
+  </view>
+
+</view>
