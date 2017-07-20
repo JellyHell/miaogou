@@ -46,6 +46,12 @@ public interface IUserDao {
 
 	List<Map<String, String>> getShoppingCartList(Map<String, Object> pa);
 
+	int isWxUserExits(Map<String, Object> pa);
+
+	int updateWxUser(Map<String, Object> pa);
+
+	int insertWxUser(Map<String, Object> pa);
+
 
 
 }

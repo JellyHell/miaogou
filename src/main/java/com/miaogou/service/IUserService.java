@@ -38,6 +38,10 @@ public interface IUserService {
 
 	Map<String, Object> getShoppingCartList(String openId) throws Exception;
 
+	Map<String, Object> addWxUser(String openId, String nickName,
+			String avatarUrl, String gender, String province, String city,
+			String country) throws Exception;
+
 
 
 }

@@ -366,5 +366,35 @@ public class UserImpl implements IUserService{
 	        return retMap;
 		    
 		}
+
+
+		@Override
+		@Transactional
+		public Map<String, Object> addWxUser(String openId, String nickName,
+				String avatarUrl, String gender, String province, String city,
+				String country) throws Exception {
+			Map<String,Object> retMap=new HashMap<String,Object>();
+			
+			Map<String,Object> pa=new HashMap<String,Object>();
+		    pa.put("openId", openId);
+		    pa.put("nickName", nickName);
+		    pa.put("avatarUrl", avatarUrl);
+		    pa.put("gender", gender);
+		    pa.put("province", province);
+		    pa.put("city", city);
+		    pa.put("country", country);
+		    
+		    //查看是否存在
+		    
+		    //存在   update
+		    if(userDao.isWxUserExits(pa)==1){
+		    	if(userDao.updateWxUser(pa)!=1) throw new Exception();
+		    }else{ //不存在  insert
+		    	if(userDao.insertWxUser(pa)!=1) throw new Exception();
+		    }
+		    retMap.put("errcode", "0");
+	        retMap.put("errmsg", "OK");
+	        return retMap;
+		}
 		
 }

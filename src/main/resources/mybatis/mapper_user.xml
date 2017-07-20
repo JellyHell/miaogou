@@ -157,4 +157,41 @@
        from mg_shoppingcart a left join mg_goods b on a.goodsCode=b.goods_code
         where openId=#{openId} and state='0'
     </select>
+    
+    <select id="isWxUserExits" parameterType="Map" resultType="java.lang.Integer">
+      select count(1) from mg_wxUser where openId=#{openId}
+    </select>
+    
+    <update id="updateWxUser" parameterType="Map" >
+      UPDATE mg_wxUser
+	 <trim prefix="set" suffixOverrides=",">
+		 <if test="nickName!=null and  nickName!=''">nickName=#{nickName},</if>
+		 <if test="avatarUrl!=null and  avatarUrl!=''">avatarUrl=#{avatarUrl},</if>
+		 <if test="gender!=null and  gender!=''">gender =#{gender},</if>
+		 <if test="province!=null and  province!=''">province=#{province},</if>
+		 <if test="city!=null  and city!=''">city=#{city},</if>
+		 <if test="country!=null  and country!=''">country=#{country},</if>
+	 </trim>
+	 WHERE openId=#{openId}
+    </update>
+    
+    <insert id="insertWxUser" parameterType="Map">
+     INSERT INTO mg_wxUser
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+         <if test="nickName!=null and nickName!=''">nickName,</if>
+         <if test="avatarUrl!=null and avatarUrl!=''">avatarUrl,</if>
+         <if test="gender!=null and gender!=''">gender,</if>
+         <if test="province!=null and province!=''">province,</if>
+         <if test="city!=null and city!=''">city,</if>
+         <if test="country!=null and country!=''">country,</if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+         <if test="nickName!=null and nickName!=''">#{nickName},</if>
+         <if test="avatarUrl!=null and avatarUrl!=''">#{avatarUrl},</if>
+         <if test="gender!=null and gender!=''">#{gender},</if>
+         <if test="province!=null and province!=''">#{province},</if>
+         <if test="city!=null and city!=''">#{city},</if>
+         <if test="country!=null and country!=''">#{country},</if>
+      </trim>
+    </insert>
 </mapper>

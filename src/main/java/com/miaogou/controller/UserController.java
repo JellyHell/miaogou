@@ -550,6 +550,47 @@ public class UserController {
 		}
 		return retMap;
 	}
+	
+	/**
+	 * 新增微信用户
+	 * @param _3rd_session
+	 * @param nickName  昵称
+	 * @param avatarUrl 头像
+	 * @param gender 性别
+	 * @param province 省份
+	 * @param city 城市
+	 * @param country 国家
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "User/addWxUser", method = RequestMethod.POST)
+	public Map<String, Object> addWxUser(
+			 String _3rd_session,String nickName,String avatarUrl,String gender ,String province
+			 ,String city,String country,HttpServletRequest request,HttpServletResponse response){
+		
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		String openId=new String("");
+		try {
+			Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");
+		} catch (Exception e) {
+			retMap.put("errcode", "-5");
+			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
+			return retMap;
+		}
+		
+		try {
+			retMap=UserService.addWxUser(openId,nickName,avatarUrl,gender,province,city,country);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
+	}
+	
 	public static void main(String[] args) throws Exception {
 		/*UUID uuid = UUID.randomUUID();
 		System.out.println(uuid);
