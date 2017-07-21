@@ -172,12 +172,14 @@
 		 <if test="city!=null  and city!=''">city=#{city},</if>
 		 <if test="country!=null  and country!=''">country=#{country},</if>
 	 </trim>
-	 WHERE openId=#{openId}
+	 WHERE userId=#{userId}
     </update>
     
     <insert id="insertWxUser" parameterType="Map">
      INSERT INTO mg_wxUser
     <trim prefix="(" suffix=")" suffixOverrides=",">
+	     <if test="userId!=null and userId!=''">userId,</if>
+	     <if test="openId!=null and openId!=''">openId,</if>
          <if test="nickName!=null and nickName!=''">nickName,</if>
          <if test="avatarUrl!=null and avatarUrl!=''">avatarUrl,</if>
          <if test="gender!=null and gender!=''">gender,</if>
@@ -186,6 +188,8 @@
          <if test="country!=null and country!=''">country,</if>
       </trim>
       <trim prefix="values (" suffix=")" suffixOverrides=",">
+	     <if test="userId!=null and userId!=''">#{userId},</if>
+	     <if test="openId!=null and openId!=''">#{openId},</if>
          <if test="nickName!=null and nickName!=''">#{nickName},</if>
          <if test="avatarUrl!=null and avatarUrl!=''">#{avatarUrl},</if>
          <if test="gender!=null and gender!=''">#{gender},</if>
@@ -194,4 +198,8 @@
          <if test="country!=null and country!=''">#{country},</if>
       </trim>
     </insert>
+    
+    <select id="selectUserIdByopenId" parameterType="Map" resultType="java.lang.String">
+     select userId from mg_wxUser where openId=#{openId}
+    </select>
 </mapper>

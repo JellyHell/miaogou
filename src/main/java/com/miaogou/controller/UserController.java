@@ -76,13 +76,15 @@ public class UserController {
 				map.put("openid", openid); //oYk__0HbSPT3uWpCyLcEkOfRT2LA
 				map.put("session_key", session_key);  //mnbwt+r+pt6n6J5Aq+Lpug==
 				
+				retMap=UserService.insertOrSelectUserId(openid);
+				
 				//存入redis  并设置超时时间为  一个小时
-				RedisUtils.addMap(_3rd_session, map, 60*60);
+				//RedisUtils.addMap(_3rd_session, map, 60*60);
 				
 				
-				retMap.put("errcode", "0");
+				/*retMap.put("errcode", "0");
 				retMap.put("errmsg", "ok");
-				retMap.put("_3rd_session", _3rd_session);
+				retMap.put("_3rd_session", _3rd_session);*/
 				
 				
 			}else{

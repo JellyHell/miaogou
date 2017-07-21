@@ -42,6 +42,8 @@ public interface IUserService {
 			String avatarUrl, String gender, String province, String city,
 			String country) throws Exception;
 
+	Map<String, Object> insertOrSelectUserId(String openid) throws Exception;
+
 
 
 }

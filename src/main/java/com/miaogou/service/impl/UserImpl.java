@@ -52,8 +52,30 @@ public class UserImpl implements IUserService{
 			
 			return retMap;
 		}
-
-
+        
+		@Override
+		@Transactional
+		public Map<String, Object> insertOrSelectUserId(String openid) throws Exception {
+            Map<String,Object> retMap=new HashMap<String,Object>();
+			
+			Map<String,Object> pa=new HashMap<String,Object>();
+			pa.put("openId", openid);
+			
+			String  userId=userDao.selectUserIdByopenId(pa);
+			
+			if(userId==null||"".equals(userId)){
+				userId="s_wxUser"+userDao.nextval("s_wxUser");
+				pa.put("userId", userId);
+				if(userDao.insertWxUser(pa)!=1) throw new Exception();
+			}
+			
+			retMap.put("errcode", "0");
+	        retMap.put("errmsg", "OK");
+	        retMap.put("userId", userId);
+	      
+			return retMap;
+		}
+        
 		@Override
 		@Transactional
 		public Map<String, Object> getBannerAd() throws Exception{
@@ -396,5 +418,8 @@ public class UserImpl implements IUserService{
 	        retMap.put("errmsg", "OK");
 	        return retMap;
 		}
+
+
+		
 		
 }

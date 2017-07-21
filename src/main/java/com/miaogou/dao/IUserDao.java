@@ -52,6 +52,8 @@ public interface IUserDao {
 
 	int insertWxUser(Map<String, Object> pa);
 
+	String selectUserIdByopenId(Map<String, Object> pa);
+
 
 
 }
