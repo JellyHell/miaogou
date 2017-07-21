@@ -563,14 +563,14 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "User/addWxUser", method = RequestMethod.POST)
 	public Map<String, Object> addWxUser(
-			 String _3rd_session,String nickName,String avatarUrl,String gender ,String province
+			 String userId,String nickName,String avatarUrl,String gender ,String province
 			 ,String city,String country,HttpServletRequest request,HttpServletResponse response){
 		
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		String openId=new String("");
 		try {
-			Map<String,String> t=RedisUtils.findMap(_3rd_session);
-			openId=t.get("openid");
+			/*Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");*/
 		} catch (Exception e) {
 			retMap.put("errcode", "-5");
 			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
@@ -578,7 +578,7 @@ public class UserController {
 		}
 		
 		try {
-			retMap=UserService.addWxUser(openId,nickName,avatarUrl,gender,province,city,country);
+			retMap=UserService.addWxUser(userId,nickName,avatarUrl,gender,province,city,country);
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");

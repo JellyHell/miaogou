@@ -200,6 +200,6 @@
     </insert>
     
     <select id="selectUserIdByopenId" parameterType="Map" resultType="java.lang.String">
-     select userId from mg_wxUser where openId=#{openId}
+     select userId from mg_wxUser where userId=#{openId}
     </select>
 </mapper>

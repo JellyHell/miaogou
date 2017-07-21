@@ -393,13 +393,13 @@ public class UserImpl implements IUserService{
 
 		@Override
 		@Transactional
-		public Map<String, Object> addWxUser(String openId, String nickName,
+		public Map<String, Object> addWxUser(String userId, String nickName,
 				String avatarUrl, String gender, String province, String city,
 				String country) throws Exception {
 			Map<String,Object> retMap=new HashMap<String,Object>();
 			
 			Map<String,Object> pa=new HashMap<String,Object>();
-		    pa.put("openId", openId);
+		    pa.put("userId", userId);
 		    pa.put("nickName", nickName);
 		    pa.put("avatarUrl", avatarUrl);
 		    pa.put("gender", gender);
