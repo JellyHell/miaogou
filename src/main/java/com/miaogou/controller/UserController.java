@@ -81,12 +81,6 @@ public class UserController {
 				//存入redis  并设置超时时间为  一个小时
 				//RedisUtils.addMap(_3rd_session, map, 60*60);
 				
-				
-				/*retMap.put("errcode", "0");
-				retMap.put("errmsg", "ok");
-				retMap.put("_3rd_session", _3rd_session);*/
-				
-				
 			}else{
 				retMap.put("errcode", obj.getInt("errcode"));
 				retMap.put("errmsg", obj.getString("errmsg"));
@@ -170,7 +164,7 @@ public class UserController {
 	
 	/**
 	 * 增加收货地址
-	 * @param _3rd_session user/login  接口返回的后台维护的第三方session   里面保存了这个用户的openId
+	 * @param userId 
 	 * @param name  收件人姓名
 	 * @param phone 收件人电话
 	 * @param area 收件人地区
@@ -183,13 +177,13 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "addr/addDeliveryAddress", method = RequestMethod.POST)
 	public Map<String, Object> addDeliveryAddress(
-			 String _3rd_session,String name,String phone,String area,String address,String postCode,
+			 String userId,String name,String phone,String area,String address,String postCode,
 			HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
-		String openId=new String("");
+		//String openId=new String("");
 		try {
-			Map<String,String> t=RedisUtils.findMap(_3rd_session);
-			openId=t.get("openid");
+			/*Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");*/
 		} catch (Exception e) {
 			retMap.put("errcode", "-5");
 			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
@@ -197,7 +191,7 @@ public class UserController {
 		}
 		
 		try {
-			retMap=UserService.addDeliveryAddress(openId,name,phone,area,address,postCode);
+			retMap=UserService.addDeliveryAddress(userId,name,phone,area,address,postCode);
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");
@@ -217,15 +211,15 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "addr/getDeliveryAddress", method = RequestMethod.GET)
 	public Map<String, Object> getDeliveryAddress(
-			 String _3rd_session,
+			 String userId,
 			HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		String openId=new String("");
 		
 		try {
 			
-			Map<String,String> t=RedisUtils.findMap(_3rd_session);
-			openId=t.get("openid");
+			/*Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");*/
 		} catch (Exception e) {
 			retMap.put("errcode", "-5");
 			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
@@ -233,7 +227,7 @@ public class UserController {
 		}
 		
 		try {
-			retMap=UserService.getDeliveryAddress(openId);
+			retMap=UserService.getDeliveryAddress(userId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");
@@ -253,13 +247,13 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "addr/delDeliveryAddress", method = RequestMethod.GET)
 	public Map<String, Object> delDeliveryAddress(
-			 String _3rd_session,String code,HttpServletRequest request,HttpServletResponse response){
+			 String userId,String code,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		
 		String openId=new String("");
 		try {
-			Map<String,String> t=RedisUtils.findMap(_3rd_session);
-			openId=t.get("openid");
+			/*Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");*/
 		} catch (Exception e) {
 			retMap.put("errcode", "-5");
 			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
@@ -267,7 +261,7 @@ public class UserController {
 		}
 		
 		try {
-			retMap=UserService.delDeliveryAddress(openId,code);
+			retMap=UserService.delDeliveryAddress(userId,code);
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");
@@ -287,13 +281,13 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "addr/setDefaultDeliveryAddress", method = RequestMethod.POST)
 	public Map<String, Object> setDefaultDeliveryAddress(
-			 String _3rd_session,String code,HttpServletRequest request,HttpServletResponse response){
+			 String userId,String code,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		
 		String openId=new String("");
 		try {
-			Map<String,String> t=RedisUtils.findMap(_3rd_session);
-			openId=t.get("openid");
+			/*Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");*/
 		} catch (Exception e) {
 			retMap.put("errcode", "-5");
 			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
@@ -301,7 +295,7 @@ public class UserController {
 		}
 		
 		try {
-			retMap=UserService.setDefaultDeliveryAddress(openId,code);
+			retMap=UserService.setDefaultDeliveryAddress(userId,code);
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");
@@ -320,13 +314,13 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "register", method = RequestMethod.POST)
 	public Map<String, Object> register(
-			 String _3rd_session,HttpServletRequest request,HttpServletResponse response){
+			 String userId,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		
 		String openId=new String("");
 		try {
-			Map<String,String> t=RedisUtils.findMap(_3rd_session);
-			openId=t.get("openid");
+			/*Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");*/
 		} catch (Exception e) {
 			retMap.put("errcode", "-5");
 			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
@@ -334,7 +328,7 @@ public class UserController {
 		}
 		
 		try {
-			retMap=UserService.register(openId);
+			retMap=UserService.register(userId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");
@@ -353,13 +347,13 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "getRegisterStatus", method = RequestMethod.GET)
 	public Map<String, Object> getRegisterStatus(
-			 String _3rd_session,HttpServletRequest request,HttpServletResponse response){
+			 String userId,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		
 		String openId=new String("");
 		try {
-			Map<String,String> t=RedisUtils.findMap(_3rd_session);
-			openId=t.get("openid");
+			/*Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");*/
 		} catch (Exception e) {
 			retMap.put("errcode", "-5");
 			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
@@ -367,7 +361,7 @@ public class UserController {
 		}
 		
 		try {
-			retMap=UserService.getRegisterStatus(openId);
+			retMap=UserService.getRegisterStatus(userId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");
@@ -388,13 +382,13 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "getScoreList", method = RequestMethod.GET)
 	public Map<String, Object> getScoreList(
-			 String _3rd_session,int pageSize,int pageNum,HttpServletRequest request,HttpServletResponse response){
+			 String userId,int pageSize,int pageNum,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		
 		String openId=new String("");
 		try {
-			Map<String,String> t=RedisUtils.findMap(_3rd_session);
-			openId=t.get("openid");
+			/*Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");*/
 		} catch (Exception e) {
 			retMap.put("errcode", "-5");
 			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
@@ -402,7 +396,7 @@ public class UserController {
 		}
 		
 		try {
-			retMap=UserService.getScoreList(openId,pageSize,pageNum);
+			retMap=UserService.getScoreList(userId,pageSize,pageNum);
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");
@@ -425,14 +419,14 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "upload/wishList", method = RequestMethod.POST)
 	public Map<String, Object> uploadWishList(@RequestParam("file") CommonsMultipartFile[] files,
-			 String _3rd_session,String  goodsName,String url,HttpServletRequest request,HttpServletResponse response) throws Exception{
+			 String userId,String  goodsName,String url,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		
         Map<String,Object> retMap=new HashMap<String,Object>();
 		
 		String openId=new String("");
 		try {
-			Map<String,String> t=RedisUtils.findMap(_3rd_session);
-			openId=t.get("openid");
+			/*Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");*/
 		} catch (Exception e) {
 			retMap.put("errcode", "-5");
 			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
@@ -440,7 +434,7 @@ public class UserController {
 		}
 		
 		try {
-			retMap=UserService.uploadWishList(openId,files,goodsName,url);
+			retMap=UserService.uploadWishList(userId,files,goodsName,url);
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");

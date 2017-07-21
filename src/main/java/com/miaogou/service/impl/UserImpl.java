@@ -93,13 +93,14 @@ public class UserImpl implements IUserService{
 
 		@Override
 		@Transactional
-		public Map<String, Object> addDeliveryAddress(String openId,
+		public Map<String, Object> addDeliveryAddress(String userId,
 				String name, String phone, String area, String address,
 				String postCode) throws Exception{
 			Map<String,Object> retMap=new HashMap<String,Object>();
 			
 			Map<String,Object> pa=new HashMap<String,Object>();
 			pa.put("code", "s_addr"+userDao.nextval("s_addr"));
+			pa.put("userId", userId);
 			pa.put("name", name);
 			pa.put("phone", phone);
 			pa.put("area", area);
@@ -117,12 +118,12 @@ public class UserImpl implements IUserService{
 
 		@Override
 		@Transactional
-		public Map<String, Object> getDeliveryAddress(String openId)
+		public Map<String, Object> getDeliveryAddress(String userId)
 				throws Exception {
             Map<String,Object> retMap=new HashMap<String,Object>();
 			
 			Map<String,Object> pa=new HashMap<String,Object>();
-			pa.put("openId", openId);
+			pa.put("userId", userId);
 			
 			List<Map<String,String>> li=userDao.getDeliveryAddress(pa);
 			retMap.put("errcode", "0");
@@ -134,12 +135,12 @@ public class UserImpl implements IUserService{
 
 		@Override
 		@Transactional
-		public Map<String, Object> delDeliveryAddress(String openId, String code)
+		public Map<String, Object> delDeliveryAddress(String userId, String code)
 				throws Exception {
 			Map<String,Object> retMap=new HashMap<String,Object>();
 				
 		    Map<String,Object> pa=new HashMap<String,Object>();
-		    pa.put("openId", openId);
+		    pa.put("userId", userId);
 		    pa.put("code", code);
 		    
 		    if(userDao.delDeliveryAddress(pa)!=1) throw new Exception("删除失败");
@@ -152,12 +153,12 @@ public class UserImpl implements IUserService{
 
 		@Override
 		@Transactional
-		public Map<String, Object> setDefaultDeliveryAddress(String openId,
+		public Map<String, Object> setDefaultDeliveryAddress(String userId,
 				String code) throws Exception {
 			Map<String,Object> retMap=new HashMap<String,Object>();
 			
 		    Map<String,Object> pa=new HashMap<String,Object>();
-		    pa.put("openId", openId);
+		    pa.put("userId", userId);
 		    pa.put("code", code);
 		    
 		    //首先设置所有的收货地址都不为默认的  isdefault=0
@@ -194,11 +195,11 @@ public class UserImpl implements IUserService{
 
 		@Override
 		@Transactional
-		public Map<String, Object> register(String openId) throws Exception {
+		public Map<String, Object> register(String userId) throws Exception {
             Map<String,Object> retMap=new HashMap<String,Object>();
 			
 		    Map<String,Object> pa=new HashMap<String,Object>();
-		    pa.put("openId", openId);
+		    pa.put("userId", userId);
 		    
 		    
 		    //首先查看是否已经签到了 今天
@@ -226,12 +227,12 @@ public class UserImpl implements IUserService{
 
 		@Override
 		@Transactional
-		public Map<String, Object> getRegisterStatus(String openId)
+		public Map<String, Object> getRegisterStatus(String userId)
 				throws Exception {
 			  Map<String,Object> retMap=new HashMap<String,Object>();
 				
 			  Map<String,Object> pa=new HashMap<String,Object>();
-	          pa.put("openId", openId);
+	          pa.put("userId", userId);
 			    
 			  String status="0";
 			  //首先查看是否已经签到了 今天
@@ -247,11 +248,11 @@ public class UserImpl implements IUserService{
 
 		@Override
 		@Transactional
-		public Map<String, Object> getScoreList(String openId,int pageSize,int pageNum) throws Exception {
+		public Map<String, Object> getScoreList(String userId,int pageSize,int pageNum) throws Exception {
 			Map<String,Object> retMap=new HashMap<String,Object>();
 				
 			Map<String,Object> pa=new HashMap<String,Object>();
-	        pa.put("openId", openId);
+	        pa.put("userId", userId);
 	        
 	        PageHelper.startPage(pageNum,pageSize);
 	        List<Map<String,String>> li=userDao.getScoreList(pa);
@@ -273,13 +274,13 @@ public class UserImpl implements IUserService{
          */
 		@Override
 		@Transactional
-		public Map<String, Object> uploadWishList(String openId,
+		public Map<String, Object> uploadWishList(String userId,
 				CommonsMultipartFile[] files, String goodsName, String url)
 				throws Exception {
 			Map<String,Object> retMap=new HashMap<String,Object>();
 			
 			Map<String,Object> pa=new HashMap<String,Object>();
-	        pa.put("openId", openId);
+	        pa.put("userId", userId);
 	        
 	        String wishCode="s_wish"+userDao.nextval("s_wish");
 	        //先上传附件  新增至附件表  mg_attachment
@@ -304,7 +305,7 @@ public class UserImpl implements IUserService{
 	        
 	        //新增心愿表  mg_wish
 	        pa.put("code", wishCode);
-	        pa.put("openId", openId);
+	        pa.put("userId", userId);
 	        pa.put("goodsName", goodsName);
 	        pa.put("goodsUrl", url);
 	        pa.put("state", "00");  //心愿单状态 00 未确认  01 已确认 02 已上架

@@ -11,24 +11,24 @@ public interface IUserService {
 
 	Map<String, Object> getBannerAd() throws Exception;
 
-	Map<String, Object> addDeliveryAddress(String openId, String name,
+	Map<String, Object> addDeliveryAddress(String userId, String name,
 			String phone, String area, String address, String postCode) throws Exception;
 
-	Map<String, Object> getDeliveryAddress(String openId) throws Exception;
+	Map<String, Object> getDeliveryAddress(String userId) throws Exception;
 
-	Map<String, Object> delDeliveryAddress(String openId, String code) throws Exception;
+	Map<String, Object> delDeliveryAddress(String userId, String code) throws Exception;
 
-	Map<String, Object> setDefaultDeliveryAddress(String openId, String code) throws Exception;
+	Map<String, Object> setDefaultDeliveryAddress(String userId, String code) throws Exception;
 
 	Map<String, Object> getBestSalesGoods(int pageSize, int pageNum) throws Exception;
 
-	Map<String, Object> register(String openId) throws Exception;
+	Map<String, Object> register(String userId) throws Exception;
 
-	Map<String, Object> getRegisterStatus(String openId) throws Exception;
+	Map<String, Object> getRegisterStatus(String userId) throws Exception;
 
-	Map<String, Object> getScoreList(String openId, int pageSize, int pageNum) throws Exception;
+	Map<String, Object> getScoreList(String userId, int pageSize, int pageNum) throws Exception;
 
-	Map<String, Object> uploadWishList(String openId,
+	Map<String, Object> uploadWishList(String userId,
 			CommonsMultipartFile[] files, String goodsName, String url) throws Exception;
 
 	Map<String, Object> getWishList(String openId, int pageSize, int pageNum) throws Exception;

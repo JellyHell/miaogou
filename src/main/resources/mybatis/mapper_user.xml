@@ -19,7 +19,7 @@
     INSERT INTO mg_delivery_address 
     <trim prefix="(" suffix=")" suffixOverrides=",">
          <if test="code !=null and code !=''">code,</if>
-         <if test="openId !=null and openId !=''">openId,</if>
+         <if test="userId !=null and userId !=''">userId,</if>
          <if test="name !=null and name !=''">name,</if>
          <if test="phone !=null and phone !=''">phone,</if>
          <if test="area !=null and area !=''">area,</if>
@@ -28,7 +28,7 @@
       </trim>
       <trim prefix="values (" suffix=")" suffixOverrides=",">
          <if test="code !=null and code !=''">#{code},</if>
-         <if test="openId !=null and openId !=''">#{openId},</if>
+         <if test="userId !=null and userId !=''">#{userId},</if>
          <if test="name !=null and name !=''">#{name},</if>
          <if test="phone !=null and phone !=''">#{phone},</if>
          <if test="area !=null and area !=''">#{area},</if>
@@ -38,19 +38,19 @@
     </insert>
     
     <select id="getDeliveryAddress" parameterType="Map" resultType="Map">
-     select * from mg_delivery_address where openId=#{openId}
+     select * from mg_delivery_address where userId=#{userId}
     </select>
     
     <update id="delDeliveryAddress" parameterType="Map">
-     delete from mg_delivery_address where code=#{code} and openId=#{openId}
+     delete from mg_delivery_address where code=#{code} and userId=#{userId}
     </update>
     
     <update id="setAllNotDefaultAddress" parameterType="Map" >
-     update mg_delivery_address set isDefault='0' where openId=#{openId}
+     update mg_delivery_address set isDefault='0' where userId=#{userId}
     </update>
     
     <update id="setDefaultDeliveryAddress" parameterType="Map">
-     update mg_delivery_address set isDefault='1' where code=#{code} and openId=#{openId}
+     update mg_delivery_address set isDefault='1' where code=#{code} and userId=#{userId}
     </update>
     
     <select id="getBestSalesGoods" parameterType="Map" resultType="Map">
@@ -58,20 +58,20 @@
     </select>
     
     <insert id="register" parameterType="Map">
-    INSERT INTO `mg_register` (`openId`, `register_time`) VALUES (#{openId}, SYSDATE())
+    INSERT INTO `mg_register` (`userId`, `register_time`) VALUES (#{userId}, SYSDATE())
     </insert>
     
     <select id="isRegister" parameterType="Map" resultType="java.lang.Integer">
-      select count(1) from mg_register where openId=#{openId} and TO_DAYS(register_time)=TO_DAYS(SYSDATE())
+      select count(1) from mg_register where userId=#{userId} and TO_DAYS(register_time)=TO_DAYS(SYSDATE())
     </select>
     
     <insert id="addScore" parameterType="Map">
-	    INSERT INTO `mg_score` (`code`, `openId`, `score`, `reason`, `score_time`) 
-	    VALUES (#{code}, #{openId}, #{score}, #{reason}, SYSDATE())
+	    INSERT INTO `mg_score` (`code`, `userId`, `score`, `reason`, `score_time`) 
+	    VALUES (#{code}, #{userId}, #{score}, #{reason}, SYSDATE())
     </insert>
     
     <select id="getScoreList" parameterType="Map" resultType="Map">
-     select reason,score from mg_score where openId=#{openId} order by score_time desc
+     select reason,score from mg_score where userId=#{userId} order by score_time desc
     </select>
     
     <insert id="insertAttachment" parameterType="Map">
@@ -98,7 +98,7 @@
      INSERT INTO mg_wish
     <trim prefix="(" suffix=")" suffixOverrides=",">
          <if test="code !=null and code !=''">code,</if>
-         <if test="openId !=null and openId !=''">openId,</if>
+         <if test="userId !=null and userId !=''">userId,</if>
          <if test="goodsName !=null and goodsName !=''">goodsName,</if>
          <if test="goodsUrl !=null and goodsUrl !=''">goodsUrl,</if>
          <if test="state !=null and state !=''">state,</if>
@@ -107,7 +107,7 @@
       </trim>
       <trim prefix="values (" suffix=")" suffixOverrides=",">
          <if test="code !=null and code !=''">#{code},</if>
-         <if test="openId !=null and openId !=''">#{openId},</if>
+         <if test="userId !=null and userId !=''">#{userId},</if>
          <if test="goodsName !=null and goodsName !=''">#{goodsName},</if>
          <if test="goodsUrl !=null and goodsUrl !=''">#{goodsUrl},</if>
          <if test="state !=null and state !=''">#{state},</if>
@@ -117,7 +117,7 @@
     </insert>
     
     <select id="getWishList" parameterType="Map" resultType="Map">
-     select code,openId,goodsName,goodsUrl,state,
+     select code,userId,goodsName,goodsUrl,state,
      DATE_FORMAT(createTime,'%Y-%c-%d %T') createTime,
      DATE_FORMAT(updateTime,'%Y-%c-%d %T') updateTime from mg_wish order by updateTime desc
     </select>
@@ -130,7 +130,7 @@
         INSERT INTO mg_shoppingcart
     <trim prefix="(" suffix=")" suffixOverrides=",">
          <if test="code !=null and code !=''">code,</if>
-         <if test="openId !=null and openId !=''">openId,</if>
+         <if test="userId !=null and userId !=''">userId,</if>
          <if test="goodsCode !=null and goodsCode !=''">goodsCode,</if>
          <if test="goodsNum !=null and goodsNum !=''">goodsNum,</if>
          <if test="code !=null and code !=''">createTime,</if>
@@ -139,7 +139,7 @@
       </trim>
       <trim prefix="values (" suffix=")" suffixOverrides=",">
          <if test="code !=null and code !=''">#{code},</if>
-         <if test="openId !=null and openId !=''">#{openId},</if>
+         <if test="userId !=null and userId !=''">#{userId},</if>
          <if test="goodsCode !=null and goodsCode !=''">#{goodsCode},</if>
          <if test="goodsNum !=null and goodsNum !=''">#{goodsNum},</if>
          <if test="code !=null and code !=''">SYSDATE(),</if>
@@ -155,11 +155,11 @@
              DATE_FORMAT(a.createTime,'%Y-%c-%d %T') createTime,
              DATE_FORMAT(a.updateTime,'%Y-%c-%d %T') updateTime
        from mg_shoppingcart a left join mg_goods b on a.goodsCode=b.goods_code
-        where openId=#{openId} and state='0'
+        where userId=#{userId} and state='0'
     </select>
     
     <select id="isWxUserExits" parameterType="Map" resultType="java.lang.Integer">
-      select count(1) from mg_wxUser where openId=#{openId}
+      select count(1) from mg_wxUser where userId=#{userId}
     </select>
     
     <update id="updateWxUser" parameterType="Map" >
