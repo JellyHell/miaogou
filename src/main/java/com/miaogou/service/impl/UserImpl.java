@@ -320,12 +320,12 @@ public class UserImpl implements IUserService{
 
 		@Override
 		@Transactional
-		public Map<String, Object> getWishList(String openId, int pageSize,
+		public Map<String, Object> getWishList(String userId, int pageSize,
 				int pageNum) throws Exception {
 			Map<String,Object> retMap=new HashMap<String,Object>();
 			
 			Map<String,Object> pa=new HashMap<String,Object>();
-	        pa.put("openId", openId);
+	        pa.put("userId", userId);
 	        
 	        PageHelper.startPage(pageNum,pageSize);
 	        
@@ -353,13 +353,13 @@ public class UserImpl implements IUserService{
 
 		@Override
 		@Transactional
-		public Map<String, Object> addToShoppingCart(String openId,
+		public Map<String, Object> addToShoppingCart(String userId,
 				String goodsCode, String goodsNum) throws Exception {
             Map<String,Object> retMap=new HashMap<String,Object>();
 			
 			Map<String,Object> pa=new HashMap<String,Object>();
 			pa.put("code", "s_shopcart"+userDao.nextval("s_shopcart"));
-	        pa.put("openId", openId);
+	        pa.put("userId", userId);
 	        pa.put("goodsCode", goodsCode);
 	        pa.put("goodsNum", goodsNum);
 	        pa.put("state", "0");
@@ -374,12 +374,12 @@ public class UserImpl implements IUserService{
 
 		@Override
 		@Transactional
-		public Map<String, Object> getShoppingCartList(String openId)
+		public Map<String, Object> getShoppingCartList(String userId)
 				throws Exception {
 			Map<String,Object> retMap=new HashMap<String,Object>();
 				
 			Map<String,Object> pa=new HashMap<String,Object>();
-		    pa.put("openId", openId);
+		    pa.put("userId", userId);
 		    
 		    List<Map<String,String>> li=userDao.getShoppingCartList(pa);
 		    

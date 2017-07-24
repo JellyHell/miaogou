@@ -33,10 +33,10 @@ public interface IUserService {
 
 	Map<String, Object> getWishList(String openId, int pageSize, int pageNum) throws Exception;
 
-	Map<String, Object> addToShoppingCart(String openId, String goodsCode,
+	Map<String, Object> addToShoppingCart(String userId, String goodsCode,
 			String goodsNum) throws Exception;
 
-	Map<String, Object> getShoppingCartList(String openId) throws Exception;
+	Map<String, Object> getShoppingCartList(String userId) throws Exception;
 
 	Map<String, Object> addWxUser(String userId, String nickName,
 			String avatarUrl, String gender, String province, String city,

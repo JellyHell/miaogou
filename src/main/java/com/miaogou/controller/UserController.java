@@ -456,13 +456,13 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "getWishList", method = RequestMethod.GET)
 	public Map<String, Object> getWishList(
-			 String _3rd_session,int pageSize,int pageNum,HttpServletRequest request,HttpServletResponse response){
+			 String userId,int pageSize,int pageNum,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		
 		String openId=new String("");
 		try {
-			Map<String,String> t=RedisUtils.findMap(_3rd_session);
-			openId=t.get("openid");
+			/*Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");*/
 		} catch (Exception e) {
 			retMap.put("errcode", "-5");
 			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
@@ -470,7 +470,7 @@ public class UserController {
 		}
 		
 		try {
-			retMap=UserService.getWishList(openId,pageSize,pageNum);
+			retMap=UserService.getWishList(userId,pageSize,pageNum);
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");
@@ -491,13 +491,13 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "goods/addToShoppingCart", method = RequestMethod.POST)
 	public Map<String, Object> addToShoppingCart(
-			 String _3rd_session,String goodsCode,String goodsNum,HttpServletRequest request,HttpServletResponse response){
+			 String userId,String goodsCode,String goodsNum,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		
 		String openId=new String("");
 		try {
-			Map<String,String> t=RedisUtils.findMap(_3rd_session);
-			openId=t.get("openid");
+			/*Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");*/
 		} catch (Exception e) {
 			retMap.put("errcode", "-5");
 			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
@@ -505,7 +505,7 @@ public class UserController {
 		}
 		
 		try {
-			retMap=UserService.addToShoppingCart(openId,goodsCode,goodsNum);
+			retMap=UserService.addToShoppingCart(userId,goodsCode,goodsNum);
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");
@@ -524,13 +524,13 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "goods/getShoppingCartList", method = RequestMethod.GET)
 	public Map<String, Object> getShoppingCartList(
-			 String _3rd_session,HttpServletRequest request,HttpServletResponse response){
+			 String userId,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		
 		String openId=new String("");
 		try {
-			Map<String,String> t=RedisUtils.findMap(_3rd_session);
-			openId=t.get("openid");
+			/*Map<String,String> t=RedisUtils.findMap(_3rd_session);
+			openId=t.get("openid");*/
 		} catch (Exception e) {
 			retMap.put("errcode", "-5");
 			retMap.put("errmsg", "该session不存在或者过期,请重新获取_3rd_session");
@@ -538,7 +538,7 @@ public class UserController {
 		}
 		
 		try {
-			retMap=UserService.getShoppingCartList(openId);
+			retMap=UserService.getShoppingCartList(userId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");
