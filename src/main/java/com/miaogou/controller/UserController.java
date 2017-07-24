@@ -315,6 +315,7 @@ public class UserController {
 	@RequestMapping(value = "register", method = RequestMethod.POST)
 	public Map<String, Object> register(
 			 String userId,HttpServletRequest request,HttpServletResponse response){
+		String ee=request.getParameter("userId");
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		
 		String openId=new String("");
@@ -549,7 +550,7 @@ public class UserController {
 	
 	/**
 	 * 新增微信用户
-	 * @param _3rd_session
+	 * @param userId
 	 * @param nickName  昵称
 	 * @param avatarUrl 头像
 	 * @param gender 性别
