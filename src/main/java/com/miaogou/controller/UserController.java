@@ -372,7 +372,7 @@ public class UserController {
 	
 	/**
 	 * 获取积分列表信息
-	 * @param _3rd_session
+	 * @param userId
 	 * @param pageSize
 	 * @param pageNum
 	 * @param request
