@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.miaogou.service.IUserService;
-import com.miaogou.util.FastdfsUtils;
 import com.miaogou.util.HttpRequestUtil;
 import com.miaogou.util.RedisUtils;
 
