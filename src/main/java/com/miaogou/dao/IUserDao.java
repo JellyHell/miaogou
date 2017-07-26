@@ -54,6 +54,12 @@ public interface IUserDao {
 
 	String selectUserIdByopenId(Map<String, Object> pa);
 
+	Map<String, String> getGoodsInfo(Map<String, Object> pa);
+
+	String getgetBigImg(Map<String, Object> pa);
+
+	List<String> getImgList(Map<String, Object> pa);
+
 
 
 }

@@ -117,6 +117,28 @@ public class UserController {
 	}
 	
 	/**
+	 * 获取接口详情
+	 * @param goods_code 商品code
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "goods/getDetails", method = RequestMethod.GET)
+	public Map<String, Object> getDetails(String goods_code,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		try {
+			retMap=UserService.getDetails(goods_code);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		
+		return retMap;
+	}
+	
+	/**
 	 * 获取销量榜
 	 * @param pageSize 每页大小
 	 * @param pageNum  页数

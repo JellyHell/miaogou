@@ -202,4 +202,16 @@
     <select id="selectUserIdByopenId" parameterType="Map" resultType="java.lang.String">
      select userId from mg_wxUser where openId=#{openId}
     </select>
+    
+    <select id="getGoodsInfo" parameterType="Map" resultType="Map">
+      select * from mg_goodsdetails where goods_code=#{goods_code}
+    </select>
+    
+    <select id="getgetBigImg" parameterType="Map" resultType="java.lang.String">
+       select url from mg_attachment where tabCode=#{goods_code} and isBigImg='1'
+    </select>
+    
+    <select id="getImgList" parameterType="Map" resultType="java.lang.String">
+     select url  from mg_attachment where tabCode=#{goods_code} and isBigImg is null
+    </select>
 </mapper>

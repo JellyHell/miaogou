@@ -44,6 +44,8 @@ public interface IUserService {
 
 	Map<String, Object> insertOrSelectUserId(String openid) throws Exception;
 
+	Map<String, Object> getDetails(String goods_code) throws Exception;
+
 
 
 }

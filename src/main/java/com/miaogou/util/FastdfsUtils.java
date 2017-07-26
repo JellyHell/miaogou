@@ -159,13 +159,47 @@ public class FastdfsUtils {
 	  }
 public static void main(String[] args) throws FileNotFoundException, IOException, Exception {
 	
-	String[] arr=uploadFile("C://Users//Administrator//Desktop//dog.jpg","jpg",null);
-	for(int i=0;i<arr.length;i++){
+	String[] arr=new String[]{};
+	System.out.println(1);
+	arr=uploadFile("D://temp//香水//产品图片//香水-香奈儿//1.jpg","jpg",null);
+	for(int i=0;i<arr.length;i++)
+		System.out.println(arr[i]);
+	
+	
+	System.out.println(1);
+	arr=uploadFile("D://temp//香水//产品图片//香水-香奈儿//2.jpg","jpg",null);
+	for(int i=0;i<arr.length;i++)
+		System.out.println(arr[i]);
+	
+	 System.out.println(3);
+	arr=uploadFile("D://temp//香水//产品图片//香水-香奈儿//3.jpg","jpg",null);
+	for(int i=0;i<arr.length;i++)
+		System.out.println(arr[i]);
+	
+	 System.out.println(4);
+	 arr=uploadFile("D://temp//香水//产品图片//香水-香奈儿//4.jpg","jpg",null);
+		for(int i=0;i<arr.length;i++)
+			System.out.println(arr[i]);
+	 
+		 System.out.println(5);
+	 arr=uploadFile("D://temp//香水//产品图片//香水-香奈儿//5.jpg","jpg",null);
+		for(int i=0;i<arr.length;i++)
+			System.out.println(arr[i]);
+	 
+	
+	 
+	
+	 
+	 System.out.println("icon");
+	 arr=uploadFile("D://temp//香水//产品图片//香水-香奈儿//icon.jpg","jpg",null);
+	 for(int i=0;i<arr.length;i++)
+		System.out.println(arr[i]);
+	 
+	 System.out.println("大图");
+	 arr=uploadFile("D://temp//香水//产品图片//香水-香奈儿//大图.jpg","jpg",null);
+	 for(int i=0;i<arr.length;i++)
 		System.out.println(arr[i]);
 	}
-	String str="dewdewdew.jpg";
-	System.out.println(str.substring(str.indexOf(".")+1));
-	
 	/*group1
 	M00/00/00/CodDhlldo4qATjECAABErKcqlSY380.jpg
 	http://123.207.40.218:8080/group1/M00/00/00/CodDhlldo4qATjECAABErKcqlSY380.jpg
@@ -188,5 +222,6 @@ public static void main(String[] args) throws FileNotFoundException, IOException
 	String upload_file1 = storageClient1.upload_file1(FastdfsUtils.class.getResource(cp).getFile(), "conf", null);
 	
 	System.out.println(upload_file1);*/
-}
+
+
 }

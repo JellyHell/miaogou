@@ -413,11 +413,35 @@ public class UserImpl implements IUserService{
 		    if(userDao.isWxUserExits(pa)==1){
 		    	if(userDao.updateWxUser(pa)!=1) throw new Exception();
 		    }else{ //不存在  insert
-		    	if(userDao.insertWxUser(pa)!=1) throw new Exception();
+		    	throw new Exception("没有找到该用户");
 		    }
 		    retMap.put("errcode", "0");
 	        retMap.put("errmsg", "OK");
 	        return retMap;
+		}
+
+		@Override
+		@Transactional
+		public Map<String, Object> getDetails(String goods_code)
+				throws Exception {
+            Map<String,Object> retMap=new HashMap<String,Object>();
+			
+			Map<String,Object> pa=new HashMap<String,Object>();
+			pa.put("goods_code", goods_code);
+			
+			//details info 
+			Map<String,String> info=userDao.getGoodsInfo(pa);
+			//bigimg
+			String bigImg=userDao.getgetBigImg(pa);
+			//img list
+			List<String> li=userDao.getImgList(pa);
+			
+			retMap.put("detailInfo", info);
+			retMap.put("bigImg", bigImg);
+			retMap.put("imgList", li);
+			retMap.put("errcode", "0");
+		    retMap.put("errmsg", "OK");
+			return retMap;
 		}
 
 
