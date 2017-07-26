@@ -159,19 +159,19 @@ public class FastdfsUtils {
 	  }
 public static void main(String[] args) throws FileNotFoundException, IOException, Exception {
 	
-	/*String[] arr=uploadFile("C://Users//Administrator//Desktop//dog.jpg","jpg",null);
+	String[] arr=uploadFile("C://Users//Administrator//Desktop//dog.jpg","jpg",null);
 	for(int i=0;i<arr.length;i++){
 		System.out.println(arr[i]);
 	}
 	String str="dewdewdew.jpg";
 	System.out.println(str.substring(str.indexOf(".")+1));
-	*/
+	
 	/*group1
 	M00/00/00/CodDhlldo4qATjECAABErKcqlSY380.jpg
 	http://123.207.40.218:8080/group1/M00/00/00/CodDhlldo4qATjECAABErKcqlSY380.jpg
 	jpg*/
-	int cnt=deleteFile("group1", "M00/00/00/CodDhlldo4qATjECAABErKcqlSY380.jpg");
-	System.out.println(cnt);
+	/*int cnt=deleteFile("group1", "M00/00/00/CodDhlldo4qATjECAABErKcqlSY380.jpg");
+	System.out.println(cnt);*/
 	
 	//http://119.29.101.199/group1/M00/00/00/CroLi1k4tUmAVNERAABErKcqlSY460.jpg
 	/*String cp="/com/cumt/cs/bl/util/fdfs_client.conf";
