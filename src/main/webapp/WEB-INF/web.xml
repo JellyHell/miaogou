@@ -56,6 +56,15 @@
 		<filter-name>CheckLoginFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	<!-- <servlet>
+      <servlet-name>WxUpload</servlet-name>
+      <servlet-class>com.miaogou.servlet.FileUploadServlet</servlet-class>
+    </servlet>
+	<servlet-mapping>
+     <servlet-name>WxUpload</servlet-name>
+	 <url-pattern>/upload/wishList</url-pattern>
+	</servlet-mapping> -->
 
 	<session-config>
 		<session-timeout>30</session-timeout>
