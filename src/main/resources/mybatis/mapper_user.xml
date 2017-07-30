@@ -151,7 +151,7 @@
     <select id="getShoppingCartList" parameterType="Map" resultType="Map">
       select a.code,a.goodsCode,
              a.goodsNum,
-             b.goods_name,b.price,b.goods_img,
+             b.goods_name,b.price,b.iconImg goods_img,
              DATE_FORMAT(a.createTime,'%Y-%c-%d %T') createTime,
              DATE_FORMAT(a.updateTime,'%Y-%c-%d %T') updateTime
        from mg_shoppingcart a left join mg_goods b on a.goodsCode=b.goods_code
