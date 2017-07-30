@@ -214,4 +214,20 @@
     <select id="getImgList" parameterType="Map" resultType="java.lang.String">
      select url  from mg_attachment where tabCode=#{goods_code} and isBigImg is null
     </select>
+    
+    <insert id="createOrder" parameterType="Map">
+     INSERT INTO `mg_order` (`out_trade_no`, `openId`, `total_fee`, `createTime`, `updateTime`, `state`) 
+     VALUES (#{out_trade_no}, #{openid}, #{total_fee}, SYSDATE(), SYSDATE(), '-1')
+    </insert>
+    
+    <select id="modifytotlfee" parameterType="Map" resultType="java.lang.Integer">
+      select count(1) from mg_order where out_trade_no=#{out_trade_no} and total_fee=#{total_fee}
+    </select>
+    
+    <select id="orderisResolved" parameterType="Map" resultType="java.lang.Integer">
+     select count(1) from mg_order where out_trade_no=#{out_trade_no} and resoved='1'
+    </select>
+    <update id="Resolveorder" parameterType="Map">
+    update mg_order set resoved='1' ,state='a' where out_trade_no=#{out_trade_no}
+    </update>
 </mapper>

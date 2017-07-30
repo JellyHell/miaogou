@@ -444,6 +444,35 @@ public class UserImpl implements IUserService{
 			return retMap;
 		}
 
+		@Override
+		@Transactional
+		public int createOrder(Map<String, Object> pa) {
+			
+			return userDao.createOrder(pa);
+			
+		}
+
+		@Override
+		@Transactional
+		public int modifytotlfee(Map<String, Object> pa) {
+			
+			return userDao.modifytotlfee(pa);
+		}
+
+		@Override
+		@Transactional
+		public boolean orderisResolved(Map<String, Object> pa) {
+			
+			return userDao.orderisResolved(pa)==1;
+		}
+
+		@Override
+		@Transactional
+		public int Resolveorder(Map<String, Object> pa) {
+			
+			return  userDao.Resolveorder(pa);
+		}
+
 
 		
 		

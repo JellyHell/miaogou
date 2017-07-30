@@ -1,5 +1,10 @@
 package com.miaogou.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -8,6 +13,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -17,11 +25,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.miaogou.dao.NotifyRet;
 import com.miaogou.service.IUserService;
 import com.miaogou.util.HttpRequestUtil;
 import com.miaogou.util.PayUtil;
 import com.miaogou.util.RedisUtils;
 import com.miaogou.util.UUIDHexGenerator;
+import com.miaogou.util.XmlUtils;
 
 
 /**
@@ -48,6 +58,11 @@ public class UserController {
 	
 	@Value("${key}")
     private String key;
+	
+	@Value("${notify_url}")
+    private String notify_url;
+	
+	private static Object lock=new Object();
 	
 	/**
 	 * 根据login获取到的code和appid，secret 获取openid和session_key
@@ -635,11 +650,13 @@ public class UserController {
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		
 		Map<String, String> result=new HashMap<String,String>();
+		
+		Map<String,Object> pa=new HashMap<String,Object>();
 		try {
 			
 		
 		//统一下单请求参数
-		Map<String,Object> pa=new HashMap<String,Object>();
+		
 		pa.put("appid", appid);   //小程序ID
 		pa.put("mch_id", mch_id); //商户号
 		pa.put("openid", openid); //openid
@@ -648,7 +665,7 @@ public class UserController {
 		pa.put("out_trade_no", PayUtil.create_out_trade_no()); //商户订单号
 		pa.put("total_fee", total_fee);   //总金额
 		pa.put("spbill_create_ip", request.getRemoteAddr());  //终端IP
-		pa.put("notify_url", "www.baidu.com"); //通知地址
+		pa.put("notify_url", notify_url); //通知地址
 		pa.put("trade_type", "JSAPI");  //交易类型
 		
 		//生成签名
@@ -670,12 +687,107 @@ public class UserController {
 			retMap.put("errmsg", "系统异常请稍后重试!");
 			return retMap;
 		}
+		
+		//生产订单成功 插入数据库
+		if("SUCCESS".equals(result.get("result_code"))&&"SUCCESS".equals(result.get("return_code"))){
+			UserService.createOrder(pa);
+		}
 		retMap.put("errcode", "0");
 		retMap.put("errmsg", "OK");
 		retMap.put("data", result);
 		return retMap;
 	}
+	/**
+	 * 支付完成回调函数
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 * @throws DocumentException
+	 */
+	@ResponseBody
+	@RequestMapping(value = "pay/notify_url",produces={"application/xml;chrset=UTF-8"}, method = RequestMethod.POST)
+	public void unifiedorder(
+			HttpServletRequest request,HttpServletResponse response) throws IOException, DocumentException{
+		NotifyRet ret=new NotifyRet();
+		
+		response.setHeader("Content-type", "text/plain;charset=UTF-8");
+		
+		InputStream inStream = request.getInputStream();
+        int _buffer_size = 1024;
+        if (inStream != null) {
+            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+            byte[] tempBytes = new byte[_buffer_size];
+            int count = -1;
+            while ((count = inStream.read(tempBytes, 0, _buffer_size)) != -1) {
+                outStream.write(tempBytes, 0, count);
+            }
+            tempBytes = null;
+            outStream.flush();
+            //将流转换成字符串
+            String result = new String(outStream.toByteArray(), "UTF-8");
+            //将字符串解析成XML
+            Document doc = DocumentHelper.parseText(result);
+            //将XML格式转化成MAP格式数据
+            Map<String, Object> resultMap = XmlUtils.Dom2Map(doc);
+            
+            //验证金额是否相等
+            if(UserService.modifytotlfee(resultMap)!=1){
+            	ret.setReturn_code("FAIL");
+            	ret.setReturn_msg("金额不相符");
+            	response.getWriter().write(NotifyRetToXml(ret));
+            	return;
+            }
+            
+            //验证 sign
+            if(!PayUtil.modifyNotifySign(resultMap,key)){
+            	ret.setReturn_code("FAIL");
+            	ret.setReturn_msg("签名验证失败");
+            	response.getWriter().write(NotifyRetToXml(ret));
+            	return;
+            }
+            //同步 处理订单状态
+            synchronized (lock) {
+            	if(UserService.orderisResolved(resultMap)){
+            		ret.setReturn_code("SUCCESS");
+            	}else{
+            		if(UserService.Resolveorder(resultMap)==1){
+            			ret.setReturn_code("SUCCESS");
+            		}else{
+            			ret.setReturn_code("FAIL");
+                    	ret.setReturn_msg("系统数据更新失败");
+            		}
+            	}
+            	
+			}
+        }else{
+        	ret.setReturn_code("FAIL");
+        	ret.setReturn_msg("获取数据为空");
+        }
+    	response.getWriter().write(NotifyRetToXml(ret));
+	}
+	@ResponseBody
+	@RequestMapping(value = "test",produces={"application/xml;chrset=UTF-8"}, method = RequestMethod.GET)
+	public void test(
+			HttpServletRequest request,HttpServletResponse response) throws IOException{
+		response.setHeader("Content-type", "text/plain;charset=UTF-8");  
+		NotifyRet ret=new NotifyRet();
+		ret.setReturn_code("FAIL");
+    	ret.setReturn_msg("系统数据更新失败");
+    	String tt=NotifyRetToXml(ret);
+		response.getWriter().write(tt);
+	}
 	
+	public static String NotifyRetToXml(NotifyRet ret) throws UnsupportedEncodingException{
+		StringBuffer bu=new StringBuffer("<xml>");
+		if(ret.getReturn_code()!=null)
+			 bu.append("<return_code><![CDATA["+ret.getReturn_code()+"]]></return_code>");
+		
+		if(ret.getReturn_msg()!=null)
+			 bu.append("<return_msg><![CDATA["+ret.getReturn_msg()+"]]></return_msg>");
+		
+		return bu.toString();  
+	}
 	public static void main(String[] args) throws Exception {
 		/*UUID uuid = UUID.randomUUID();
 		System.out.println(uuid);

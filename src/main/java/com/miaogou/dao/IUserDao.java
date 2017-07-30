@@ -60,6 +60,14 @@ public interface IUserDao {
 
 	List<String> getImgList(Map<String, Object> pa);
 
+	int createOrder(Map<String, Object> pa);
+
+	int modifytotlfee(Map<String, Object> pa);
+
+	int orderisResolved(Map<String, Object> pa);
+
+	int Resolveorder(Map<String, Object> pa);
+
 
 
 }

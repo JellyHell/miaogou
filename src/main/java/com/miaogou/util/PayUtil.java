@@ -66,7 +66,7 @@ public class PayUtil {
 			stringA.append(t+"="+pa.get(t)+"&");
 		}
 		stringA.append("key="+keyValue);
-		String stringSignTemp=MD5Utils.getMD5(stringA.toString()).toUpperCase();
+		String stringSignTemp=MD5Utils.getMD52(stringA.toString()).toUpperCase();
 		return stringSignTemp;
 	}
 	
@@ -133,7 +133,33 @@ public class PayUtil {
         }
         return result;
     }
-	public static void main(String[] args) {
-		System.out.println("ca".compareTo("b"));
+    /**
+     * 验证返回的sign是否正确
+     * @param resultMap
+     * @return
+     */
+    public static boolean modifyNotifySign(Map<String, Object> pa,String keyValue) {
+    			List<String> keyli=new ArrayList<String>();
+    			for (String key : pa.keySet()) {  
+    				if(!"sign".equals(key))
+    			    	keyli.add(key);
+    			} 
+    			
+    			//key ascii排序
+    			Collections.sort(keyli);
+    			StringBuffer stringA=new StringBuffer();
+    			
+    			for(String t:keyli){
+    				stringA.append(t+"="+pa.get(t)+"&");
+    			}
+    			stringA.append("key="+keyValue);
+    			String stringSignTemp=MD5Utils.getMD52(stringA.toString()).toUpperCase();
+    			return pa.get("sign").equals(stringSignTemp);    
+		
 	}
+	public static void main(String[] args) {
+		String t="dwedwed#";
+		System.out.println(t.substring(0, t.length()-1));
+	}
+	
 }
