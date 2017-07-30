@@ -228,6 +228,6 @@
      select count(1) from mg_order where out_trade_no=#{out_trade_no} and resoved='1'
     </select>
     <update id="Resolveorder" parameterType="Map">
-    update mg_order set resoved='1' ,state='a' where out_trade_no=#{out_trade_no}
+    update mg_order set resoved='1' ,state='1' where out_trade_no=#{out_trade_no}
     </update>
 </mapper>
