@@ -687,7 +687,7 @@ public class UserController {
 			retMap.put("errmsg", "系统异常请稍后重试!");
 			return retMap;
 		}
-		
+		pa.put("prepay_id", result.get("prepay_id"));
 		//生产订单成功 插入数据库
 		if("SUCCESS".equals(result.get("result_code"))&&"SUCCESS".equals(result.get("return_code"))){
 			UserService.createOrder(pa);
@@ -766,6 +766,25 @@ public class UserController {
         }
     	response.getWriter().write(NotifyRetToXml(ret));
 	}
+	
+	/**
+	 * 支付完成查询订单状态
+	 * @param prepay_id
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "pay/orderquery", method = RequestMethod.GET)
+	public Map<String, Object> orderquery(String prepay_id,
+			HttpServletRequest request,HttpServletResponse response){
+		
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		
+		return retMap;
+		
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "test",produces={"application/xml;chrset=UTF-8"}, method = RequestMethod.GET)
 	public void test(

@@ -216,8 +216,8 @@
     </select>
     
     <insert id="createOrder" parameterType="Map">
-     INSERT INTO `mg_order` (`out_trade_no`, `openId`, `total_fee`, `createTime`, `updateTime`, `state`) 
-     VALUES (#{out_trade_no}, #{openid}, #{total_fee}, SYSDATE(), SYSDATE(), '-1')
+     INSERT INTO `mg_order` (`out_trade_no`,`prepay_id`, `openId`, `total_fee`, `createTime`, `updateTime`, `state`) 
+     VALUES (#{out_trade_no},#{prepay_id} ,#{openid}, #{total_fee}, SYSDATE(), SYSDATE(), '-1')
     </insert>
     
     <select id="modifytotlfee" parameterType="Map" resultType="java.lang.Integer">
@@ -228,6 +228,6 @@
      select count(1) from mg_order where out_trade_no=#{out_trade_no} and resoved='1'
     </select>
     <update id="Resolveorder" parameterType="Map">
-    update mg_order set resoved='1' ,state='1' where out_trade_no=#{out_trade_no}
+    update mg_order set resoved='1' ,state='1',transaction_id=#{transaction_id} where out_trade_no=#{out_trade_no}
     </update>
 </mapper>
