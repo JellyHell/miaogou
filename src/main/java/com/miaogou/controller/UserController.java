@@ -629,7 +629,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "pay/unifiedorder", method = RequestMethod.GET)
-	public Map<String, Object> unifiedorder(String body,int total_fee,String openId,
+	public Map<String, Object> unifiedorder(String body,int total_fee,String openid,
 			HttpServletRequest request,HttpServletResponse response){
 		
 		Map<String,Object> retMap=new HashMap<String,Object>();
@@ -642,7 +642,7 @@ public class UserController {
 		Map<String,Object> pa=new HashMap<String,Object>();
 		pa.put("appid", appid);   //小程序ID
 		pa.put("mch_id", mch_id); //商户号
-		pa.put("openid", openId); //openid
+		pa.put("openid", openid); //openid
 		pa.put("nonce_str", UUIDHexGenerator.generate()); //随机字符串
 		pa.put("body", body);  //商品描述
 		pa.put("out_trade_no", PayUtil.create_out_trade_no()); //商户订单号
