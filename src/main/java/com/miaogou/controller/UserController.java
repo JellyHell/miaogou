@@ -19,7 +19,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.miaogou.service.IUserService;
 import com.miaogou.util.HttpRequestUtil;
+import com.miaogou.util.PayUtil;
 import com.miaogou.util.RedisUtils;
+import com.miaogou.util.UUIDHexGenerator;
 
 
 /**
@@ -41,11 +43,18 @@ public class UserController {
 	@Value("${secret}")
     private String secret;
 	
+	@Value("${mch_id}")
+    private String mch_id;
+	
+	@Value("${key}")
+    private String key;
 	
 	/**
 	 * 根据login获取到的code和appid，secret 获取openid和session_key
 	 */
 	private final static String jscode2session="https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code"; 
+	
+	private final static String unifiedorder_url="https://api.mch.weixin.qq.com/pay/unifiedorder";
 	
 	/**
 	 * 根据login获取到的code和appid，secret 获取openid和session_key 并生成第三方session作为key保存至本地session
@@ -609,6 +618,64 @@ public class UserController {
 		return retMap;
 	}
 	
+	/**
+	 * 统一下单(预支付)
+	 * @param body 商品描述
+	 * @param total_fee 总金额
+	 * @param openId openId
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "pay/unifiedorder", method = RequestMethod.GET)
+	public Map<String, Object> unifiedorder(String body,int total_fee,String openId,
+			HttpServletRequest request,HttpServletResponse response){
+		
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		
+		Map<String, String> result=new HashMap<String,String>();
+		try {
+			
+		
+		//统一下单请求参数
+		Map<String,Object> pa=new HashMap<String,Object>();
+		pa.put("appid", appid);   //小程序ID
+		pa.put("mch_id", mch_id); //商户号
+		pa.put("openid", openId); //openid
+		pa.put("nonce_str", UUIDHexGenerator.generate()); //随机字符串
+		pa.put("body", body);  //商品描述
+		pa.put("out_trade_no", PayUtil.create_out_trade_no()); //商户订单号
+		pa.put("total_fee", total_fee);   //总金额
+		pa.put("spbill_create_ip", request.getRemoteAddr());  //终端IP
+		pa.put("notify_url", "www.baidu.com"); //通知地址
+		pa.put("trade_type", "JSAPI");  //交易类型
+		
+		//生成签名
+		String sign=PayUtil.getSign(pa,key);
+		pa.put("sign", sign);
+		
+		StringBuffer requestXml=new StringBuffer("<xml>");
+		for(String k:pa.keySet())
+			requestXml.append("<"+k+">"+pa.get(k)+"</"+k+">");
+		requestXml.append("</xml>");
+		
+		result =PayUtil.httpRequest(unifiedorder_url, "POST", requestXml.toString());
+	        // 将解析结果存储在HashMap中
+	        
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+			return retMap;
+		}
+		retMap.put("errcode", "0");
+		retMap.put("errmsg", "OK");
+		retMap.put("data", result);
+		return retMap;
+	}
+	
 	public static void main(String[] args) throws Exception {
 		/*UUID uuid = UUID.randomUUID();
 		System.out.println(uuid);
@@ -618,6 +685,7 @@ public class UserController {
 				     replace("JSCODE", "013JN7cA1Pjs7h066HcA1HVocA1JN7cJ");
 		JSONObject obj=HttpRequestUtil.httpRequest(url, "GET", null);
 		System.out.println(obj);*/
-		System.out.println(RedisUtils.getttl("c3666e5d-9169-44c6-832b-0a7e17182f57"));
+		//System.out.println(RedisUtils.getttl("c3666e5d-9169-44c6-832b-0a7e17182f57"));
+		System.out.println(UUIDHexGenerator.generate());
 	}
 }
