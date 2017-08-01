@@ -58,6 +58,8 @@ public interface IUserService {
 
 	String getout_trade_noByprepay_id(String prepay_id);
 
+	int updateOrderState(String prepay_id);
+
 
 
 }

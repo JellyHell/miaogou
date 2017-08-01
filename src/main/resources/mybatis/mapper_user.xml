@@ -238,4 +238,8 @@
      <select id="getout_trade_noByprepay_id" parameterType="Map" resultType="java.lang.String">
      select out_trade_no from mg_order where prepay_id=#{prepay_id}
     </select>
+    
+    <update id="updateOrderStateByPrePar_Id" parameterType="Map">
+     update mg_order set state=#{state} where prepay_id=#{prepay_id}
+    </update>
 </mapper>

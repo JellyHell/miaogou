@@ -79,6 +79,11 @@ public class UserController {
 	private final static String orderquery="https://api.mch.weixin.qq.com/pay/orderquery";
 	
 	/**
+	 * 关闭订单
+	 */
+	private final static String closeorder="https://api.mch.weixin.qq.com/pay/closeorder";
+	
+	/**
 	 * 根据login获取到的code和appid，secret 获取openid和session_key 并生成第三方session作为key保存至本地session
 	 * @param code
 	 * @param request
@@ -799,6 +804,8 @@ public class UserController {
 		String transaction_id="";
 		for(int i=0;i<3;i++){
 			transaction_id=UserService.gettransaction_idByprepay_id(prepay_id);
+			//等待一秒  等待异步调用update  transaction_id
+			Thread.currentThread().sleep(1000);
 		}
 		//
 		String out_trade_no="";
@@ -807,7 +814,6 @@ public class UserController {
 		}
 		
 		//查询订单
-		
 		pa.put("appid", appid);   //小程序ID
 		pa.put("mch_id", mch_id); //商户号
 		pa.put("nonce_str", UUIDHexGenerator.generate()); //随机字符串
@@ -833,6 +839,69 @@ public class UserController {
 			retMap.put("errmsg", "系统异常请稍后重试!");
 			return retMap;
 		}
+		
+		retMap.put("errcode", "0");
+		retMap.put("errmsg", "OK");
+		retMap.put("data", result);
+		return retMap;
+		
+	}
+	
+	/**
+	 * 关闭订单
+	 * 以下情况需要调用关单接口：商户订单支付失败需要生成新单号重新发起支付，要对原订单号调用关单，避免重复支付；
+	 * 系统下单后，用户支付超时，系统退出不再受理，避免用户继续，请调用关单接口。
+                    注意：订单生成后不能马上调用关单接口，最短调用时间间隔为5分钟。
+	 * @param prepay_id 统一下单返回的prepay_id
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "pay/closeorder", method = RequestMethod.GET)
+	public Map<String, Object> closeorder(String prepay_id,
+			HttpServletRequest request,HttpServletResponse response){
+		
+        Map<String,Object> retMap=new HashMap<String,Object>();
+		
+		Map<String, String> result=new HashMap<String,String>();
+		
+		Map<String,Object> pa=new HashMap<String,Object>();
+		try {
+	   
+	    
+		//商户订单号
+		String out_trade_no=UserService.getout_trade_noByprepay_id(prepay_id);
+		
+		
+		//查询订单
+		pa.put("appid", appid);   //小程序ID
+		pa.put("mch_id", mch_id); //商户号
+		pa.put("nonce_str", UUIDHexGenerator.generate()); //随机字符串
+		pa.put("out_trade_no", out_trade_no);//商户订单号
+		
+		//生成签名
+		String sign=PayUtil.getSign(pa,key);
+		pa.put("sign", sign);
+		
+		StringBuffer requestXml=new StringBuffer("<xml>");
+		for(String k:pa.keySet())
+			requestXml.append("<"+k+">"+pa.get(k)+"</"+k+">");
+		requestXml.append("</xml>");
+		
+		result =PayUtil.httpRequest(closeorder, "POST", requestXml.toString());
+	        
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+			return retMap;
+		}
+		
+		//更新订单表状态为0 取消订单 
+		if("SUCCESS".equals(result.get("return_code"))&&"SUCCESS".equals(result.get("result_code")))
+			UserService.updateOrderState(prepay_id);
 		
 		retMap.put("errcode", "0");
 		retMap.put("errmsg", "OK");

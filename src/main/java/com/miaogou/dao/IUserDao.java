@@ -72,6 +72,8 @@ public interface IUserDao {
 
 	String getout_trade_noByprepay_id(Map<String, String> pa);
 
+	int updateOrderStateByPrePar_Id(Map<String, String> pa);
+
 
 
 }

@@ -489,6 +489,15 @@ public class UserImpl implements IUserService{
 			return userDao.getout_trade_noByprepay_id(pa);
 		}
 
+		@Override
+		@Transactional
+		public int updateOrderState(String prepay_id) {
+			Map<String,String> pa=new HashMap<String,String>();
+			pa.put("prepay_id", prepay_id);
+			pa.put("state", "0");
+			return userDao.updateOrderStateByPrePar_Id(pa);
+		}
+
 
 		
 		
