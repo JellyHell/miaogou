@@ -69,7 +69,14 @@ public class UserController {
 	 */
 	private final static String jscode2session="https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code"; 
 	
+	/**
+	 * 统一下单
+	 */
 	private final static String unifiedorder_url="https://api.mch.weixin.qq.com/pay/unifiedorder";
+	/**
+	 * 查询订单
+	 */
+	private final static String orderquery="https://api.mch.weixin.qq.com/pay/orderquery";
 	
 	/**
 	 * 根据login获取到的code和appid，secret 获取openid和session_key 并生成第三方session作为key保存至本地session
@@ -768,8 +775,8 @@ public class UserController {
 	}
 	
 	/**
-	 * 支付完成查询订单状态
-	 * @param prepay_id
+	 * 支付完成查询订单状态  (用于支付完成后立马查询使用)
+	 * @param prepay_id 统一下单返回的prepay_id
 	 * @param request
 	 * @param response
 	 * @return
@@ -779,8 +786,57 @@ public class UserController {
 	public Map<String, Object> orderquery(String prepay_id,
 			HttpServletRequest request,HttpServletResponse response){
 		
-		Map<String,Object> retMap=new HashMap<String,Object>();
+        Map<String,Object> retMap=new HashMap<String,Object>();
 		
+		Map<String, String> result=new HashMap<String,String>();
+		
+		Map<String,Object> pa=new HashMap<String,Object>();
+		try {
+	   
+	    //根据prepay_id 查询 异步回调函数返回的 微信端 transaction_id 订单号  因为是异步调用不一定会有transaction_id
+	    // 如果三次都没有获取到  则使用自己这边的订单 out_trade_no
+		
+		String transaction_id="";
+		for(int i=0;i<3;i++){
+			transaction_id=UserService.gettransaction_idByprepay_id(prepay_id);
+		}
+		//
+		String out_trade_no="";
+		if(transaction_id==null||"".equals(transaction_id)){
+			out_trade_no=UserService.getout_trade_noByprepay_id(prepay_id);
+		}
+		
+		//查询订单
+		
+		pa.put("appid", appid);   //小程序ID
+		pa.put("mch_id", mch_id); //商户号
+		pa.put("nonce_str", UUIDHexGenerator.generate()); //随机字符串
+		pa.put("transaction_id", transaction_id);  //微信订单号
+		pa.put("out_trade_no", out_trade_no);//商户订单号
+		
+		//生成签名
+		String sign=PayUtil.getSign(pa,key);
+		pa.put("sign", sign);
+		
+		StringBuffer requestXml=new StringBuffer("<xml>");
+		for(String k:pa.keySet())
+			requestXml.append("<"+k+">"+pa.get(k)+"</"+k+">");
+		requestXml.append("</xml>");
+		
+		result =PayUtil.httpRequest(orderquery, "POST", requestXml.toString());
+	        // 将解析结果存储在HashMap中
+	        
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+			return retMap;
+		}
+		
+		retMap.put("errcode", "0");
+		retMap.put("errmsg", "OK");
+		retMap.put("data", result);
 		return retMap;
 		
 	}

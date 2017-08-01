@@ -54,7 +54,7 @@ public class PayUtil {
 		//去除为空的key
 		List<String> keyli=new ArrayList<String>();
 		for (String key : pa.keySet()) {  
-		    if(!"".equals(pa.get(key)))
+		    if(!"".equals(pa.get(key))&&pa.get(key)!=null)
 		    	keyli.add(key);
 		} 
 		

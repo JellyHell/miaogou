@@ -68,6 +68,10 @@ public interface IUserDao {
 
 	int Resolveorder(Map<String, Object> pa);
 
+	String gettransaction_idByprepay_id(Map<String, String> pa);
+
+	String getout_trade_noByprepay_id(Map<String, String> pa);
+
 
 
 }

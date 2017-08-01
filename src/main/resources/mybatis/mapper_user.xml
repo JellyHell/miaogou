@@ -230,4 +230,12 @@
     <update id="Resolveorder" parameterType="Map">
     update mg_order set resoved='1' ,state='1',transaction_id=#{transaction_id} where out_trade_no=#{out_trade_no}
     </update>
+    
+    <select id="gettransaction_idByprepay_id" parameterType="Map" resultType="java.lang.String">
+     select transaction_id from mg_order where prepay_id=#{prepay_id}
+    </select>
+    
+     <select id="getout_trade_noByprepay_id" parameterType="Map" resultType="java.lang.String">
+     select out_trade_no from mg_order where prepay_id=#{prepay_id}
+    </select>
 </mapper>

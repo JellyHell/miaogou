@@ -473,6 +473,22 @@ public class UserImpl implements IUserService{
 			return  userDao.Resolveorder(pa);
 		}
 
+		@Override
+		@Transactional
+		public String gettransaction_idByprepay_id(String prepay_id) {
+			Map<String,String> pa=new HashMap<String,String>();
+			pa.put("prepay_id", prepay_id);
+			return userDao.gettransaction_idByprepay_id(pa);
+		}
+
+		@Override
+		@Transactional
+		public String getout_trade_noByprepay_id(String prepay_id) {
+			Map<String,String> pa=new HashMap<String,String>();
+			pa.put("prepay_id", prepay_id);
+			return userDao.getout_trade_noByprepay_id(pa);
+		}
+
 
 		
 		

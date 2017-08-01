@@ -54,6 +54,10 @@ public interface IUserService {
 
 	int Resolveorder(Map<String, Object> resultMap);
 
+	String gettransaction_idByprepay_id(String prepay_id);
+
+	String getout_trade_noByprepay_id(String prepay_id);
+
 
 
 }
