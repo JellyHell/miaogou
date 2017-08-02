@@ -219,7 +219,15 @@
      INSERT INTO `mg_order` (`out_trade_no`,`prepay_id`, `openId`, `total_fee`, `createTime`, `updateTime`, `state`) 
      VALUES (#{out_trade_no},#{prepay_id} ,#{openid}, #{total_fee}, SYSDATE(), SYSDATE(), '-1')
     </insert>
+    <insert id="createOrderDeliveryAddress" parameterType="Map">
+     INSERT INTO `mg_order_delivery_address` (`out_trade_no`, `name`, `phone`, `area`, `address`, `postCode`)
+      VALUES (#{out_trade_no}, #{name}, #{phone}, #{area}, #{address}, #{postCode})
+    </insert>
     
+    <insert id="createOrderGoods" parameterType="Map">
+      INSERT INTO `mg_order_goods` (`out_trade_no`, `goodsCode`, `goodsNum`) 
+      VALUES (#{out_trade_no}, #{goodsCode}, #{goodsNum})
+    </insert>
     <select id="modifytotlfee" parameterType="Map" resultType="java.lang.Integer">
       select count(1) from mg_order where out_trade_no=#{out_trade_no} and total_fee=#{total_fee}
     </select>

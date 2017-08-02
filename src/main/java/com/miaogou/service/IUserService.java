@@ -46,7 +46,7 @@ public interface IUserService {
 
 	Map<String, Object> getDetails(String goods_code) throws Exception;
 
-	int createOrder(Map<String, Object> pa);
+	void createOrder(Map<String, Object> pa) throws Exception;
 
 	int modifytotlfee(Map<String, Object> resultMap);
 

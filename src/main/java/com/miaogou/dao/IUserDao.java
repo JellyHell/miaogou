@@ -86,6 +86,10 @@ public interface IUserDao {
 
 	int delFromShoppingCart(Map<String, Object> pa);
 
+	int createOrderDeliveryAddress(Map<String, Object> pa);
+
+	int createOrderGoods(Map<String, Object> pa);
+
 
 
 }

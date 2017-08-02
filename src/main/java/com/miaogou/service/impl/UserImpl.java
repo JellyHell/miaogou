@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -453,9 +455,25 @@ public class UserImpl implements IUserService{
 
 		@Override
 		@Transactional
-		public int createOrder(Map<String, Object> pa) {
+		public void createOrder(Map<String, Object> pa) throws Exception {
 			
-			return userDao.createOrder(pa);
+			 //插入订单表
+			if(userDao.createOrder(pa)!=1) throw new Exception();
+			
+			//插入联系地址表
+			if(userDao.createOrderDeliveryAddress(pa)!=1) throw new Exception();
+			
+			JSONObject obj=new JSONObject(pa.get("detail"));
+			
+			JSONArray arr=obj.getJSONArray("goods_detail");
+			
+			if(arr!=null&&arr.length()>0){
+				for(int i=0;i<arr.length();i++){
+					pa.put("goodsCode", arr.getJSONObject(i).getString("goodsCode"));
+					pa.put("goodsNum", arr.getJSONObject(i).getInt("goodsNum"));
+					if(userDao.createOrderGoods(pa)!=1) throw new Exception();
+				}
+			}
 			
 		}
 

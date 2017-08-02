@@ -696,16 +696,34 @@ public class UserController {
 	
 	/**
 	 * 统一下单(预支付)
-	 * @param body 商品描述
-	 * @param total_fee 总金额
-	 * @param openId openId
+	 * @param openid  
+	 * @param detail 商品信息json格式字符串  exp:  
+	 *                               {
+									    "goods_detail": [
+									        {
+									            "goodsCode": "s_goods10001",
+									            "goodsNum": 2
+									        },
+									        {
+									            "goodsCode": "s_goods10001",
+									            "goodsNum": 3
+									        }
+									    ]
+									 }
+	 * @param name 寄件人姓名
+	 * @param phone 电话
+	 * @param area 地区
+	 * @param address 详细地址
+	 * @param postCode 邮编
+	 * @param total_fee  总费用  单位 ‘分’
 	 * @param request
 	 * @param response
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "pay/unifiedorder", method = RequestMethod.GET)
-	public Map<String, Object> unifiedorder(String body,int total_fee,String openid,
+	public Map<String, Object> unifiedorder(String openid,String detail,String name,
+			String phone,String area,String address,String postCode,int total_fee,
 			HttpServletRequest request,HttpServletResponse response){
 		
 		Map<String,Object> retMap=new HashMap<String,Object>();
@@ -722,7 +740,7 @@ public class UserController {
 		pa.put("mch_id", mch_id); //商户号
 		pa.put("openid", openid); //openid
 		pa.put("nonce_str", UUIDHexGenerator.generate()); //随机字符串
-		pa.put("body", body);  //商品描述
+		pa.put("body", "喵购平台商品购买");  //商品描述
 		pa.put("out_trade_no", PayUtil.create_out_trade_no()); //商户订单号
 		pa.put("total_fee", total_fee);   //总金额
 		pa.put("spbill_create_ip", request.getRemoteAddr());  //终端IP
@@ -751,8 +769,25 @@ public class UserController {
 		pa.put("prepay_id", result.get("prepay_id"));
 		//生产订单成功 插入数据库
 		if("SUCCESS".equals(result.get("result_code"))&&"SUCCESS".equals(result.get("return_code"))){
-			UserService.createOrder(pa);
+			pa.put("detail", detail);
+			pa.put("name", name);
+			pa.put("phone", phone);
+			pa.put("area", area);
+			pa.put("address", address);
+			pa.put("postCode", postCode);
+			
+			try {
+				UserService.createOrder(pa);
+			} catch (Exception e) {
+				retMap.put("errcode", "-1");
+				retMap.put("errmsg", "操作数据库失败");
+				return retMap;
+			}
+			
+				
 		}
+		
+		
 		retMap.put("errcode", "0");
 		retMap.put("errmsg", "OK");
 		retMap.put("data", result);
