@@ -90,6 +90,8 @@ public interface IUserDao {
 
 	int createOrderGoods(Map<String, Object> pa);
 
+	List<Map<String, Object>> getOrderList(Map<String, Object> pa);
+
 
 
 }

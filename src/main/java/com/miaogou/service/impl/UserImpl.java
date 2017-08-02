@@ -1,5 +1,6 @@
 package com.miaogou.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -560,6 +561,41 @@ public class UserImpl implements IUserService{
 			
 			retMap.put("errcode", "0");
 		    retMap.put("errmsg", "OK");
+			return retMap;
+		}
+
+		@Override
+		@Transactional
+		public Map<String, Object> getOrderList(String userId,String state) throws Exception {
+            Map<String,Object> retMap=new HashMap<String,Object>();
+			
+			Map<String,Object> pa=new HashMap<String,Object>();
+			pa.put("userId", userId);
+			pa.put("state", state);
+			
+			List<Map<String,Object>> li=userDao.getOrderList(pa);
+			if(li!=null&&li.size()>0){
+				for(int i=0;i<li.size();i++){
+					String detail=(String) li.get(i).get("detail");
+					String[] items=detail.split(",");
+					List<Map<String,String>> goodslist=new ArrayList<Map<String,String>>();
+					if(items!=null&&items.length>0){
+						for(int j=0;j<items.length;j++){
+							Map<String,String> map=new HashMap<String,String>();
+							map.put("goodsCode",items[j].split("#")[0]);
+							map.put("goodsNum",items[j].split("#")[1]);
+							map.put("iconImg",items[j].split("#")[2]);
+							map.put("goodsName",items[j].split("#")[3]);
+							goodslist.add(map);
+						}
+					}
+					li.get(i).put("goodsList", goodslist);
+					li.get(i).remove("detail");
+				}
+			}
+			retMap.put("errcode", "0");
+		    retMap.put("errmsg", "OK");
+		    retMap.put("data", li);
 			return retMap;
 		}
 

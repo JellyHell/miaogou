@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -1000,16 +1001,146 @@ public class UserController {
 		
 	}
 	
+	/**
+	 * 查询未支付订单
+	 * @param userId
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping(value = "test",produces={"application/xml;chrset=UTF-8"}, method = RequestMethod.GET)
-	public void test(
+	@RequestMapping(value = "order/unpaid", method = RequestMethod.GET)
+	public Map<String, Object> unpaidOrder(String userId,
+			HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		
+		try {
+			retMap=UserService.getOrderList(userId,"-1");
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+			return retMap;
+		}
+		
+		return retMap;
+	}
+	
+	/**
+	 * 支付成功 尚未发货
+	 * @param userId
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "order/paidNotExpress", method = RequestMethod.GET)
+	public Map<String, Object> paidNotExpress(String userId,
+			HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		
+		try {
+			retMap=UserService.getOrderList(userId,"1");
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+			return retMap;
+		}
+		
+		return retMap;
+	}
+	
+	/**
+	 * 已经寄件  买家尚未收货
+	 * @param userId
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "order/Expressing", method = RequestMethod.GET)
+	public Map<String, Object> ExpressedNotTake(String userId,
+			HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		
+		try {
+			retMap=UserService.getOrderList(userId,"2");
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+			return retMap;
+		}
+		
+		return retMap;
+	}
+	
+	/**
+	 * 订单完成
+	 * @param userId
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "order/completion", method = RequestMethod.GET)
+	public Map<String, Object> completion(String userId,
+			HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		
+		try {
+			retMap=UserService.getOrderList(userId,"3");
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+			return retMap;
+		}
+		
+		return retMap;
+	}
+	
+	/**
+	 * 订单取消
+	 * @param userId
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "order/cancel", method = RequestMethod.GET)
+	public Map<String, Object> ordercancel(String userId,
+			HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		
+		try {
+			retMap=UserService.getOrderList(userId,"0");
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+			return retMap;
+		}
+		
+		return retMap;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "test", method = RequestMethod.GET)
+	public void test(String json,
 			HttpServletRequest request,HttpServletResponse response) throws IOException{
-		response.setHeader("Content-type", "text/plain;charset=UTF-8");  
-		NotifyRet ret=new NotifyRet();
-		ret.setReturn_code("FAIL");
-    	ret.setReturn_msg("系统数据更新失败");
-    	String tt=NotifyRetToXml(ret);
-		response.getWriter().write(tt);
+		JSONObject obj=new JSONObject(json);
+		
+		JSONArray arr=obj.getJSONArray("goods_detail");
+		 
+		for(int i=0;i<arr.length();i++){
+			System.out.println(arr.getJSONObject(i).get("goodsCode"));
+			System.out.println(arr.getJSONObject(i).get("goodsNum"));
+		}
+		System.out.println(obj);
+		System.out.println(arr);
+		System.out.println("1111111");
 	}
 	
 	public static String NotifyRetToXml(NotifyRet ret) throws UnsupportedEncodingException{

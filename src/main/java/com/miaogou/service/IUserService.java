@@ -63,6 +63,14 @@ public interface IUserService {
 	Map<String, Object> reduce1FromShoppingCart(String userId, String goodsCode) throws Exception;
 
 	Map<String, Object> delFromShoppingCart(String code) throws Exception;
+    /**
+     * 
+     * @param userId
+     * @param state  订单状态  ( -1 初始状态未支付   0 订单取消 1 支付成功代发货  2 发货中 3 订单完成 )
+     * @return
+     * @throws Exception
+     */
+	Map<String, Object> getOrderList(String userId,String state) throws Exception;
 
 
 
