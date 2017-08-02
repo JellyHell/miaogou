@@ -242,4 +242,27 @@
     <update id="updateOrderStateByPrePar_Id" parameterType="Map">
      update mg_order set state=#{state} where prepay_id=#{prepay_id}
     </update>
+    
+    <select id="isGoodsInShoppingCart" parameterType="Map" resultType="java.lang.Integer">
+     select  count(1) from mg_shoppingcart where userId=#{userId} and goodsCode=#{goodsCode}
+    </select>
+    
+    <update id="updateShoppingCartGoodsNum" parameterType="Map">
+      update mg_shoppingcart set goodsNum=goodsNum+#{goodsNum},updateTime=SYSDATE() where userId=#{userId} and goodsCode=#{goodsCode}
+    </update>
+    <select id="getGoodsNumInshoppingCart" parameterType="Map" resultType="java.lang.Integer">
+     select goodsNum from mg_shoppingcart where userId=#{userId} and goodsCode=#{goodsCode}
+    </select>
+    
+    <update id="deletefromShopingByuserIdAndGoodsCode" parameterType="Map">
+      delete from mg_shoppingcart where userId=#{userId} and goodsCode=#{goodsCode}
+    </update>
+    
+    <update id="reduce1FromShoppingCart" parameterType="Map">
+     update mg_shoppingcart set goodsNum=goodsNum-1,updateTime=SYSDATE() where userId=#{userId} and goodsCode=#{goodsCode}
+    </update>
+    
+    <update id="delFromShoppingCart" parameterType="Map">
+     delete from mg_shoppingcart where code=#{code}
+    </update>
 </mapper>

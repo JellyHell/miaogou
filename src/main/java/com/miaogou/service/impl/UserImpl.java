@@ -358,13 +358,20 @@ public class UserImpl implements IUserService{
             Map<String,Object> retMap=new HashMap<String,Object>();
 			
 			Map<String,Object> pa=new HashMap<String,Object>();
-			pa.put("code", "s_shopcart"+userDao.nextval("s_shopcart"));
+			
 	        pa.put("userId", userId);
 	        pa.put("goodsCode", goodsCode);
 	        pa.put("goodsNum", goodsNum);
 	        pa.put("state", "0");
 	        
-	        if(userDao.addToShoppingCart(pa)!=1) throw new Exception();
+	        //查看该用户下这个商品是否在 购物车中 
+	        
+	        if(userDao.isGoodsInShoppingCart(pa)>0){ 
+	        	if(userDao.updateShoppingCartGoodsNum(pa)!=1) throw new Exception();
+	        }else{
+	        	pa.put("code", "s_shopcart"+userDao.nextval("s_shopcart"));
+	        	if(userDao.addToShoppingCart(pa)!=1) throw new Exception();
+	        }
 	        
 	        retMap.put("errcode", "0");
 	        retMap.put("errmsg", "OK");
@@ -496,6 +503,46 @@ public class UserImpl implements IUserService{
 			pa.put("prepay_id", prepay_id);
 			pa.put("state", "0");
 			return userDao.updateOrderStateByPrePar_Id(pa);
+		}
+
+		@Override
+		@Transactional
+		public Map<String, Object> reduce1FromShoppingCart(String userId,
+				String goodsCode) throws Exception {
+			    Map<String,Object> retMap=new HashMap<String,Object>();
+				
+				Map<String,Object> pa=new HashMap<String,Object>();
+				pa.put("userId", userId);
+				pa.put("goodsCode", goodsCode);
+				
+				//查看该商品在购物车中的数量
+				int goodsNum=userDao.getGoodsNumInshoppingCart(pa);
+				
+				if(goodsNum==1){   //数量为1  删除
+					if(userDao.deletefromShopingByuserIdAndGoodsCode(pa)!=1) throw new Exception();
+				}else{    //数量大于1 减少1 
+					if(userDao.reduce1FromShoppingCart(pa)!=1) throw new Exception();
+				}
+					
+				retMap.put("errcode", "0");
+			    retMap.put("errmsg", "OK");
+				return retMap;
+		}
+
+		@Override
+		@Transactional
+		public Map<String, Object> delFromShoppingCart(String code) throws Exception {
+			Map<String,Object> retMap=new HashMap<String,Object>();
+			
+			Map<String,Object> pa=new HashMap<String,Object>();
+			pa.put("code", code);
+			
+			
+			if(userDao.delFromShoppingCart(pa)!=1) throw new Exception();
+			
+			retMap.put("errcode", "0");
+		    retMap.put("errmsg", "OK");
+			return retMap;
 		}
 
 

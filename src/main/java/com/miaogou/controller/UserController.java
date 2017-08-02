@@ -573,6 +573,55 @@ public class UserController {
 	}
 	
 	/**
+	 * 指定商品从该用户的购物车中减去1个  如果本来还剩一个则进行删除操作
+	 * @param userId  用户userId
+	 * @param goodsCode  商品code
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "goods/reduce1FromShoppingCart", method = RequestMethod.POST)
+	public Map<String, Object> reduce1FromShoppingCart(
+			 String userId,String goodsCode,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		
+		try {
+			retMap=UserService.reduce1FromShoppingCart(userId,goodsCode);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
+		
+	}
+	
+	/**
+	 * 根据购物车code删除该购物车该商品  
+	 * @param code   购物车列表中返回的code
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "goods/delFromShoppingCart", method = RequestMethod.POST)
+	public Map<String, Object> delFromShoppingCart(
+			 String code,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		
+		try {
+			retMap=UserService.delFromShoppingCart(code);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
+		
+	}
+	
+	/**
 	 * 获取购物车列表
 	 * @param _3rd_session
 	 * @param request

@@ -74,6 +74,18 @@ public interface IUserDao {
 
 	int updateOrderStateByPrePar_Id(Map<String, String> pa);
 
+	int isGoodsInShoppingCart(Map<String, Object> pa);
+
+	int updateShoppingCartGoodsNum(Map<String, Object> pa);
+
+	int getGoodsNumInshoppingCart(Map<String, Object> pa);
+
+	int deletefromShopingByuserIdAndGoodsCode(Map<String, Object> pa);
+
+	int reduce1FromShoppingCart(Map<String, Object> pa);
+
+	int delFromShoppingCart(Map<String, Object> pa);
+
 
 
 }

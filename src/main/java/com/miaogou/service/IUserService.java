@@ -60,6 +60,10 @@ public interface IUserService {
 
 	int updateOrderState(String prepay_id);
 
+	Map<String, Object> reduce1FromShoppingCart(String userId, String goodsCode) throws Exception;
+
+	Map<String, Object> delFromShoppingCart(String code) throws Exception;
+
 
 
 }
