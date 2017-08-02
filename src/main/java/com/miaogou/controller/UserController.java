@@ -780,6 +780,7 @@ public class UserController {
 			try {
 				UserService.createOrder(pa);
 			} catch (Exception e) {
+				e.printStackTrace();
 				retMap.put("errcode", "-1");
 				retMap.put("errmsg", "操作数据库失败");
 				return retMap;
