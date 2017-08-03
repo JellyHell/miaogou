@@ -1,18 +1,29 @@
 package com.miaogou.controller;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.net.ssl.SSLContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLContexts;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -83,6 +94,11 @@ public class UserController {
 	 * 关闭订单
 	 */
 	private final static String closeorder="https://api.mch.weixin.qq.com/pay/closeorder";
+	
+	/**
+	 * 退款
+	 */
+	private final static String refund="https://api.mch.weixin.qq.com/secapi/pay/refund";
 	
 	/**
 	 * 根据login获取到的code和appid，secret 获取openid和session_key 并生成第三方session作为key保存至本地session
@@ -1000,6 +1016,88 @@ public class UserController {
 		retMap.put("data", result);
 		return retMap;
 		
+	}
+	
+	/**
+	 * 退款
+	 * @param transaction_id
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws KeyStoreException 
+	 * @throws FileNotFoundException 
+	 */
+	@ResponseBody
+	@RequestMapping(value = "pay/refund", method = RequestMethod.GET)
+	public Map<String, Object> refund(String transaction_id,
+			HttpServletRequest request,HttpServletResponse response) throws Exception{
+		
+		 Map<String,Object> retMap=new HashMap<String,Object>();
+		 
+		 Map<String, String> result=new HashMap<String,String>();
+		 
+		 Map<String,Object> pa=new HashMap<String,Object>();
+		 
+		 //证书部分
+		 KeyStore keyStore  = KeyStore.getInstance("PKCS12");
+	     FileInputStream instream = new FileInputStream(new File("D:/喵淘/svn/ProductManager/cert/apiclient_cert.p12"));
+	     try {
+	            keyStore.load(instream, mch_id.toCharArray());
+	        } finally {
+	            instream.close();
+	        }
+
+	        // Trust own CA and all self-signed certs
+	      SSLContext sslcontext = SSLContexts.custom()
+	                .loadKeyMaterial(keyStore, mch_id.toCharArray())
+	                .build();
+	        // Allow TLSv1 protocol only
+	      SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+	                sslcontext,
+	                new String[] { "TLSv1" },
+	                null,
+	                SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+	      CloseableHttpClient httpclient = HttpClients.custom()
+	                .setSSLSocketFactory(sslsf)
+	                .build();
+		 
+		try {
+			pa.put("appid", appid);   //小程序ID
+			pa.put("mch_id", mch_id); //商户号
+			pa.put("nonce_str", UUIDHexGenerator.generate()); //随机字符串
+			pa.put("transaction_id", transaction_id);//微信订单号
+			pa.put("out_refund_no", "123"); //商户退款单号
+			pa.put("total_fee", 1);   //订单金额
+			pa.put("refund_fee", 1);  //退款金额
+			pa.put("op_user_id", mch_id);  //操作员帐号, 默认为商户号
+			
+			//生成签名
+			String sign=PayUtil.getSign(pa,key);
+			pa.put("sign", sign);
+			
+			StringBuffer requestXml=new StringBuffer("<xml>");
+			for(String k:pa.keySet())
+				requestXml.append("<"+k+">"+pa.get(k)+"</"+k+">");
+			requestXml.append("</xml>");
+			
+			System.out.println(requestXml.toString());
+			
+			result =PayUtil.httpRequest(refund, "POST", requestXml.toString());
+			
+			//HttpPost
+			
+			 
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+			return retMap;
+		}
+		
+		retMap.put("errcode", "0");
+		retMap.put("errmsg", "OK");
+		retMap.put("data", result);
+		return retMap;
 	}
 	
 	/**

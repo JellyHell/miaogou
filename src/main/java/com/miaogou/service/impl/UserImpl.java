@@ -464,7 +464,7 @@ public class UserImpl implements IUserService{
 			//插入联系地址表
 			if(userDao.createOrderDeliveryAddress(pa)!=1) throw new Exception();
 			
-			JSONObject obj=new JSONObject(pa.get("detail"));
+			JSONObject obj=new JSONObject((String)pa.get("detail"));
 			
 			JSONArray arr=obj.getJSONArray("goods_detail");
 			
