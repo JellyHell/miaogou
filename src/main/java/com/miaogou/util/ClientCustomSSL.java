@@ -31,17 +31,27 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.security.KeyStore;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.net.ssl.SSLContext;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContexts;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 
@@ -76,13 +86,36 @@ public class ClientCustomSSL {
                 .build();
         try {
 
-            HttpGet httpget = new HttpGet("https://api.mch.weixin.qq.com/secapi/pay/refund");
+            //HttpGet httpget = new HttpGet("https://api.mch.weixin.qq.com/secapi/pay/refund");
             
-            HttpPost httppost=new HttpPost("");
+            HttpPost httppost=new HttpPost("https://api.mch.weixin.qq.com/secapi/pay/refund");
+            
+            
+            
+            Map<String,Object> pa=new HashMap<String,Object>();
+            pa.put("appid", "wxf35c73404cfc846b");   //小程序ID
+			pa.put("mch_id", "1486397222"); //商户号
+			pa.put("nonce_str", UUIDHexGenerator.generate()); //随机字符串
+			pa.put("transaction_id", "4005472001201708013843450558");//微信订单号
+			pa.put("out_refund_no", "123"); //商户退款单号
+			pa.put("total_fee", "1");   //订单金额
+			pa.put("refund_fee", "1");  //退款金额
+			pa.put("op_user_id", "1486397222");  //操作员帐号, 默认为商户号
+			
+			//生成签名
+			String sign=PayUtil.getSign(pa,"chengyanfangweichunchun346520456");
+			pa.put("sign", sign);
+           
+            
+			StringBuffer requestXml=new StringBuffer("<xml>");
+			for(String k:pa.keySet())
+				requestXml.append("<"+k+">"+pa.get(k)+"</"+k+">");
+			requestXml.append("</xml>");
+			
+			StringEntity en=new StringEntity(requestXml.toString());
+			httppost.setEntity(en);
 
-            System.out.println("executing request" + httpget.getRequestLine());
-
-            CloseableHttpResponse response = httpclient.execute(httpget);
+            CloseableHttpResponse response = httpclient.execute(httppost);
             try {
                 HttpEntity entity = response.getEntity();
 
