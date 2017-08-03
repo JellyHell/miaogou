@@ -574,6 +574,15 @@ public class UserImpl implements IUserService{
 			pa.put("state", state);
 			
 			List<Map<String,Object>> li=userDao.getOrderList(pa);
+			
+			//删除过期的订单
+			if(li!=null&&li.size()>0){
+				for(int i=li.size()-1;i>=0;i--){
+					Long ttl=(Long) li.get(i).get("ttl");
+					if(ttl<0) li.remove(i);
+				}
+			}
+			
 			if(li!=null&&li.size()>0){
 				for(int i=0;i<li.size();i++){
 					String detail=(String) li.get(i).get("detail");
