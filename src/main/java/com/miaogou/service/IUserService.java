@@ -78,6 +78,8 @@ public interface IUserService {
 
 	Map<String, Object> askForRefund(String out_trade_no,String reason)throws Exception;
 
+	int updaterefundErrmsg(Map<String, Object> pa);
+
 
 
 }

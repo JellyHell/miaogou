@@ -1113,8 +1113,6 @@ public class UserController {
 	                .build();
 		 
 		try {
-			
-			
 			pa.put("appid", appid);   //小程序ID
 			pa.put("mch_id", mch_id); //商户号
 			pa.put("nonce_str", UUIDHexGenerator.generate()); //随机字符串
@@ -1153,13 +1151,21 @@ public class UserController {
 				 //将退款单状态修改为  提交退款成功状态
 				 pa.put("refund_id", map.get("refund_id"));
 				 UserService.updateFreundto0(pa);
+			}else{
+				retMap.put("errcode", "1");
+				retMap.put("errmsg", "提交退款失败 return_msg="+map.get("return_msg")+" err_code="+map.get("err_code")+" err_code_des="+map.get("err_code_des"));
+				
+				pa.put("errmsg", retMap.get("errmsg"));
+				UserService.updaterefundErrmsg(pa);
+				
+				return retMap;
 			}
 			
 			 
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");
-			retMap.put("errmsg", "系统异常请稍后重试!");
+			retMap.put("errmsg", "系统异常请稍后重试! ");
 			return retMap;
 		}
 		
@@ -1177,17 +1183,11 @@ public class UserController {
              System.out.println("----------------------------------------");
              System.out.println(response.getStatusLine());
              if (entity != null) {
-                 System.out.println("Response content length: " + entity.getContentLength());
-                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(entity.getContent(),"UTF_8"));
-                 String text;
-                 StringBuffer buffer = new StringBuffer();
-                 while ((text = bufferedReader.readLine()) != null) {
-                	 System.out.println(text);
-                     buffer.append(text);
-                 }
+            	 
+                 String tt=new String(input2byte(entity.getContent()),"utf-8");
                  
+                 InputStream in=new ByteArrayInputStream(tt.getBytes());  
                  Map<String, String> map = new HashMap<String, String>();
-                 InputStream in=new ByteArrayInputStream(buffer.toString().getBytes());  
                  // 读取输入流
                  SAXReader reader = new SAXReader();
                  Document document = reader.read(in);
@@ -1197,6 +1197,7 @@ public class UserController {
                  @SuppressWarnings("unchecked")
                  List<Element> elementList = root.elements();
                  for (Element element : elementList) {
+                	 System.out.println(element.getName()+":"+element.getText());
                      map.put(element.getName(), element.getText());
                  }
                  
@@ -1364,16 +1365,19 @@ public class UserController {
 		
 		return bu.toString();  
 	}
+	
+	public static final byte[] input2byte(InputStream inStream)  
+            throws IOException {  
+        ByteArrayOutputStream swapStream = new ByteArrayOutputStream();  
+        byte[] buff = new byte[100];  
+        int rc = 0;  
+        while ((rc = inStream.read(buff, 0, 100)) > 0) {  
+            swapStream.write(buff, 0, rc);  
+        }  
+        byte[] in2b = swapStream.toByteArray();  
+        return in2b;  
+    } 
 	public static void main(String[] args) throws Exception {
-		/*UUID uuid = UUID.randomUUID();
-		System.out.println(uuid);
-		System.out.println("013Ar3IQ1TErC61xVGJQ1uNMHQ1Ar3IU");
-		String url=jscode2session.replace("APPID", "wxf044dd5db8e29d36").
-				     replace("SECRET", "eccb013f72f3882394c40eba57cfc7bd").
-				     replace("JSCODE", "013JN7cA1Pjs7h066HcA1HVocA1JN7cJ");
-		JSONObject obj=HttpRequestUtil.httpRequest(url, "GET", null);
-		System.out.println(obj);*/
-		//System.out.println(RedisUtils.getttl("c3666e5d-9169-44c6-832b-0a7e17182f57"));
-		System.out.println(UUIDHexGenerator.generate());
+		
 	}
 }

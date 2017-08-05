@@ -643,6 +643,13 @@ public class UserImpl implements IUserService{
 				return retMap;
 		}
 
+		@Override
+		@Transactional
+		public int updaterefundErrmsg(Map<String, Object> pa) {
+			
+			return userDao.updaterefundErrmsg(pa);
+		}
+
 
 		
 		

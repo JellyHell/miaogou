@@ -98,6 +98,8 @@ public interface IUserDao {
 
 	int insertintoRefund(Map<String, Object> pa);
 
+	int updaterefundErrmsg(Map<String, Object> pa);
+
 
 
 }
