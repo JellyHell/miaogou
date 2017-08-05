@@ -304,4 +304,8 @@
       (select total_fee from mg_order where out_trade_no=#{out_trade_no}),
        (select total_fee from mg_order where out_trade_no=#{out_trade_no}),  #{reason}, '-1')
     </insert>
+    
+    <update id="updaterefundErrmsg" parameterType="Map">
+     update mg_refund set errmsg=#{errmsg},state='-2' where out_refund_no=#{out_refund_no}
+    </update>
 </mapper>
