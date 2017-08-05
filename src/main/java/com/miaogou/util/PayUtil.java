@@ -42,6 +42,14 @@ public class PayUtil {
     public static String create_out_trade_no(){
     	return new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+createCode(8);
     }
+    
+    /**
+     * 生成商户退款单号
+     * @return
+     */
+    public static String create_out_refund_no(){
+    	return new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+createCode(8);
+    }
     /**
      * 获取签名
      * @param pa

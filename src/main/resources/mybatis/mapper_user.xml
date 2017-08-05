@@ -289,4 +289,19 @@
 		GROUP BY a.out_trade_no,a.prepay_id,a.total_fee ,a.createTime,
 		b.name,b.phone,b.area,b.address,b.postCode
     </select>
+    
+    <select id="getTotalFeeBytransaction_id" parameterType="Map" resultType="Map">
+      select transaction_id,total_fee,refund_fee from mg_refund where out_refund_no=#{out_refund_no}
+    </select>
+    <update id="updateFreundto0" parameterType="Map">
+      update mg_refund set state='0',refund_id=#{refund_id} where out_refund_no=#{out_refund_no}
+    </update>
+    
+    <insert id="insertintoRefund" parameterType="Map">
+     INSERT INTO `mg_refund` (`out_refund_no`, `transaction_id`, `total_fee`, `refund_fee`,  `reason`, `state`) 
+     VALUES (#{out_refund_no},
+      (select transaction_id from mg_order where out_trade_no=#{out_trade_no}),
+      (select total_fee from mg_order where out_trade_no=#{out_trade_no}),
+       (select total_fee from mg_order where out_trade_no=#{out_trade_no}),  #{reason}, '-1')
+    </insert>
 </mapper>

@@ -1,16 +1,20 @@
 package com.miaogou.controller;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -19,14 +23,20 @@ import javax.net.ssl.SSLContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContexts;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,14 +75,29 @@ public class UserController {
 	@Value("${secret}")
     private String secret;
 	
+	/**
+	 * 商户id
+	 */
 	@Value("${mch_id}")
     private String mch_id;
 	
+	/**
+	 * 签名时用到的key
+	 */
 	@Value("${key}")
     private String key;
 	
+	/**
+	 * 微信支付回调地址
+	 */
 	@Value("${notify_url}")
     private String notify_url;
+	
+	/**
+	 * 退款时证书物理路径
+	 */
+	@Value("${p12_position}")
+    private String p12_position;
 	
 	private static Object lock=new Object();
 	
@@ -1019,8 +1044,34 @@ public class UserController {
 	}
 	
 	/**
+	 * 买家申请退款
+	 * @param out_trade_no
+	 * @param reason
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value = "pay/askForRefund", method = RequestMethod.POST)
+	public Map<String, Object> askForRefund(String out_trade_no,String reason,
+			HttpServletRequest request,HttpServletResponse response) throws Exception{
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		
+		try {
+			retMap=UserService.askForRefund(out_trade_no,reason);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+			return retMap;
+		}
+		return retMap;
+	}
+	
+	/**
 	 * 退款
-	 * @param transaction_id
+	 * @param out_refund_no 商户退款单号
 	 * @param request
 	 * @param response
 	 * @return
@@ -1029,7 +1080,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "pay/refund", method = RequestMethod.GET)
-	public Map<String, Object> refund(String transaction_id,
+	public Map<String, Object> refund(String out_refund_no,
 			HttpServletRequest request,HttpServletResponse response) throws Exception{
 		
 		 Map<String,Object> retMap=new HashMap<String,Object>();
@@ -1040,7 +1091,7 @@ public class UserController {
 		 
 		 //证书部分
 		 KeyStore keyStore  = KeyStore.getInstance("PKCS12");
-	     FileInputStream instream = new FileInputStream(new File("D:/喵淘/svn/ProductManager/cert/apiclient_cert.p12"));
+	     FileInputStream instream = new FileInputStream(new File(p12_position));
 	     try {
 	            keyStore.load(instream, mch_id.toCharArray());
 	        } finally {
@@ -1062,13 +1113,19 @@ public class UserController {
 	                .build();
 		 
 		try {
+			
+			
 			pa.put("appid", appid);   //小程序ID
 			pa.put("mch_id", mch_id); //商户号
 			pa.put("nonce_str", UUIDHexGenerator.generate()); //随机字符串
-			pa.put("transaction_id", transaction_id);//微信订单号
-			pa.put("out_refund_no", "123"); //商户退款单号
-			pa.put("total_fee", 1);   //订单金额
-			pa.put("refund_fee", 1);  //退款金额
+			pa.put("out_refund_no", out_refund_no); //商户退款单号
+			
+			//查询该订单总金额 和退款金额  目前 是全额退款   后面有时间 再写非全额退款
+			Map<String,String> refund_info=UserService.getTotalFeeBytransaction_id(pa);
+			
+			pa.put("transaction_id", refund_info.get("transaction_id"));//微信订单号
+			pa.put("total_fee", refund_info.get("total_fee"));   //订单金额
+			pa.put("refund_fee", refund_info.get("refund_fee"));  //退款金额
 			pa.put("op_user_id", mch_id);  //操作员帐号, 默认为商户号
 			
 			//生成签名
@@ -1082,9 +1139,21 @@ public class UserController {
 			
 			System.out.println(requestXml.toString());
 			
-			result =PayUtil.httpRequest(refund, "POST", requestXml.toString());
+			HttpPost httppost=new HttpPost(refund);
 			
-			//HttpPost
+			StringEntity en=new StringEntity(requestXml.toString());
+			httppost.setEntity(en);
+
+            CloseableHttpResponse resp = httpclient.execute(httppost);
+			
+			Map<String,String> map=getMapFromCloseableHttpResponse(resp);
+			
+			//退款申请成功
+			if("SUCCESS".equals(map.get("return_code"))&&"SUCCESS".equals(map.get("result_code"))){
+				 //将退款单状态修改为  提交退款成功状态
+				 pa.put("refund_id", map.get("refund_id"));
+				 UserService.updateFreundto0(pa);
+			}
 			
 			 
 		} catch (Exception e) {
@@ -1100,6 +1169,47 @@ public class UserController {
 		return retMap;
 	}
 	
+	private Map<String, String> getMapFromCloseableHttpResponse(
+			CloseableHttpResponse response) throws IOException, DocumentException {
+		 try {
+             HttpEntity entity = response.getEntity();
+
+             System.out.println("----------------------------------------");
+             System.out.println(response.getStatusLine());
+             if (entity != null) {
+                 System.out.println("Response content length: " + entity.getContentLength());
+                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(entity.getContent(),"UTF_8"));
+                 String text;
+                 StringBuffer buffer = new StringBuffer();
+                 while ((text = bufferedReader.readLine()) != null) {
+                	 System.out.println(text);
+                     buffer.append(text);
+                 }
+                 
+                 Map<String, String> map = new HashMap<String, String>();
+                 InputStream in=new ByteArrayInputStream(buffer.toString().getBytes());  
+                 // 读取输入流
+                 SAXReader reader = new SAXReader();
+                 Document document = reader.read(in);
+                 // 得到xml根元素
+                 Element root = document.getRootElement();
+                 // 得到根元素的所有子节点
+                 @SuppressWarnings("unchecked")
+                 List<Element> elementList = root.elements();
+                 for (Element element : elementList) {
+                     map.put(element.getName(), element.getText());
+                 }
+                 
+                 return map;
+                
+             }
+             EntityUtils.consume(entity);
+         } finally {
+             response.close();
+         }
+		return null;
+	}
+
 	/**
 	 * 查询未支付订单
 	 * @param userId
@@ -1224,6 +1334,8 @@ public class UserController {
 		
 		return retMap;
 	}
+	
+	
 	
 	@ResponseBody
 	@RequestMapping(value = "test", method = RequestMethod.GET)

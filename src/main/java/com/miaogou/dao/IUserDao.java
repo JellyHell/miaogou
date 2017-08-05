@@ -92,6 +92,12 @@ public interface IUserDao {
 
 	List<Map<String, Object>> getOrderList(Map<String, Object> pa);
 
+	Map<String, String> getTotalFeeBytransaction_id(Map<String, Object> pa);
+
+	int updateFreundto0(Map<String, Object> pa);
+
+	int insertintoRefund(Map<String, Object> pa);
+
 
 
 }

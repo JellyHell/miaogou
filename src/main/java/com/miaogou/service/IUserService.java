@@ -72,6 +72,12 @@ public interface IUserService {
      */
 	Map<String, Object> getOrderList(String userId,String state) throws Exception;
 
+	Map<String, String> getTotalFeeBytransaction_id(Map<String, Object> pa) throws Exception;
+
+	int updateFreundto0(Map<String, Object> pa);
+
+	Map<String, Object> askForRefund(String out_trade_no,String reason)throws Exception;
+
 
 
 }

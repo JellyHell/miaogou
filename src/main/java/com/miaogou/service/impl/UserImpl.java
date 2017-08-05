@@ -18,6 +18,7 @@ import com.github.pagehelper.PageInfo;
 import com.miaogou.dao.IUserDao;
 import com.miaogou.service.IUserService;
 import com.miaogou.util.FastdfsUtils;
+import com.miaogou.util.PayUtil;
 
 /**
  * 
@@ -606,6 +607,40 @@ public class UserImpl implements IUserService{
 		    retMap.put("errmsg", "OK");
 		    retMap.put("data", li);
 			return retMap;
+		}
+
+		@Override
+		@Transactional
+		public Map<String, String> getTotalFeeBytransaction_id(Map<String, Object> pa)
+				throws Exception {
+			
+			return userDao.getTotalFeeBytransaction_id(pa);
+		}
+
+		@Override
+		@Transactional
+		public int updateFreundto0(Map<String, Object> pa) {
+			
+			return userDao.updateFreundto0(pa);
+		}
+
+		@Override
+		@Transactional
+		public Map<String, Object> askForRefund(String out_trade_no,String reason)
+				throws Exception {
+			    Map<String,Object> retMap=new HashMap<String,Object>();
+				
+				Map<String,Object> pa=new HashMap<String,Object>();
+				pa.put("out_refund_no", PayUtil.create_out_refund_no());
+				pa.put("out_trade_no", out_trade_no);
+				pa.put("reason", reason);
+				
+			
+				if(userDao.insertintoRefund(pa)!=1) throw new Exception();
+				
+				retMap.put("errcode", "0");
+			    retMap.put("errmsg", "OK");
+				return retMap;
 		}
 
 
