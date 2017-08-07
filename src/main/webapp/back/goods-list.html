@@ -1,0 +1,126 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" >
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<link href="static/h-ui/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="static/h-ui.admin/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+
+
+<title>商品列表</title>
+</head>
+<body>
+<nav class="breadcrumb">
+     <i class="Hui-iconfont">&#xe67f;</i> 
+                首页 <span class="c-gray en">&gt;</span> 
+                产品管理 <span class="c-gray en">&gt;</span> 
+                商品管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+     <i class="Hui-iconfont">&#xe68f;</i></a>
+</nav>
+<div class="pd-20">
+  <table id="goodsList" class="table table-border table-bordered table-hover table-bg table-sort table-striped">
+		<thead>
+			<tr class="text-c">
+				<th ><input type="checkbox" name="" value=""></th>
+				<th style="display: none" code="goods_code">商品编码</th>
+				<th code="goods_name">商品名称</th>
+				<th code="goods_class">商品类别</th>
+				<th code="price">价格</th>
+				<th code="iconImg" isimg=true>图标</th>
+				<th code="brand">品牌</th>
+				<th code="firstBrand">第一品牌</th>
+				<th code="secondBrand">第二品牌</th>
+				<th oper="edit,delete">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> 
+</body>
+
+<script>
+   
+   $(function(){
+	   //获取商品列表
+	   getAllGoodsList();
+   });
+   
+   function getAllGoodsList(){
+	   $.ajax({
+		   url:'SystemBack/getGoodsList',
+		   type:'get',
+		   data:{},
+		   success:function(res){
+			   setTableList("goodsList",res.data);
+		   }
+	   });
+   }
+   
+   function setTableList(id,data){
+	   $("#"+id+" tbody tr").remove();
+	   if(!data) return;
+	   var html="";
+	   $.each(data,function(index,item){
+		   html+="<tr class='text-c'>";
+		   $("#"+id+" thead tr th").each(function(){
+			   if($(this).find("input").length>0){
+				   html+="<td><input type='checkbox' value='1' name=''></td>"; 
+				   return true;
+			   }
+			   var key=$(this).attr('code');
+			   if($(this).attr("isimg")){
+				   var url=item[key];
+				   html+="<td onclick='img_show(\""+url+"\")' href='javascript:;'><img style='width:100px;height:100px;' src="+item[key]+" ></td>";  
+				   return true;
+			   }
+			   
+			   if($(this).is(":hidden")){
+				   html+="<td style='display:none'>"+(item[key])+"</td>"; 
+				   return true;
+			   }
+			   
+			   html+="<td>"+(key==undefined?'':item[key])+"</td>";   
+		   });
+		   html+="</tr>";
+	   })
+	   $("#"+id+" tbody").html(html);
+	   
+   }
+   
+   /*img 查看*/
+   function img_show(url){
+	   var json={
+			   "title": "", //相册标题
+			   "id": 123, //相册id
+			   "start": 0, //初始显示的图片序号，默认0
+			   "data": [   //相册包含的图片，数组格式
+			     {
+			       "alt": "图片",
+			       "pid": 666, //图片id
+			       "src": url, //原图地址
+			       "thumb": "" //缩略图地址
+			     }
+			   ]
+			 }
+	      layer.photos({
+		    photos: json
+		    ,anim: 5 
+		  });
+   }
+</script>
+</html>
