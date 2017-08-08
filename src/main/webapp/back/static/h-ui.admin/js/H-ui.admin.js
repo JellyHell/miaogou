@@ -315,3 +315,94 @@ $(function(){
 		$(window.frames.document).contents().find("#skin").attr("href",hrefRes);
 	});
 }); 
+
+function setTableList(id,data){
+	   $("#"+id+" tbody tr").remove();
+	   if(!data) return;
+	   var html="";
+	   $.each(data,function(index,item){
+		   html+="<tr class='text-c'>";
+		   $("#"+id+" thead tr th").each(function(){
+			   //type="checkbox"
+			   if($(this).find("input").length>0){
+				   html+="<td><input type='checkbox' value='1' name=''></td>"; 
+				   return true;
+			   }
+			   var key=$(this).attr('code');
+			   //单个图片列
+			   if($(this).attr("isimg")){
+				   var url=item[key];
+				   html+="<td  href='javascript:;'><img onclick='img_show(\""+url+"\")' style='width:100px;height:100px;cursor:pointer;' src="+item[key]+" ></td>";  
+				   return true;
+			   }
+			   
+			   //多个图片
+			   if($(this).attr("isimgarr")){
+				   var imgList=item[key]; 
+				   html+='<td  class="maincolor"><a onclick="imgarr_show('+JSON.stringify(imgList).replace(/"/g,"&"+"#34")+')" >查看</a></td>';  
+				   return true;
+			   }
+			   //隐藏的列
+			   if($(this).is(":hidden")){
+				   html+="<td style='display:none'>"+(item[key])+"</td>"; 
+				   return true;
+			   }
+			   
+			   //按钮列
+			   var oper=$(this).attr("oper");
+			   if(oper!=undefined){
+				  var operarr=oper.split(",");
+				  html+="<td>";
+				  for(var i=0;i<operarr.length;i++){
+					  if(operarr[i]=="edit"){
+						  html+='<a style="text-decoration:none" onclick="'+id+'_edit('+JSON.stringify(item).replace(/"/g,"&"+"#34")+')" class="ml-5"  href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>';
+					  }
+					  if(operarr[i]=="delete"){
+						  html+='<a style="text-decoration:none" onclick="'+id+'_delete('+JSON.stringify(item).replace(/"/g,"&"+"#34")+')" class="ml-5"  href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+					  }
+				  }
+				  html+="</td>";
+				  return true;
+			   }
+			   
+			   html+="<td>"+(key==undefined?'':item[key])+"</td>";   
+		   });
+		   html+="</tr>";
+	   })
+	   $("#"+id+" tbody").html(html);
+	   
+}
+
+/*img 查看*/
+function img_show(url){
+	   var json={
+			   "title": "", //相册标题
+			   "id": 123, //相册id
+			   "start": 0, //初始显示的图片序号，默认0
+			   "data": [   //相册包含的图片，数组格式
+			     {
+			       "alt": "图片",
+			       "pid": 666, //图片id
+			       "src": url, //原图地址
+			       "thumb": "" //缩略图地址
+			     }
+			   ]
+			 }
+	      layer.photos({
+		    photos: json
+		    ,anim: 5 
+		  });
+}
+
+function imgarr_show(arr){
+	   var json={
+			   "title": "", //相册标题
+			   "id": 123, //相册id
+			   "start": 0, //初始显示的图片序号，默认0
+			   "data": arr
+			 }
+	      layer.photos({
+		    photos: json
+		    ,anim: 5 
+		  });
+}
