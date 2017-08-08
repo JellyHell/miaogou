@@ -7,7 +7,11 @@
 			SELECT
 			a.goods_code,
 			a.goods_name,
-			a.goods_class,
+			case a.goods_class
+			     when 'bj' then '保健'
+			     when 'xs' then '香水'
+			     else '未知分类'
+			     end goods_class,
 			a.price,
 			a.iconImg,
 			b.brand,
