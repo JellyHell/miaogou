@@ -4,6 +4,40 @@
 <mapper namespace="com.miaogou.dao.ISystemBackDao">
 
 	<select id="getGoodsList" resultType="Map">
-	 select * from mg_goods a  left join mg_goodsdetails b on a.goods_code=b.goods_code 
+			SELECT
+			a.goods_code,
+			a.goods_name,
+			a.goods_class,
+			a.price,
+			a.iconImg,
+			b.brand,
+			b.firstBrand,
+			b.secondBrand,
+			b.introduce,
+			b.introducePrice,
+			b.introduceUrl,
+			GROUP_CONCAT(
+				c.`code`,
+				'#',
+				c.url,
+				'#',
+				IFNULL(c.isBigImg, '0')
+			) imglist
+		FROM
+			mg_goods a
+		LEFT JOIN mg_goodsdetails b ON a.goods_code = b.goods_code
+		LEFT JOIN mg_attachment c ON a.goods_code = c.tabCode
+		GROUP BY
+			a.goods_code,
+			a.goods_name,
+			a.goods_class,
+			a.price,
+			a.iconImg,
+			b.brand,
+			b.firstBrand,
+			b.secondBrand,
+			b.introduce,
+			b.introducePrice,
+			b.introduceUrl
 	</select>
 </mapper>

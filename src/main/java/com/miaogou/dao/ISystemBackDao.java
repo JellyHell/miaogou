@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface ISystemBackDao {
 
-	List<Map<String, String>> getGoodsList();
+	List<Map<String, Object>> getGoodsList();
 
 
 }

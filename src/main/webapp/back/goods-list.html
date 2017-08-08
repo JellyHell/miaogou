@@ -27,12 +27,14 @@
   <table id="goodsList" class="table table-border table-bordered table-hover table-bg table-sort table-striped">
 		<thead>
 			<tr class="text-c">
-				<th ><input type="checkbox" name="" value=""></th>
+				<!-- <th ><input type="checkbox" name="" value=""></th> -->
 				<th style="display: none" code="goods_code">商品编码</th>
-				<th code="goods_name">商品名称</th>
+				<th code="goods_name" width="100px;">商品名称</th>
 				<th code="goods_class">商品类别</th>
 				<th code="price">价格</th>
-				<th code="iconImg" isimg=true>图标</th>
+				<th code="iconImg" width="100px;" isimg=true>图标</th>
+				<th code="bigImg" width="100px;" isimg=true>大图</th>
+				<th code="imglist"  isimgarr=true>图片列表</th>
 				<th code="brand">品牌</th>
 				<th code="firstBrand">第一品牌</th>
 				<th code="secondBrand">第二品牌</th>
@@ -78,17 +80,26 @@
 	   $.each(data,function(index,item){
 		   html+="<tr class='text-c'>";
 		   $("#"+id+" thead tr th").each(function(){
+			   //type="checkbox"
 			   if($(this).find("input").length>0){
 				   html+="<td><input type='checkbox' value='1' name=''></td>"; 
 				   return true;
 			   }
 			   var key=$(this).attr('code');
+			   //单个图片列
 			   if($(this).attr("isimg")){
 				   var url=item[key];
-				   html+="<td onclick='img_show(\""+url+"\")' href='javascript:;'><img style='width:100px;height:100px;' src="+item[key]+" ></td>";  
+				   html+="<td  href='javascript:;'><img onclick='img_show(\""+url+"\")' style='width:100px;height:100px;cursor:pointer;' src="+item[key]+" ></td>";  
 				   return true;
 			   }
 			   
+			   //多个图片
+			   if($(this).attr("isimgarr")){
+				   var imgList=item[key]; 
+				   html+='<td  ><a onclick="imgarr_show('+JSON.stringify(imgList).replace(/"/g,"&"+"#34")+')" >查看</a></td>';  
+				   return true;
+			   }
+			   //隐藏的列
 			   if($(this).is(":hidden")){
 				   html+="<td style='display:none'>"+(item[key])+"</td>"; 
 				   return true;
@@ -116,6 +127,19 @@
 			       "thumb": "" //缩略图地址
 			     }
 			   ]
+			 }
+	      layer.photos({
+		    photos: json
+		    ,anim: 5 
+		  });
+   }
+   
+   function imgarr_show(arr){
+	   var json={
+			   "title": "", //相册标题
+			   "id": 123, //相册id
+			   "start": 0, //初始显示的图片序号，默认0
+			   "data": arr
 			 }
 	      layer.photos({
 		    photos: json
