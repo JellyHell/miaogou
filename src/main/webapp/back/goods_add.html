@@ -136,7 +136,12 @@
 </body>
 
 <script>
-layer.msg('error!',{icon:1,time:1000});
+$(function(){
+	var index = parent.layer.getFrameIndex(window.name);
+	parent.$('#search').click();
+	parent.layer.close(index);
+});
+
 $("#form-article-add").validate({
 	rules:{
 		goods_name:{
@@ -184,9 +189,7 @@ $("#form-article-add").validate({
 					layer.msg('error!',{icon:1,time:1000});
 				}
 			});
-		var index = parent.layer.getFrameIndex(window.name);
-		parent.$('#search').click();
-		parent.layer.close(index);
+		
 	}
 });
 </script>
