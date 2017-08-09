@@ -44,4 +44,26 @@
 			b.introducePrice,
 			b.introduceUrl
 	</select>
+	
+	<insert id="inserIntoGoods" parameterType="Map">
+	INSERT INTO mg_goods (`goods_code`, `goods_class`, `goods_name`, `price`,  
+                `iconImg`, `group`, `remote`) 
+                VALUES (#{goods_code}, #{goods_class},#{goods_name},#{price},#{iconImg},#{group},#{remote})
+	</insert>
+	<insert id="inserIntoGoodsDetails" parameterType="Map">
+	 INSERT INTO mg_goodsdetails (`goods_code`, `brand`, `firstBrand`, `secondBrand`, `introduceUrl`, 
+	 `introducePrice`, `introduce`)
+      VALUES (#{goods_code}, #{brand}, #{firstBrand}, #{secondBrand}, #{introduceUrl}, #{introducePrice}, #{introduce})
+	</insert>
+	
+	<insert id="inserIntoAttachmentbigImg" parameterType="Map">
+	 INSERT INTO mg_attachment (`code`, `tabCode`, `groupName`, `remoteName`, `url`, `isBigImg`, `createTime`) 
+		VALUES (#{code}, #{tabCode}, #{groupName}, #{remoteName}, 
+		#{url}, '1', SYSDATE())
+	</insert>
+	<insert id="inserIntoAttachment" parameterType="Map">
+	 INSERT INTO mg_attachment (`code`, `tabCode`, `groupName`, `remoteName`, `url`, `createTime`) 
+		VALUES (#{code}, #{tabCode}, #{groupName}, #{remoteName}, 
+		#{url}, SYSDATE())
+	</insert>
 </mapper>

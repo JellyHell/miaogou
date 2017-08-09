@@ -11,5 +11,13 @@ public interface ISystemBackDao {
 
 	List<Map<String, Object>> getGoodsList();
 
+	int inserIntoGoods(Map<String, String> pa);
+
+	int inserIntoGoodsDetails(Map<String, String> pa);
+
+	int inserIntoAttachmentbigImg(Map<String, String> pa);
+
+	int inserIntoAttachment(Map<String, String> pa);
+
 
 }
