@@ -27,13 +27,13 @@
 <div class="page-container">
 
 <div class="text-c"> 
-		<input type="text" name="" id="" placeholder="" style="width:250px" class="input-text">
+		<input type="text" name="" id="key" placeholder="" style="width:250px" class="input-text">
 		<button name="" id="search" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i>查询</button>
 </div>
 
 <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
 	<a class="btn btn-primary radius" onclick="goods_add()" href="javascript:;">
-	<i class="Hui-iconfont">&#xe600;</i>增加商品</a></span> <span class="r">共有数据：<strong>54</strong> 条</span> 
+	<i class="Hui-iconfont">&#xe600;</i>增加商品</a></span> <span class="r">共有数据：<strong id="total"></strong> 条</span> 
 </div>
 <div class="mt-20">
   <table id="goodsList" class="table table-border table-bordered table-hover table-bg table-sort table-striped">
@@ -76,17 +76,24 @@
    $(function(){
 	   //获取商品列表
 	   getAllGoodsList("",5,1);
+	   
+	   $("#search").click(function(){
+		   var pageSize=$("#goodsList_select option:selected").val();
+		   getAllGoodsList($(this).prev().val(),pageSize,1);
+	   });
    });
    
    function test(){
 	   alert(1);
    }
    function getAllGoodsList(key,pageSize,currentPage){
+	   console.log(key);
 	   $.ajax({
 		   url:'SystemBack/getGoodsList',
 		   type:'get',
+		   scriptCharset: 'utf-8',
 		   data:{
-			   key:'',
+			   key:encodeURI(key),
 			   pageSize:pageSize,
 			   currentPage:currentPage
 			   },

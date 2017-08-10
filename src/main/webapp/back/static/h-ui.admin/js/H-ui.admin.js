@@ -316,6 +316,22 @@ $(function(){
 	});
 }); 
 
+$.ajaxSetup( {
+	//设置ajax请求结束后的执行动作
+	complete : 
+	function(XMLHttpRequest, textStatus) {
+	// 通过XMLHttpRequest取得响应头，sessionstatus
+	var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
+	if (sessionstatus == "TIMEOUT") {
+	var win = window;
+	while (win != win.top){
+	win = win.top;
+	}
+	win.location.href= XMLHttpRequest.getResponseHeader("CONTEXTPATH");
+	}
+  }
+});
+
 function setTableList(id,pageInfo,pageCallback){
 	   var data=pageInfo.list; 
 	   $("#"+id+" tbody tr").remove();
@@ -372,11 +388,12 @@ function setTableList(id,pageInfo,pageCallback){
 	   })
 	   $("#"+id+" tbody").html(html);
 	   
+	   $("#total").html(pageInfo.total);
 	   //分页
 	   if(pageCallback){
-		   var html="<div class='dataTables_length' style='float: left;margin-top: 20px;font-size: 14px;color: #888;'  id='DataTables_Table_0_length'>"+
+		   var html="<div class='dataTables_length' style='float: left;margin-top: 20px;margin-bottom:30px;font-size: 14px;color: #888;'  id='DataTables_Table_0_length'>"+
 					"	 <label>显示 "+
-					"		<select onchange="+id+"_pageSizeChange(this.value) style='width: 56px;height: 26px;border: 1px solid #c5b7b7;' name='DataTables_Table_0_length' aria-controls='DataTables_Table_0' class='select'>"+
+					"		<select id="+id+"_select onchange="+id+"_pageSizeChange(this.value) style='width: 56px;height: 26px;border: 1px solid #c5b7b7;' name='DataTables_Table_0_length' aria-controls='DataTables_Table_0' class='select'>"+
 					"		   <option value='5'>5</option>"+
 					"		   <option value='10'>10</option>"+
 					"		   <option value='25'>25</option>"+

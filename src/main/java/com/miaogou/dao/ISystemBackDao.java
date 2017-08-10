@@ -19,5 +19,9 @@ public interface ISystemBackDao {
 
 	int inserIntoAttachment(Map<String, String> pa);
 
+	int userExists(String username);
+
+	int passwordRight(Map<String, String> pa);
+
 
 }

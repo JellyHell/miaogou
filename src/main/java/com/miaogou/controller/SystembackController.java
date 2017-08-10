@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.miaogou.bean.SysUser;
 import com.miaogou.service.ISystemBackService;
 
 /**
@@ -40,7 +41,7 @@ public class SystembackController {
 	public Map<String, Object> getGoodsList(String key,int pageSize,int currentPage,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		try {
-			
+			key=java.net.URLDecoder.decode(key, "utf-8");
 			retMap=systembackService.getGoodsList(key,pageSize,currentPage);
 			
 		} catch (Exception e) {
@@ -72,6 +73,57 @@ public class SystembackController {
 			retMap.put("errmsg", "系统异常请稍后重试!");
 		}
 		return retMap;
+	}
+	/**
+	 * login
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/loginin", method = RequestMethod.POST)
+	public Map<String, Object> loginin(String username,String password,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		try {
+			
+			//验证该用户是否存在
+			
+			if(!systembackService.userExists(username)){
+				retMap.put("errcode", "-1");
+				retMap.put("errmsg", "用户不存在！");
+				return retMap;
+			}
+			//判断密码是否正确
+			if(!systembackService.passwordRight(username,password)){
+				retMap.put("errcode", "-3");
+				retMap.put("errmsg", "密码不正确！");
+				return retMap;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		//存入session
+		SysUser user=new SysUser();
+		user.setUsername(username);
+		request.getSession().putValue("loginInfo", user);
+		
+		retMap.put("errcode", "0");
+		retMap.put("errmsg", "OK");
+		return retMap;
+	}
+	
+	/**
+	 * 单纯验证登陆
+	 * @param request
+	 * @param response
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/logincheck", method = RequestMethod.GET)
+	public void logincheck(HttpServletRequest request,HttpServletResponse response){
+		
 	}
 	
 	public static void main(String[] args) throws Exception {

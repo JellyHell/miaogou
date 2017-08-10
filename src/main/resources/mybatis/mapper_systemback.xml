@@ -73,4 +73,10 @@
 		VALUES (#{code}, #{tabCode}, #{groupName}, #{remoteName}, 
 		#{url}, SYSDATE())
 	</insert>
+	<select id="userExists" parameterType="java.lang.String" resultType="java.lang.Integer">
+	 select count(1) from sys_user where username=#{_parameter}
+	</select>
+	<select id="passwordRight" parameterType="Map" resultType="java.lang.Integer">
+	 select count(1) from sys_user where username=#{username} and password=#{password}
+	</select>
 </mapper>

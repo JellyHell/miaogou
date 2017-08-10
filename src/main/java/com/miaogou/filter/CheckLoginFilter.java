@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
@@ -40,7 +41,7 @@ public class CheckLoginFilter implements Filter{
 			FilterChain chain) throws IOException, ServletException {
 		
 		//获取完整url
-		/*String url=((HttpServletRequest)request).getRequestURI();
+		String url=((HttpServletRequest)request).getRequestURI();
 		Boolean isExcludedPage=false;
 		
 		//一些特定的请求不过滤  例如登录 或者一些静态文件的访问
@@ -57,17 +58,27 @@ public class CheckLoginFilter implements Filter{
 		
 			response.setCharacterEncoding("UTF-8");  
 		    response.setContentType("application/json; charset=utf-8"); 
+		    HttpServletRequest req=(HttpServletRequest)request;
+		    HttpServletResponse res=(HttpServletResponse)response;
 		    
-		    JSONObject obj=new JSONObject();
-		    obj.put("errcode", "-1");
-		    obj.put("errmsg", "请登陆");
-			PrintWriter out=response.getWriter();
-			out.append(obj.toString()); 
+		    String type = req.getHeader("X-Requested-With");// XMLHttpRequest
+		    
+		    String loginPage = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+req.getContextPath();  
+		    loginPage+="/back/login.html";
+		    if (StringUtils.equals("XMLHttpRequest", type)) {
+		    	// ajax请求
+		    	res.setHeader("SESSIONSTATUS", "TIMEOUT");
+		    	res.setHeader("CONTEXTPATH", loginPage);
+
+		    	res.setStatus(HttpServletResponse.SC_FORBIDDEN);
+		    	return ;
+		    } else {
+		    	res.sendRedirect(loginPage);
+		    	return ;
+		    }
 		}else{
 			chain.doFilter(request, response);
-		}*/
-		
-		chain.doFilter(request, response);
+		}
 		
 	}
 

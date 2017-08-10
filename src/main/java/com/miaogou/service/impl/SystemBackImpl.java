@@ -19,6 +19,7 @@ import com.miaogou.dao.ISystemBackDao;
 import com.miaogou.dao.IUserDao;
 import com.miaogou.service.ISystemBackService;
 import com.miaogou.util.FastdfsUtils;
+import com.miaogou.util.MD5Utils;
 
 /**
  * 
@@ -175,7 +176,20 @@ public class SystemBackImpl implements ISystemBackService{
 			return retMap;
 		}
 
-		
+		@Override
+		@Transactional
+		public boolean userExists(String username) {
+			return systembackDao.userExists(username)>0;
+		}
+
+
+		@Override
+		public boolean passwordRight(String username, String password) {
+			Map<String,String> pa=new HashMap<String,String>();
+			pa.put("username", username);
+			pa.put("password", MD5Utils.getMD5(password));
+			return systembackDao.passwordRight(pa)>0;
+		}
 
 
 		

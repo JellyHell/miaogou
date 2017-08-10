@@ -16,6 +16,10 @@ public interface ISystemBackService {
 			String introduce, CommonsMultipartFile iconImgfile,
 			CommonsMultipartFile bigImgfile, CommonsMultipartFile[] imgListfile) throws Exception;
 
+	boolean userExists(String username);
+
+	boolean passwordRight(String username, String password);
+
 	
 
 
