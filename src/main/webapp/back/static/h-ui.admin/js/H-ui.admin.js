@@ -7,6 +7,14 @@
 * Licensed under MIT license.
 * http://opensource.org/licenses/MIT
 */
+
+$.ajax({
+		   url:'SystemBack/logincheck',
+		   type:'get',
+		   success:function(res){
+		   }
+});
+
 var num=0,oUl=$("#min_title_list"),hide_nav=$("#Hui-tabNav");
 
 /*获取顶部选项卡总长度*/
