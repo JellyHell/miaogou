@@ -37,11 +37,11 @@ public class SystembackController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/getGoodsList", method = RequestMethod.GET)
-	public Map<String, Object> getGoodsList(HttpServletRequest request,HttpServletResponse response){
+	public Map<String, Object> getGoodsList(String key,int pageSize,int currentPage,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		try {
 			
-			retMap=systembackService.getGoodsList();
+			retMap=systembackService.getGoodsList(key,pageSize,currentPage);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

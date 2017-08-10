@@ -3,7 +3,7 @@
 
 <mapper namespace="com.miaogou.dao.ISystemBackDao">
 
-	<select id="getGoodsList" resultType="Map">
+	<select id="getGoodsList" parameterType="Map" resultType="Map">
 			SELECT
 			a.goods_code,
 			a.goods_name,
@@ -31,6 +31,13 @@
 			mg_goods a
 		LEFT JOIN mg_goodsdetails b ON a.goods_code = b.goods_code
 		LEFT JOIN mg_attachment c ON a.goods_code = c.tabCode
+		
+		<where>
+		   <if test="key!=null and key!=''"> 
+		    and a.goods_name like CONCAT(CONCAT('%',#{key}),'%')
+		   </if>
+	    </where>
+		
 		GROUP BY
 			a.goods_code,
 			a.goods_name,

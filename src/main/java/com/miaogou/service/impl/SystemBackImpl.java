@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.miaogou.dao.ISystemBackDao;
 import com.miaogou.dao.IUserDao;
 import com.miaogou.service.ISystemBackService;
@@ -35,10 +37,20 @@ public class SystemBackImpl implements ISystemBackService{
 
 		@Override
 		@Transactional
-		public Map<String, Object> getGoodsList() {
+		public Map<String, Object> getGoodsList(String key, int pageSize, int currentPage) {
 		    
 			Map<String,Object> retMap=new HashMap<String,Object>();
-			List<Map<String,Object>> li=systembackDao.getGoodsList();
+			
+			Map<String,String> pa=new HashMap<String,String>();
+			pa.put("key", key);
+			
+			PageHelper.startPage(currentPage,pageSize);
+			
+			List<Map<String,Object>> li=systembackDao.getGoodsList(pa);
+			
+			PageInfo<Map<String,Object>> pageInfo = new PageInfo<Map<String,Object>>(li);
+	        long total = pageInfo.getTotal(); //获取总条数
+	        int pages=pageInfo.getPages(); //获取总页数
 			
 			//解析出图片列表
 			
@@ -71,7 +83,7 @@ public class SystemBackImpl implements ISystemBackService{
 			
 			retMap.put("errcode", "0");
 			retMap.put("errmsg", "ok");
-			retMap.put("data", li);
+			retMap.put("pageInfo", pageInfo);
 			return retMap;
 		}
 
