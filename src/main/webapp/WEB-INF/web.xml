@@ -49,7 +49,7 @@
 		<filter-class>com.miaogou.filter.CheckLoginFilter</filter-class>
 		<init-param>    
 			<param-name>excludedPages</param-name>    
-			<param-value>.js,.htm,.html,.css,.jpg,.png,.gif,.json,.woff,.woff2,/login/into</param-value>    
+			<param-value>.js,.htm,.html,.css,.jpg,.png,.gif,.json,.woff,.woff2,/SystemBack/loginin</param-value>    
 		</init-param> 
 	</filter>
 	<filter-mapping>

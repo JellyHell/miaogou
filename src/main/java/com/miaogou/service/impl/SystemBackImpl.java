@@ -91,7 +91,7 @@ public class SystemBackImpl implements ISystemBackService{
 		@Override
 		@Transactional
 		public Map<String, Object> addGoods(String goods_name, String price,
-				String goods_class, String brand, String firstBrand,
+				String goods_class,String sale, String brand, String firstBrand,
 				String secondBrand, String introduceUrl, String introducePrice,
 				String introduce, CommonsMultipartFile iconImgfile,
 				CommonsMultipartFile bigImgfile,
@@ -103,6 +103,7 @@ public class SystemBackImpl implements ISystemBackService{
 			pa.put("goods_code", code);
 			pa.put("goods_name", goods_name);
 			pa.put("goods_class", goods_class);
+			pa.put("sale", sale);
 			pa.put("price", price);
 			pa.put("brand", brand);
 			pa.put("firstBrand", firstBrand);
@@ -189,6 +190,51 @@ public class SystemBackImpl implements ISystemBackService{
 			pa.put("username", username);
 			pa.put("password", MD5Utils.getMD5(password));
 			return systembackDao.passwordRight(pa)>0;
+		}
+
+		@Override
+		@Transactional
+		public Map<String, Object> GoodsDel(String goods_code) throws Exception {
+            
+			Map<String,Object> retMap=new HashMap<String,Object>();
+			
+			Map<String,String> pa=new HashMap<String,String>();
+			pa.put("goods_code", goods_code);
+			
+			
+			//先查询出图片列表  删除图片使用
+			List<Map<String,String>> li=systembackDao.getAttachmentBytabCode(pa);
+			//查询出  商品信息  删除图片使用
+			Map<String,String> goodsItem=systembackDao.getGoodsItem(pa);
+			
+			
+			//删除数据表 1 mg_attachemnt
+			if(li!=null&&li.size()>0)
+			    if(systembackDao.attachemntDelBytabCode(pa)<=0) 
+			            throw new Exception();
+			
+			//删除数据表 2 mg_goodsdetails
+			if(systembackDao.delGoodsDetails(pa)!=1) throw new Exception();
+			
+			//删除数据表 3 mg_goods
+			if(systembackDao.delGoods(pa)!=1) throw new Exception();
+			
+			//删除服务器上的图片  有异常也不抛出    不回滚
+			try {
+				if(li!=null&&li.size()>0){
+					for(int i=0;i<li.size();i++)
+						 FastdfsUtils.deleteFile(li.get(i).get("groupName"), li.get(i).get("remoteName"));
+				}
+				
+				FastdfsUtils.deleteFile(goodsItem.get("group"), goodsItem.get("remote"));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			retMap.put("errcode", "0");
+			retMap.put("errmsg", "ok");
+			return retMap;
 		}
 
 

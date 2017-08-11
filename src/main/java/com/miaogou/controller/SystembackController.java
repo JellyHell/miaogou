@@ -54,7 +54,7 @@ public class SystembackController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/addGoods", method = RequestMethod.POST)
-	public Map<String, Object> addGoods(String goods_name,String price,String goods_class,
+	public Map<String, Object> addGoods(String goods_name,String price,String goods_class,String sale,
 			                            String brand,String firstBrand,String secondBrand,
 			                            String introduceUrl,String introducePrice,String introduce,
 			                            @RequestParam("iconImgfile") CommonsMultipartFile iconImgfile,
@@ -64,7 +64,7 @@ public class SystembackController {
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		try {
 			
-			retMap=systembackService.addGoods(goods_name,price,goods_class,brand,firstBrand,secondBrand,
+			retMap=systembackService.addGoods(goods_name,price,goods_class,sale,brand,firstBrand,secondBrand,
 					           introduceUrl,introducePrice,introduce,iconImgfile,bigImgfile,imgListfile);
 			
 		} catch (Exception e) {
@@ -124,6 +124,20 @@ public class SystembackController {
 	@RequestMapping(value = "/logincheck", method = RequestMethod.GET)
 	public void logincheck(HttpServletRequest request,HttpServletResponse response){
 		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/GoodsDel", method = RequestMethod.GET)
+	public Map<String, Object> GoodsDel(String goods_code,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		try {
+			retMap=systembackService.GoodsDel(goods_code);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
 	}
 	
 	public static void main(String[] args) throws Exception {

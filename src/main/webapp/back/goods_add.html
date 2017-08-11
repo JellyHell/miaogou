@@ -43,6 +43,18 @@
 				</span>
 			</div>
 		</div>
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>上架状态：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+				<select name="sale" class="select">
+					<option value="on">上架</option>
+					<option value="off">下架</option>
+				</select>
+				</span>
+			</div>
+		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">价格：</label>
 			<div class="formControls col-xs-8 col-sm-9">
@@ -175,17 +187,28 @@ $("#form-article-add").validate({
 		$(form).ajaxSubmit({
 				success: function(data){
 					if(data.errcode=="0"){
-						layer.msg('添加成功!',{icon:1,time:1000});
+						layer.msg('添加成功!');
 					}else{
-						layer.msg('error!',{icon:1,time:1000});
+						layer.msg('系统异常 请稍后重试!',{icon:2});
 					}
+					gotoGoodsList();
 				},
                 error: function(XmlHttpRequest, textStatus, errorThrown){
-					layer.msg('error!',{icon:1,time:1000});
+					layer.msg('error!',{icon:2});
+					gotoGoodsList();
 				}
 			});
 		
 	}
 });
+
+function gotoGoodsList(){
+	setTimeout(function(){
+		var index = parent.layer.getFrameIndex(window.name);
+		parent.$('#search').click();
+		parent.layer.close(index);
+	},3000);
+	
+}
 </script>
 </html>

@@ -347,6 +347,15 @@ function setTableList(id,pageInfo,pageCallback){
 	   var html="";
 	   $.each(data,function(index,item){
 		   html+="<tr class='text-c'>";
+		   
+		   //找出所有 需要带的参数
+		   var parm={};
+		   $("#"+id+" thead tr th").each(function(){
+			   var key=$(this).attr('code');
+			   if($(this).attr("parm")) parm[key]=item[key];
+		   });
+		   
+		   
 		   $("#"+id+" thead tr th").each(function(){
 			   //type="checkbox"
 			   if($(this).find("input").length>0){
@@ -373,17 +382,20 @@ function setTableList(id,pageInfo,pageCallback){
 				   return true;
 			   }
 			   
+			   
+			   
 			   //按钮列
 			   var oper=$(this).attr("oper");
 			   if(oper!=undefined){
 				  var operarr=oper.split(",");
+				  
 				  html+="<td>";
 				  for(var i=0;i<operarr.length;i++){
 					  if(operarr[i]=="edit"){
-						  html+='<a style="text-decoration:none" onclick="'+id+'_edit('+JSON.stringify(item).replace(/"/g,"&"+"#34")+')" class="ml-5"  href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>';
+						  html+='<a style="text-decoration:none" onclick="'+id+'_edit('+JSON.stringify(parm).replace(/"/g,"&"+"#34")+')" class="ml-5"  href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>';
 					  }
 					  if(operarr[i]=="delete"){
-						  html+='<a style="text-decoration:none" onclick="'+id+'_delete('+JSON.stringify(item).replace(/"/g,"&"+"#34")+')" class="ml-5"  href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+						  html+='<a style="text-decoration:none" onclick="'+id+'_delete('+JSON.stringify(parm).replace(/"/g,"&"+"#34")+')" class="ml-5"  href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a>';
 					  }
 				  }
 				  html+="</td>";

@@ -40,7 +40,7 @@
 		<thead>
 			<tr class="text-c">
 				<!-- <th ><input type="checkbox" name="" value=""></th> -->
-				<th style="display: none" code="goods_code">商品编码</th>
+				<th style="display: none" parm=true code="goods_code">商品编码</th>
 				<th code="goods_name" width="100px;">商品名称</th>
 				<th code="goods_class">商品类别</th>
 				<th code="price">价格</th>
@@ -50,7 +50,7 @@
 				<th code="brand">品牌</th>
 				<th code="firstBrand">第一品牌</th>
 				<th code="secondBrand">第二品牌</th>
-				<th oper="edit,delete" class="td-manage">操作</th>
+				<th oper="delete" class="td-manage">操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -74,6 +74,7 @@
 <script>
    
    $(function(){
+	 
 	   //获取商品列表
 	   getAllGoodsList("",5,1);
 	   
@@ -87,7 +88,6 @@
 	   alert(1);
    }
    function getAllGoodsList(key,pageSize,currentPage){
-	   console.log(key);
 	   $.ajax({
 		   url:'SystemBack/getGoodsList',
 		   type:'get',
@@ -103,7 +103,7 @@
 					   getAllGoodsList("",pageSize,currentPage);
 				   });
 			   }else{
-				   alert("后台出错!");
+				   layer.msg("后台出错!");
 			   }
 		   }
 	   });
@@ -124,7 +124,25 @@
    }
    //删除
    function goodsList_delete(item){
-	   console.log(item);
+	   layer.confirm('是否删除?', function(index){
+		   $.ajax({
+			   url:"SystemBack/GoodsDel",
+			   type:"get",
+			   data:{goods_code:item.goods_code},
+			   success:function(res){
+				   if(res.errcode=="0"){
+					   layer.msg("删除成功！",function(){
+						   $("#search").trigger("click");
+					   });
+				   }else{
+					   layer.msg("删除失败！",function(){
+						   $("#search").trigger("click");
+					   });
+				   }
+			   }
+		   });
+		   
+		 });
    }
    
 </script>

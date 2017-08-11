@@ -23,5 +23,15 @@ public interface ISystemBackDao {
 
 	int passwordRight(Map<String, String> pa);
 
+	List<Map<String, String>> getAttachmentBytabCode(Map<String, String> pa);
+
+	Map<String, String> getGoodsItem(Map<String, String> pa);
+
+	int attachemntDelBytabCode(Map<String, String> pa);
+
+	int delGoodsDetails(Map<String, String> pa);
+
+	int delGoods(Map<String, String> pa);
+
 
 }

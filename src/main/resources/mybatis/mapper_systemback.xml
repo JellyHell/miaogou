@@ -54,8 +54,8 @@
 	
 	<insert id="inserIntoGoods" parameterType="Map">
 	INSERT INTO mg_goods (`goods_code`, `goods_class`, `goods_name`, `price`,  
-                `iconImg`, `group`, `remote`) 
-                VALUES (#{goods_code}, #{goods_class},#{goods_name},#{price},#{iconImg},#{group},#{remote})
+                `iconImg`, `group`, `remote`,`sale`) 
+                VALUES (#{goods_code}, #{goods_class},#{goods_name},#{price},#{iconImg},#{group},#{remote},#{sale})
 	</insert>
 	<insert id="inserIntoGoodsDetails" parameterType="Map">
 	 INSERT INTO mg_goodsdetails (`goods_code`, `brand`, `firstBrand`, `secondBrand`, `introduceUrl`, 
@@ -79,4 +79,19 @@
 	<select id="passwordRight" parameterType="Map" resultType="java.lang.Integer">
 	 select count(1) from sys_user where username=#{username} and password=#{password}
 	</select>
+	<select id="getAttachmentBytabCode" parameterType="Map" resultType="Map">
+	 select groupName,remoteName,url from mg_attachment where tabCode=#{goods_code}
+	</select>
+	<select id="getGoodsItem" parameterType="Map" resultType="Map">
+	 select * from mg_goods where goods_code=#{goods_code}
+	</select>
+	<update id="attachemntDelBytabCode" parameterType="Map">
+	 delete from mg_attachment where tabCode=#{goods_code}
+	</update>
+	<update id="delGoodsDetails" parameterType="Map">
+     delete from mg_goodsdetails where goods_code=#{goods_code}
+	</update>
+	<update id="delGoods" parameterType="Map">
+	 delete from mg_goods where goods_code=#{goods_code}
+	</update>
 </mapper>
