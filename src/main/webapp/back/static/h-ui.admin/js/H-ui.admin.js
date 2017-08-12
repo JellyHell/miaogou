@@ -323,11 +323,15 @@ $(function(){
 		$(window.frames.document).contents().find("#skin").attr("href",hrefRes);
 	});
 }); 
-
+var index;
 $.ajaxSetup( {
+	beforeSend:function(){
+		index = layer.load(3); //换了种风格
+	},
 	//设置ajax请求结束后的执行动作
 	complete : 
 	function(XMLHttpRequest, textStatus) {
+    layer.close(index);  
 	// 通过XMLHttpRequest取得响应头，sessionstatus
 	var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
 	if (sessionstatus == "TIMEOUT") {
