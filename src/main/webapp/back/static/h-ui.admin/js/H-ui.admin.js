@@ -326,12 +326,12 @@ $(function(){
 var index;
 $.ajaxSetup( {
 	beforeSend:function(){
-		index = layer.load(3); //换了种风格
+		index = layer.load(3); //loadding start
 	},
 	//设置ajax请求结束后的执行动作
 	complete : 
 	function(XMLHttpRequest, textStatus) {
-    layer.close(index);  
+    layer.close(index);    // loadding end
 	// 通过XMLHttpRequest取得响应头，sessionstatus
 	var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
 	if (sessionstatus == "TIMEOUT") {
@@ -352,7 +352,7 @@ function setTableList(id,pageInfo,pageCallback){
 	   $.each(data,function(index,item){
 		   html+="<tr class='text-c'>";
 		   
-		   //找出所有 需要带的参数
+		   //找出所有 按钮组 click 函数 需要带的参数
 		   var parm={};
 		   $("#"+id+" thead tr th").each(function(){
 			   var key=$(this).attr('code');
@@ -360,13 +360,17 @@ function setTableList(id,pageInfo,pageCallback){
 		   });
 		   
 		   
+		   
 		   $("#"+id+" thead tr th").each(function(){
+			   
+			   var key=$(this).attr('code');
+			   
 			   //type="checkbox"
 			   if($(this).find("input").length>0){
 				   html+="<td><input type='checkbox' value='1' name=''></td>"; 
 				   return true;
 			   }
-			   var key=$(this).attr('code');
+			   
 			   //单个图片列
 			   if($(this).attr("isimg")){
 				   var url=item[key];
@@ -386,6 +390,11 @@ function setTableList(id,pageInfo,pageCallback){
 				   return true;
 			   }
 			   
+			   //
+			   var type=$(this).attr("type");
+			   if(type="status"){   //特殊的显示方式   like  已发布  已下架
+				   
+			   }
 			   
 			   
 			   //按钮列
@@ -406,7 +415,7 @@ function setTableList(id,pageInfo,pageCallback){
 				  return true;
 			   }
 			   
-			   html+="<td>"+(key==undefined?'':item[key])+"</td>";   
+			   html+="<td>"+(key==undefined?'':do_transform(this,item[key]))+"</td>";   
 		   });
 		   html+="</tr>";
 	   })
@@ -486,3 +495,19 @@ function imgarr_show(arr){
 		    ,anim: 5 
 		  });
 }
+//显示内容转变
+function do_transform(obj,value){
+	   var type=$(obj).attr("type"); 
+	   if(type=="status"){
+		  return "<span class='label label-"+strToJson($(obj).attr("rule"))[value]+" radius'>"+transform_content(obj,value)+"</span>";
+	   }else{
+		  return transform_content(obj,value);
+	   }
+}
+function transform_content(obj,value){
+	return $(obj).attr("transform")!=undefined?(strToJson($(obj).attr("transform"))[value]):value;
+}
+
+function strToJson(str){ 
+	return (new Function("return " + str))(); 
+} 
