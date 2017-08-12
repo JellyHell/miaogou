@@ -54,7 +54,7 @@ public class CheckLoginFilter implements Filter{
 			}
 		}
 		Object user=((HttpServletRequest)request).getSession().getAttribute("loginInfo");
-		if(!isExcludedPage&&user==null){
+		if(!isExcludedPage&&user==null&&url.indexOf("back/SystemBack")>0){  //后台的请求不过滤 是否登陆
 		
 			response.setCharacterEncoding("UTF-8");  
 		    response.setContentType("application/json; charset=utf-8"); 
