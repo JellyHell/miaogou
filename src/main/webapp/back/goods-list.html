@@ -42,7 +42,7 @@
 				<!-- <th ><input type="checkbox" name="" value=""></th> -->
 				<th style="display: none" parm=true code="goods_code">商品编码</th>
 				<th code="goods_name" width="100px;">商品名称</th>
-				<th code="goods_class">商品类别</th>
+				<th code="goods_class" transform="{bj:'保健',xs:'香水'}">商品类别</th>
 				<th code="price" >价格</th>
 				<th code="iconImg" width="100px;" isimg=true>图标</th>
 				<th code="bigImg" width="100px;" isimg=true>大图</th>
@@ -51,7 +51,7 @@
 				<th code="firstBrand">第一品牌</th>
 				<th code="secondBrand">第二品牌</th>
 				<th code="sale" transform="{on:'已发布',off:'已下架'}" type="status" rule="{on:'success',off:'defunt'}">发布状态</th>
-				<th oper="delete,saleon:sale=off,saleoff:sale=on" class="td-manage">操作</th>
+				<th oper="delete,saleon:sale=off,saleoff:sale=on,edit" class="td-manage">操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -98,7 +98,6 @@
 			   currentPage:currentPage
 			   },
 		   success:function(res){
-			   console.log(res);
 			   if(res.errcode=="0"){
 				   setTableList("goodsList",res.pageInfo,function(pageSize,currentPage){
 					   getAllGoodsList("",pageSize,currentPage);
