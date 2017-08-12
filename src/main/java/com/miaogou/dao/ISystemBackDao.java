@@ -33,5 +33,7 @@ public interface ISystemBackDao {
 
 	int delGoods(Map<String, String> pa);
 
+	int GoodsSaleStatusChange(Map<String, String> pa);
+
 
 }

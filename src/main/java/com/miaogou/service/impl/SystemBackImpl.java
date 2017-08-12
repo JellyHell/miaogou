@@ -237,6 +237,23 @@ public class SystemBackImpl implements ISystemBackService{
 			return retMap;
 		}
 
+		@Override
+		@Transactional
+		public Map<String, Object> GoodsSaleStatusChange(String goods_code,
+				String sale) throws Exception {
+            Map<String,Object> retMap=new HashMap<String,Object>();
+			
+			Map<String,String> pa=new HashMap<String,String>();
+			pa.put("goods_code", goods_code);
+			pa.put("sale", sale);
+			
+			if(systembackDao.GoodsSaleStatusChange(pa)!=1) throw new Exception();
+			
+			retMap.put("errcode", "0");
+			retMap.put("errmsg", "ok");
+			return retMap;
+		}
+
 
 		
 		

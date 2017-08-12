@@ -126,12 +126,33 @@ public class SystembackController {
 		
 	}
 	
+	/**
+	 * 商品 删除
+	 * @param goods_code
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/GoodsDel", method = RequestMethod.GET)
 	public Map<String, Object> GoodsDel(String goods_code,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		try {
 			retMap=systembackService.GoodsDel(goods_code);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/GoodsSaleStatusChange", method = RequestMethod.GET)
+	public Map<String, Object> GoodsSaleStatusChange(String goods_code,String sale,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		try {
+			retMap=systembackService.GoodsSaleStatusChange(goods_code,sale);
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");

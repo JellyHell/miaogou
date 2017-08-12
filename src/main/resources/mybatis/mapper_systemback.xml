@@ -95,4 +95,8 @@
 	<update id="delGoods" parameterType="Map">
 	 delete from mg_goods where goods_code=#{goods_code}
 	</update>
+	
+	<update id="GoodsSaleStatusChange" parameterType="Map">
+	 update mg_goods set sale=#{sale} where goods_code=#{goods_code}
+	</update>
 </mapper>

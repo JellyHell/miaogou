@@ -404,11 +404,28 @@ function setTableList(id,pageInfo,pageCallback){
 				  
 				  html+="<td>";
 				  for(var i=0;i<operarr.length;i++){
-					  if(operarr[i]=="edit"){
-						  html+='<a style="text-decoration:none" onclick="'+id+'_edit('+JSON.stringify(parm).replace(/"/g,"&"+"#34")+')" class="ml-5"  href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>';
+					  if(operarr[i]=="edit"){  //编辑
+						  html+='  <a style="text-decoration:none" onclick="'+id+'_edit('+JSON.stringify(parm).replace(/"/g,"&"+"#34")+')" class="ml-5"  href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>';
 					  }
-					  if(operarr[i]=="delete"){
-						  html+='<a style="text-decoration:none" onclick="'+id+'_delete('+JSON.stringify(parm).replace(/"/g,"&"+"#34")+')" class="ml-5"  href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+					  if(operarr[i]=="delete"){ //删除
+						  html+='  <a style="text-decoration:none" onclick="'+id+'_delete('+JSON.stringify(parm).replace(/"/g,"&"+"#34")+')" class="ml-5"  href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+					  }
+					  if(operarr[i].indexOf("saleon")!=-1){ //上架
+						  var key=operarr[i].split(":")[1].split("=")[0];
+						  var value=operarr[i].split(":")[1].split("=")[1];
+						  if(item[key]==value){
+							  html+='  <a style="text-decoration:none" onclick="'+id+'_saleon('+JSON.stringify(parm).replace(/"/g,"&"+"#34")+')" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>';
+						  }
+						  
+					  }
+					  
+					  if(operarr[i].indexOf("saleoff")!=-1){ //下架
+						  var key=operarr[i].split(":")[1].split("=")[0];
+						  var value=operarr[i].split(":")[1].split("=")[1];
+						  if(item[key]==value){
+							  html+='  <a style="text-decoration:none" onclick="'+id+'_saleoff('+JSON.stringify(parm).replace(/"/g,"&"+"#34")+')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a>';
+						  }
+						  
 					  }
 				  }
 				  html+="</td>";

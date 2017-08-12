@@ -51,7 +51,7 @@
 				<th code="firstBrand">第一品牌</th>
 				<th code="secondBrand">第二品牌</th>
 				<th code="sale" transform="{on:'已发布',off:'已下架'}" type="status" rule="{on:'success',off:'defunt'}">发布状态</th>
-				<th oper="delete" class="td-manage">操作</th>
+				<th oper="delete,saleon:sale=off,saleoff:sale=on" class="td-manage">操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -145,6 +145,46 @@
 		   
 		 });
    }
-   
+   function goodsList_saleon(item){
+	   layer.confirm('确认要发布吗？',function(index){
+		   $.ajax({
+			   url:"SystemBack/GoodsSaleStatusChange",
+			   type:"get",
+			   data:{goods_code:item.goods_code,sale:'on'},
+			   success:function(res){
+				   if(res.errcode=="0"){
+					   layer.msg("发布成功！",function(){
+						   $("#search").trigger("click");
+					   });
+				   }else{
+					   layer.msg("发布失败！",function(){
+						   $("#search").trigger("click");
+					   });
+				   }
+			   }
+		   });
+		});
+   }
+   function goodsList_saleoff(item){
+	   layer.confirm('确认下架吗？',function(index){
+		   $.ajax({
+			   url:"SystemBack/GoodsSaleStatusChange",
+			   type:"get",
+			   data:{goods_code:item.goods_code,sale:'off'},
+			   success:function(res){
+				   if(res.errcode=="0"){
+					   layer.msg("下架成功！",function(){
+						   $("#search").trigger("click");
+					   });
+				   }else{
+					   layer.msg("下架失败！",function(){
+						   $("#search").trigger("click");
+					   });
+				   }
+			   }
+		   });
+		});
+   }
+  
 </script>
 </html>

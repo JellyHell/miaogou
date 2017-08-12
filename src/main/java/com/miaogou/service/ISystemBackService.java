@@ -22,6 +22,8 @@ public interface ISystemBackService {
 
 	Map<String, Object> GoodsDel(String goods_code) throws Exception;
 
+	Map<String, Object> GoodsSaleStatusChange(String goods_code, String sale) throws Exception;
+
 	
 
 
