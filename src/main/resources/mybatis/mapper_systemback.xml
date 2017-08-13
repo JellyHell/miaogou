@@ -49,7 +49,9 @@
 			b.introducePrice,
 			b.introduceUrl
 	</select>
-	
+	<select id="SkuExits" parameterType="Map" resultType="java.lang.Integer">
+	 select count(1) from mg_goods where sku=#{sku}
+	</select>
 	<insert id="inserIntoGoods" parameterType="Map">
 	INSERT INTO mg_goods (`goods_code`, `sku`,`goods_class`, `goods_name`, `price`,  
                 `iconImg`, `group`, `remote`,`sale`) 
@@ -96,4 +98,11 @@
 	<update id="GoodsSaleStatusChange" parameterType="Map">
 	 update mg_goods set sale=#{sale} where goods_code=#{goods_code}
 	</update>
+	<select id="getOrderList" resultType="Map">
+     select 
+		a.out_trade_no,a.transaction_id,a.total_fee,DATE_FORMAT(a.createTime,'%Y-%c-%d %T') createTime,a.state,
+		b.nickName,c.`name`,c.phone,c.area,c.address
+		from mg_order a left join mg_wxUser b on a.openId=b.openId left join mg_order_delivery_address c 
+		on a.out_trade_no=c.out_trade_no
+    </select>
 </mapper>

@@ -35,5 +35,9 @@ public interface ISystemBackDao {
 
 	int GoodsSaleStatusChange(Map<String, String> pa);
 
+	int SkuExits(Map<String, String> pa);
+
+	List<Map<String, Object>> getOrderList();
+
 
 }

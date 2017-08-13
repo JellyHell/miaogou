@@ -1045,8 +1045,8 @@ public class UserController {
 	
 	/**
 	 * 买家申请退款
-	 * @param out_trade_no
-	 * @param reason
+	 * @param out_trade_no 商家订单号
+	 * @param reason  退款原因
 	 * @param request
 	 * @param response
 	 * @return

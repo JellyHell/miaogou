@@ -52,6 +52,47 @@ public class SystembackController {
 		return retMap;
 	}
 	
+	/**
+	 * 查询订单列表
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getOrderList", method = RequestMethod.GET)
+	public Map<String, Object> getOrderList(int pageSize,int currentPage,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		try {
+			retMap=systembackService.getOrderList(pageSize,currentPage);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
+	}
+	
+	/**
+	 * 添加商品
+	 * @param sku
+	 * @param goods_name
+	 * @param price
+	 * @param goods_class
+	 * @param sale
+	 * @param brand
+	 * @param firstBrand
+	 * @param secondBrand
+	 * @param introduceUrl
+	 * @param introducePrice
+	 * @param introduce
+	 * @param iconImgfile
+	 * @param bigImgfile
+	 * @param imgListfile
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/addGoods", method = RequestMethod.POST)
 	public Map<String, Object> addGoods(String sku,String goods_name,String price,String goods_class,String sale,

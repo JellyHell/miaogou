@@ -24,6 +24,8 @@ public interface ISystemBackService {
 
 	Map<String, Object> GoodsSaleStatusChange(String goods_code, String sale) throws Exception;
 
+	Map<String, Object> getOrderList(int pageSize, int currentPage) throws Exception;
+
 	
 
 

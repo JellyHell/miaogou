@@ -71,6 +71,7 @@
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
 <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> 
 <script type="text/javascript" src="lib/pagination/js/jquery.pagination.min.js"></script> 
+<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 </body>
 
 <script>
@@ -84,6 +85,7 @@
 		   var pageSize=$("#goodsList_select option:selected").val();
 		   getAllGoodsList($(this).prev().val(),pageSize,1);
 	   });
+	   
    });
    
 
@@ -104,7 +106,7 @@
 					   getAllGoodsList("",pageSize,currentPage);
 				   });
 			   }else{
-				   layer.msg("后台出错!");
+				   layer.msg(res.errmsg);
 			   }
 		   }
 	   });

@@ -113,6 +113,13 @@ public class SystemBackImpl implements ISystemBackService{
 			pa.put("introducePrice", "".equals(introducePrice)?"0":introducePrice);
 			pa.put("introduce", introduce);
 			
+			//判断sku是否重复
+			if(systembackDao.SkuExits(pa)>0) {
+				retMap.put("errcode", "-3");
+				retMap.put("errmsg", "SKU不能重复");
+				return retMap;
+			}
+			
 			//上传图标  并插入mg_goods表
 			if(iconImgfile!=null){
 					String filename=iconImgfile.getOriginalFilename();
@@ -252,6 +259,25 @@ public class SystemBackImpl implements ISystemBackService{
 			
 			retMap.put("errcode", "0");
 			retMap.put("errmsg", "ok");
+			return retMap;
+		}
+
+		@Override
+		@Transactional
+		public Map<String, Object> getOrderList(int pageSize, int currentPage)
+				throws Exception {
+			
+			Map<String,Object> retMap=new HashMap<String,Object>();
+			
+            PageHelper.startPage(currentPage,pageSize);
+			
+			List<Map<String,Object>> li=systembackDao.getOrderList();
+			
+			PageInfo<Map<String,Object>> pageInfo = new PageInfo<Map<String,Object>>(li);
+			
+			retMap.put("errcode", "0");
+			retMap.put("errmsg", "ok");
+			retMap.put("pageInfo", pageInfo);
 			return retMap;
 		}
 

@@ -1,0 +1,105 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" >
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+
+<![endif]-->
+<link href="static/h-ui/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="static/h-ui.admin/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+<link href="lib/pagination/css/jquery.pagination.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>空白页</title>
+</head>
+<body>
+<nav class="breadcrumb">
+     <i class="Hui-iconfont">&#xe67f;</i> 
+                首页 <span class="c-gray en">&gt;</span> 
+                订单管理 <span class="c-gray en">&gt;</span> 
+                订单管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+     <i class="Hui-iconfont">&#xe68f;</i></a>
+</nav>
+<div class="page-container">
+
+
+<div class="cl pd-5 bg-1 bk-gray mt-20"> 
+ <span class="r">共有数据：<strong id="total">12</strong> 条</span> 
+</div>
+<div class="mt-20">
+  <table id="orderList" class="table table-border table-bordered table-hover table-bg table-sort table-striped">
+		<thead>
+			<tr class="text-c">
+				<th parm=true code="out_trade_no">商户订单号</th>
+				<th code="transaction_id" >微信支付订单号</th>
+				<th code="nickName" width="100px;">下单人微信号</th>
+				<th code="total_fee" >订单金额</th>
+				<th code="name" >收货人姓名</th>
+				<th code="phone" >收货人联系方式</th>
+				<th code="area" >收货人地区</th>
+				<th code="address">收货人详细地址</th>
+				<th code="state" transform="{'-2':'已退款','-1':'初始状态未支付','0':'订单取消','1':'支付成功待发货','2':'发货中','3':'订单完成'}" type="status" rule="{'-2':'defunt','-1':'success','0':'defunt','1':'success','2':'success','3':'success'}" >订单状态</th>
+				<th code="createTime">订单创建时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+	</table>
+</div>
+</div>
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="lib/pagination/js/jquery.pagination.min.js"></script> 
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> 
+</body>
+<script>
+$(function(){
+	 
+	   //获取商品列表
+	   getAllOrderList(5,1);
+	   
+});
+
+function getAllOrderList(pageSize,currentPage){
+	$.ajax({
+		   url:'SystemBack/getOrderList',
+		   type:'get',
+		   scriptCharset: 'utf-8',
+		   data:{
+			   pageSize:pageSize,
+			   currentPage:currentPage
+			   },
+		   success:function(res){
+			   if(res.errcode=="0"){
+				   setTableList("orderList",res.pageInfo,function(pageSize,currentPage){
+					   getAllOrderList(pageSize,currentPage);
+				   });
+			   }else{
+				   layer.msg(res.errmsg);
+			   }
+		   }
+	   });
+}
+
+function orderList_pageSizeChange (pageSize){
+	getAllOrderList(pageSize,1);
+}
+</script>
+</html>
