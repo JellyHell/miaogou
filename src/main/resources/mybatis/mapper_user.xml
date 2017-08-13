@@ -276,7 +276,7 @@
     </update>
     
     <select id="getOrderList" parameterType="Map" resultType="Map" >
-     select a.out_trade_no,a.prepay_id,a.total_fee ,DATE_FORMAT(a.createTime,'%Y-%c-%d %T') createTime,
+     select a.out_trade_no,a.prepay_id,a.total_fee ,a.state,DATE_FORMAT(a.createTime,'%Y-%c-%d %T') createTime,
         TIMESTAMPDIFF(SECOND,SYSDATE(),date_add(a.createTime, interval 2 hour)) ttl,
 		b.name,b.phone,b.area,b.address,b.postCode,
 		GROUP_CONCAT(c.goodsCode,'#',c.goodsNum,'#',d.iconImg,'#',d.goods_name)  detail
