@@ -45,6 +45,7 @@
 				<th parm=true code="out_trade_no">商户订单号</th>
 				<th code="transaction_id" >微信支付订单号</th>
 				<th code="nickName" width="100px;">下单人微信号</th>
+				<th code="orderGoodsList" type="tableDetailes" title="订单详情" column="{sku:'sku',goods_name:'商品名称','goods_num':'商品数量'}" >订单详情</th>
 				<th code="total_fee" >订单金额</th>
 				<th code="name" >收货人姓名</th>
 				<th code="phone" >收货人联系方式</th>
@@ -87,6 +88,7 @@ function getAllOrderList(pageSize,currentPage){
 			   currentPage:currentPage
 			   },
 		   success:function(res){
+			   console.log(res);
 			   if(res.errcode=="0"){
 				   setTableList("orderList",res.pageInfo,function(pageSize,currentPage){
 					   getAllOrderList(pageSize,currentPage);
@@ -101,5 +103,6 @@ function getAllOrderList(pageSize,currentPage){
 function orderList_pageSizeChange (pageSize){
 	getAllOrderList(pageSize,1);
 }
+//function ()
 </script>
 </html>

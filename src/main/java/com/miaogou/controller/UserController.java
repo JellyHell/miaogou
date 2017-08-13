@@ -761,12 +761,18 @@ public class UserController {
 	 * @param request
 	 * @param response
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 */
 	@ResponseBody
 	@RequestMapping(value = "pay/unifiedorder", method = RequestMethod.GET)
 	public Map<String, Object> unifiedorder(String openid,String detail,String name,
 			String phone,String area,String address,String postCode,int total_fee,
-			HttpServletRequest request,HttpServletResponse response){
+			HttpServletRequest request,HttpServletResponse response) throws UnsupportedEncodingException{
+		
+		//中文编码问题
+		name=java.net.URLDecoder.decode(name, "utf-8");
+		area=java.net.URLDecoder.decode(area, "utf-8");
+		address=java.net.URLDecoder.decode(address, "utf-8");
 		
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		

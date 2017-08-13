@@ -203,6 +203,6 @@ public class SystembackController {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		
+		System.out.println(java.net.URLDecoder.decode("%E6%9B%B9%E5%90%8E%E7%BA%A2", "utf-8"));
 	}
 }

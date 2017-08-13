@@ -101,8 +101,13 @@
 	<select id="getOrderList" resultType="Map">
      select 
 		a.out_trade_no,a.transaction_id,a.total_fee,DATE_FORMAT(a.createTime,'%Y-%c-%d %T') createTime,a.state,
-		b.nickName,c.`name`,c.phone,c.area,c.address
+		b.nickName,c.`name`,c.phone,c.area,c.address,
+		GROUP_CONCAT(d.goodsCode,'##',(SELECT IFNULL(sku,'') from mg_goods where goods_code=d.goodsCode),'##',
+		   (SELECT goods_name from mg_goods where goods_code=d.goodsCode),'##',d.goodsNum
+			) orderGoodsList
 		from mg_order a left join mg_wxUser b on a.openId=b.openId left join mg_order_delivery_address c 
-		on a.out_trade_no=c.out_trade_no
+		on a.out_trade_no=c.out_trade_no LEFT JOIN mg_order_goods d on a.out_trade_no=d.out_trade_no
+		GROUP BY a.out_trade_no,a.transaction_id,a.total_fee,a.createTime,a.state,
+        b.nickName,c.`name`,c.phone,c.area,c.address
     </select>
 </mapper>

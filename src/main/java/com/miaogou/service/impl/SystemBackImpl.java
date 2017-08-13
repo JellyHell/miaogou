@@ -275,6 +275,31 @@ public class SystemBackImpl implements ISystemBackService{
 			
 			PageInfo<Map<String,Object>> pageInfo = new PageInfo<Map<String,Object>>(li);
 			
+			if(li!=null&&li.size()>0){
+				for(int i=0;i<li.size();i++){
+					String imglist=(String) li.get(i).get("orderGoodsList");
+					if(imglist==null||"".equals(imglist)) continue;
+					String[] imgListarr=imglist.split(",");
+					
+					   JSONArray arr=new JSONArray();
+					   for(int j=0;j<imgListarr.length;j++){
+						   String goods_code=imgListarr[j].split("##")[0];
+						   String sku=imgListarr[j].split("##")[1];
+						   String goods_name=imgListarr[j].split("##")[2];
+						   String goods_num=imgListarr[j].split("##")[3];
+						   
+						   
+						    	JSONObject obj=new JSONObject();
+						    	obj.put("goods_code", goods_code);
+						    	obj.put("sku", sku);
+						    	obj.put("goods_name", goods_name);
+						    	obj.put("goods_num", goods_num);
+						    	arr.add(obj);
+						  }
+					      li.get(i).put("orderGoodsList", arr);
+					   }
+				}
+			
 			retMap.put("errcode", "0");
 			retMap.put("errmsg", "ok");
 			retMap.put("pageInfo", pageInfo);

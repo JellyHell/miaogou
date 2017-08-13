@@ -390,13 +390,6 @@ function setTableList(id,pageInfo,pageCallback){
 				   return true;
 			   }
 			   
-			   //
-			   var type=$(this).attr("type");
-			   if(type="status"){   //特殊的显示方式   like  已发布  已下架
-				   
-			   }
-			   
-			   
 			   //按钮列
 			   var oper=$(this).attr("oper");
 			   if(oper!=undefined){
@@ -431,9 +424,9 @@ function setTableList(id,pageInfo,pageCallback){
 				  html+="</td>";
 				  return true;
 			   }
-			   var va=do_transform(this,item[key]);
-			   va=(va==undefined?"":va);
-			   html+="<td>"+(key==undefined?'':va)+"</td>";   
+			   var va=do_transform(id,this,item[key]);
+			   va=(va==undefined?"<td></td>":va);
+			   html+=(key==undefined?'<td></td>':va);   
 		   });
 		   html+="</tr>";
 	   })
@@ -514,18 +507,59 @@ function imgarr_show(arr){
 		  });
 }
 //显示内容转变
-function do_transform(obj,value){
+function do_transform(id,obj,value){
 	   var type=$(obj).attr("type"); 
 	   if(type=="status"){
-		  return "<span class='label label-"+strToJson($(obj).attr("rule"))[value]+" radius'>"+transform_content(obj,value)+"</span>";
-	   }else{
-		  return transform_content(obj,value);
+		  return "<td><span class='label label-"+strToJson($(obj).attr("rule"))[value]+" radius'>"+transform_content(obj,value)+"</span></td>";
+	   }else if(type=="tableDetailes"){
+		   var column=$(obj).attr("column");
+		   if(value==undefined) return "<td></td>";
+		   var temp=JSON.stringify(value).replace(/\s+/g,"").replace(/"/g,"'");
+		   var title=($(obj).attr("title")==undefined?"列表信息":("'"+$(obj).attr("title")+"'"));
+		   return '<td class="maincolor"><a onclick=showtableDetails('+JSON.stringify(column).replace(/"/g,"&"+"#34")+','+temp+','+title+') >查看</a></td>';
+	    }else{
+		  var content=transform_content(obj,value); 
+		  return "<td>"+(content==undefined?"":content)+"</td>";
 	   }
 }
 function transform_content(obj,value){
-	return $(obj).attr("transform")!=undefined?(strToJson($(obj).attr("transform"))[value]):value;
+	return ($(obj).attr("transform")!=undefined?(strToJson($(obj).attr("transform"))[value]):value);
 }
 
 function strToJson(str){ 
 	return (new Function("return " + str))(); 
 } 
+function showtableDetails(column,list,title){
+	column=strToJson(column); 
+	var html='<table  class="table table-border table-bordered table-hover table-bg table-sort table-striped">'+
+				'<thead>'+
+				'	<tr class="text-c">';
+	        
+			$.each(column,function(key,values){  
+			     html+='<th>'+values+'</th>';
+			  });
+			html+=	'	</tr>'+
+				'</thead>'+
+				'<tbody>';
+			for(var i=0;i<list.length;i++){
+				html+="<tr>"
+					$.each(column,function(key,values){  
+					     html+='<td>'+list[i][key]+'</td>';
+					  });
+				html+="</tr>"
+			}
+			html+='	</tbody>'+
+			 '</table>';
+	
+	layer.open({
+		  type: 1,
+		  title:title,
+		  closeBtn: 0, //不显示关闭按钮
+		  shade: [0.3],
+		  shadeClose: true,
+		  area: ['500px', '500px'],
+		  anim: 2,
+		  content: html, //iframe的url，no代表不显示滚动条
+		  
+		});
+}
