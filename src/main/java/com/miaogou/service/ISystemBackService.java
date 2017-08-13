@@ -10,10 +10,10 @@ public interface ISystemBackService {
 
 	Map<String, Object> getGoodsList(String key, int pageSize, int currentPage);
 
-	Map<String, Object> addGoods(String goods_name, String price,
+	Map<String, Object> addGoods(String sku,String goods_name, String price,
 			String goods_class,String sale, String brand, String firstBrand,
 			String secondBrand, String introduceUrl, String introducePrice,
-			String introduce, CommonsMultipartFile iconImgfile,
+			String introduce,  CommonsMultipartFile iconImgfile,
 			CommonsMultipartFile bigImgfile, CommonsMultipartFile[] imgListfile) throws Exception;
 
 	boolean userExists(String username);

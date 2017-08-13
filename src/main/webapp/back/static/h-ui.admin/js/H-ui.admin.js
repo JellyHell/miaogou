@@ -431,8 +431,9 @@ function setTableList(id,pageInfo,pageCallback){
 				  html+="</td>";
 				  return true;
 			   }
-			   
-			   html+="<td>"+(key==undefined?'':do_transform(this,item[key]))+"</td>";   
+			   var va=do_transform(this,item[key]);
+			   va=(va==undefined?"":va);
+			   html+="<td>"+(key==undefined?'':va)+"</td>";   
 		   });
 		   html+="</tr>";
 	   })

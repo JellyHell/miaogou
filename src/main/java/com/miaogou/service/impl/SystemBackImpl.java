@@ -90,7 +90,7 @@ public class SystemBackImpl implements ISystemBackService{
 
 		@Override
 		@Transactional
-		public Map<String, Object> addGoods(String goods_name, String price,
+		public Map<String, Object> addGoods(String sku,String goods_name, String price,
 				String goods_class,String sale, String brand, String firstBrand,
 				String secondBrand, String introduceUrl, String introducePrice,
 				String introduce, CommonsMultipartFile iconImgfile,
@@ -101,6 +101,7 @@ public class SystemBackImpl implements ISystemBackService{
 			Map<String,String> pa=new HashMap<String,String>();
 			String code="s_goods"+userDao.nextval("s_goods");
 			pa.put("goods_code", code);
+			pa.put("sku", sku);
 			pa.put("goods_name", goods_name);
 			pa.put("goods_class", goods_class);
 			pa.put("sale", sale);
@@ -109,7 +110,7 @@ public class SystemBackImpl implements ISystemBackService{
 			pa.put("firstBrand", firstBrand);
 			pa.put("secondBrand", secondBrand);
 			pa.put("introduceUrl", introduceUrl);
-			pa.put("introducePrice", introducePrice);
+			pa.put("introducePrice", "".equals(introducePrice)?"0":introducePrice);
 			pa.put("introduce", introduce);
 			
 			//上传图标  并插入mg_goods表

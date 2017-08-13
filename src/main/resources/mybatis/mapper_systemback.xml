@@ -11,6 +11,7 @@
 			a.price,
 			a.iconImg,
 			a.sale,
+			a.sku,
 			b.brand,
 			b.firstBrand,
 			b.secondBrand,
@@ -50,9 +51,9 @@
 	</select>
 	
 	<insert id="inserIntoGoods" parameterType="Map">
-	INSERT INTO mg_goods (`goods_code`, `goods_class`, `goods_name`, `price`,  
+	INSERT INTO mg_goods (`goods_code`, `sku`,`goods_class`, `goods_name`, `price`,  
                 `iconImg`, `group`, `remote`,`sale`) 
-                VALUES (#{goods_code}, #{goods_class},#{goods_name},#{price},#{iconImg},#{group},#{remote},#{sale})
+                VALUES (#{goods_code}, #{sku},#{goods_class},#{goods_name},#{price},#{iconImg},#{group},#{remote},#{sale})
 	</insert>
 	<insert id="inserIntoGoodsDetails" parameterType="Map">
 	 INSERT INTO mg_goodsdetails (`goods_code`, `brand`, `firstBrand`, `secondBrand`, `introduceUrl`, 
