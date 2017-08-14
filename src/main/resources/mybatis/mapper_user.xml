@@ -4,14 +4,14 @@
 <mapper namespace="com.miaogou.dao.IUserDao">
 
 	<select id="findGoodsByClass" parameterType="Map" resultType="Map">
-	 select * from mg_goods where goods_class=#{goods_class}
+	 select * from mg_goods where goods_class=#{goods_class} and sale='on'
 	</select>
 	<select id="findGoodsBykey" parameterType="Map" resultType="Map">
      select * from (
      select a.*,(select value from sys_dictionary_data where dicCode='goodsClass' and code=a.goods_class) className
      from mg_goods a ) t where ( t.goods_name like CONCAT(CONCAT('%',#{key}),'%')
                            or t.className like CONCAT(CONCAT('%',#{key}),'%')
-                           )
+                           ) and t.sale='on'
 	</select>
 	
 	<select id="getBannerAd" resultType="Map">
@@ -61,7 +61,7 @@
     </update>
     
     <select id="getBestSalesGoods" parameterType="Map" resultType="Map">
-     select * from mg_goods order by goods_salenum desc
+     select * from mg_goods where sale='on' order by goods_salenum desc
     </select>
     
     <insert id="register" parameterType="Map">
