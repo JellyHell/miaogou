@@ -824,9 +824,13 @@ public class UserController {
 			requestXml.append("<"+k+">"+pa.get(k)+"</"+k+">");
 		requestXml.append("</xml>");
 		
+		// 将解析结果存储在HashMap中
 		result =PayUtil.httpRequest(unifiedorder_url, "POST", requestXml.toString());
-	        // 将解析结果存储在HashMap中
-	        
+	    
+		//打印返回内容
+	    for(String key:result.keySet()){
+	    	System.out.println(key+" : "+result.get(key));
+	    }
 		
 		} catch (Exception e) {
 			e.printStackTrace();
