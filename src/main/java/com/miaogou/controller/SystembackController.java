@@ -188,12 +188,41 @@ public class SystembackController {
 		return retMap;
 	}
 	
+	/**
+	 * 上架或下架
+	 * @param goods_code
+	 * @param sale
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/GoodsSaleStatusChange", method = RequestMethod.GET)
 	public Map<String, Object> GoodsSaleStatusChange(String goods_code,String sale,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		try {
 			retMap=systembackService.GoodsSaleStatusChange(goods_code,sale);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
+	}
+	
+	/**
+	 * 获取数据字典
+	 * @param dicCode
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getDictionaryData", method = RequestMethod.GET)
+	public Map<String, Object> getDictionaryData(String dicCode,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		try {
+			retMap=systembackService.getDictionaryData(dicCode);
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");

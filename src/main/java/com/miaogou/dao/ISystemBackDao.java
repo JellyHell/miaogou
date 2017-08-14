@@ -39,5 +39,7 @@ public interface ISystemBackDao {
 
 	List<Map<String, Object>> getOrderList();
 
+	List<Map<String, Object>> getDictionaryData(Map<String, String> pa);
+
 
 }

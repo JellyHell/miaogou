@@ -110,4 +110,7 @@
 		GROUP BY a.out_trade_no,a.transaction_id,a.total_fee,a.createTime,a.state,
         b.nickName,c.`name`,c.phone,c.area,c.address order by a.createTime desc
     </select>
+    <select id="getDictionaryData" parameterType="Map" resultType="Map">
+     select * from sys_dictionary_data where dicCode=#{dicCode}
+    </select>
 </mapper>

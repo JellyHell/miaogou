@@ -306,6 +306,24 @@ public class SystemBackImpl implements ISystemBackService{
 			return retMap;
 		}
 
+		@Override
+		@Transactional
+		public Map<String, Object> getDictionaryData(String dicCode)
+				throws Exception {
+			    Map<String,Object> retMap=new HashMap<String,Object>();
+				
+				Map<String,String> pa=new HashMap<String,String>();
+				pa.put("dicCode", dicCode);
+				
+				
+				List<Map<String,Object>> li=systembackDao.getDictionaryData(pa);
+				
+				retMap.put("errcode", "0");
+				retMap.put("errmsg", "ok");
+				retMap.put("data", li);
+				return retMap;
+		}
+
 
 		
 		

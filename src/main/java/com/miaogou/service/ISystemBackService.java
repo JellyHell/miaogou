@@ -26,6 +26,8 @@ public interface ISystemBackService {
 
 	Map<String, Object> getOrderList(int pageSize, int currentPage) throws Exception;
 
+	Map<String, Object> getDictionaryData(String dicCode) throws Exception;
+
 	
 
 
