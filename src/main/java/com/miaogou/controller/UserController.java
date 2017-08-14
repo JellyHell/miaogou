@@ -1,6 +1,5 @@
 package com.miaogou.controller;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -8,11 +7,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +48,6 @@ import com.miaogou.dao.NotifyRet;
 import com.miaogou.service.IUserService;
 import com.miaogou.util.HttpRequestUtil;
 import com.miaogou.util.PayUtil;
-import com.miaogou.util.RedisUtils;
 import com.miaogou.util.UUIDHexGenerator;
 import com.miaogou.util.XmlUtils;
 
@@ -185,6 +181,30 @@ public class UserController {
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		try {
 			retMap=UserService.findGoodsByClass(goodsClass,pageSize,pageNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		
+		return retMap;
+	}
+	
+	/**
+	 * 根据关键词  查找商品
+	 * @param key
+	 * @param pageSize
+	 * @param pageNum
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "goods/findGoodsBykey", method = RequestMethod.GET)
+	public Map<String, Object> findGoodsBykey(String key,int pageSize,int pageNum,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		try {
+			retMap=UserService.findGoodsBykey(key,pageSize,pageNum);
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");

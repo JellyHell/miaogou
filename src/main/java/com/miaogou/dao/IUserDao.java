@@ -100,6 +100,8 @@ public interface IUserDao {
 
 	int updaterefundErrmsg(Map<String, Object> pa);
 
+	List<Map<String, String>> findGoodsBykey(Map<String, Object> pa);
+
 
 
 }

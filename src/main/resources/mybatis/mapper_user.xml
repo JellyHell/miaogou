@@ -6,6 +6,13 @@
 	<select id="findGoodsByClass" parameterType="Map" resultType="Map">
 	 select * from mg_goods where goods_class=#{goods_class}
 	</select>
+	<select id="findGoodsBykey" parameterType="Map" resultType="Map">
+     select * from (
+     select a.*,(select value from sys_dictionary_data where dicCode='goodsClass' and code=a.goods_class) className
+     from mg_goods a ) t where ( t.goods_name like CONCAT(CONCAT('%',#{key}),'%')
+                           or t.className like CONCAT(CONCAT('%',#{key}),'%')
+                           )
+	</select>
 	
 	<select id="getBannerAd" resultType="Map">
 	 select * from mg_banner_ad where status='1' order by banner_index

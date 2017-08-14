@@ -80,6 +80,8 @@ public interface IUserService {
 
 	int updaterefundErrmsg(Map<String, Object> pa);
 
+	Map<String, Object> findGoodsBykey(String key, int pageSize, int pageNum) throws Exception;
+
 
 
 }
