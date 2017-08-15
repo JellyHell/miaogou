@@ -102,6 +102,8 @@ public interface IUserDao {
 
 	List<Map<String, String>> findGoodsBykey(Map<String, Object> pa);
 
+	int isOrderPayed(Map<String, Object> pa);
+
 
 
 }

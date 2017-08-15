@@ -636,6 +636,12 @@ public class UserImpl implements IUserService{
 				pa.put("out_trade_no", out_trade_no);
 				pa.put("reason", reason);
 				
+				//查看该订单是否支付完成
+				if(!(userDao.isOrderPayed(pa)>0)){
+					retMap.put("errcode", "-3");
+				    retMap.put("errmsg", "该订单 未支付 不能退款");
+				    return retMap;
+				}
 			
 				if(userDao.insertintoRefund(pa)!=1) throw new Exception();
 				

@@ -315,4 +315,7 @@
     <update id="updaterefundErrmsg" parameterType="Map">
      update mg_refund set errmsg=#{errmsg},state='-2' where out_refund_no=#{out_refund_no}
     </update>
+    <select id="isOrderPayed" parameterType="Map" resultType="java.lang.Integer">
+     select count(1) from mg_order where out_trade_no=#{out_trade_no} and transaction_id is not null
+    </select> 
 </mapper>
