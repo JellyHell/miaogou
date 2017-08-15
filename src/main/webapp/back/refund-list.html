@@ -41,14 +41,14 @@
 		<thead>
 			<tr class="text-c">
 				<th style="display: none" parm=true code="out_refund_no">商户退款单号</th>
-				<th code="transaction_id" width="100px;">微信支付订单号</th>
-				<th code="total_fee" >订单总价</th>
-				<th code="refund_fee" >退款金额</th>
+				<th code="transaction_id" >微信支付订单号</th>
+				<th code="total_fee" parm=true >订单总价</th>
+				<th code="refund_fee" parm=true >退款金额</th>
 				<th code="refund_id" >微信退款单号</th>
 				<th code="reason" >退款原因</th>
 				<th code="errmsg"  >操作失败原因</th>
 				<th code="state" transform="{'-2':'退款申请失败','-1':'买家提交退款','0':'退款申请成功','1':'退款成功'}" type="status" rule="{'-2':'defunt','-1':'success','0':'success','1':'success'}" >状态</th>
-				<th oper="delete" class="td-manage">操作</th>
+				<th oper="refundok:state=-2,refundok:state=-1" width=100px class="td-manage">操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -102,5 +102,71 @@ function getAllRefundList(pageSize,currentPage){
 function refundList_pageSizeChange(pageSize){
 	getAllRefundList(pageSize,1);
 }
+
+//确定申请退款
+function refundList_refundok(item){
+	var html='<form  method="post" class="form form-horizontal" id="form-article-add">'+
+			'<div class="cl" style="display:none">'+
+			 '	<label class="form-label col-xs-5 col-sm-3"><span class="c-red">*</span></label>'+
+			 '	<div class="formControls col-xs-7 col-sm-8">'+
+			  '<input type="text"  class="input-text" value="'+item.out_refund_no+'"  id="out_refund_no" name="out_refund_no">'+
+			'	</div>'+
+			'</div>'+
+	         '<div class="cl" style="box-sizing: border-box;margin-top: 15px;">'+
+			 '	<label class="form-label col-xs-5 col-sm-3"><span class="c-red">*</span>总金额：</label>'+
+			 '	<div class="formControls col-xs-7 col-sm-8">'+
+			 '		<input type="text" class="input-text" value="'+item.total_fee+'" readonly=true placeholder="" id="total_fee" name="total_fee">'+
+			'	</div>'+
+			'</div>'+
+			'<div class="cl" style="box-sizing: border-box;margin-top: 15px;">'+
+			'	<label class="form-label col-xs-5 col-sm-3"><span class="c-red">*</span>退款金额：</label>'+
+			'	<div class="formControls col-xs-7 col-sm-8">'+
+			'		<input type="text" class="input-text" value="'+item.refund_fee+'" placeholder="" id="refund_fee" name="refund_fee">'+
+			'	</div>'+
+			'</div>'+
+			'<div class="cl" style="box-sizing: border-box;margin-top: 15px;">'+
+			'<div class="col-xs-8 col-sm-3 col-xs-offset-4 col-sm-offset-8">'+
+			'	<button  class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i>提交申请</button>'+
+			'</div>'+
+		    '</div>'+
+			'</form>';
+			
+	layer.open({
+		  type: 1,
+		  title:'退款确认',
+		  closeBtn: 0, //不显示关闭按钮
+		  shade: [0.3],
+		  shadeClose: true,
+		  area: ['500px', '200px'],
+		  anim: 2,
+		  content: html, //iframe的url，no代表不显示滚动条
+		  
+		});
+	
+	$("#form-article-add").validate({
+		rules:{
+			refund_fee:{
+				required:true,
+				number:true,
+				range:[0,"#total_fee"]
+			}
+		},
+		messages:{
+			refund_fee:{
+				range:"退款金额 必须介于0 和 总金额之间"
+			}
+		},
+		onkeyup:true,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			console.log(1);
+			
+			
+		}
+	});
+}
+
+
 </script>
 </html>

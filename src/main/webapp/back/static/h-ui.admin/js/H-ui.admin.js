@@ -404,6 +404,8 @@ function setTableList(id,pageInfo,pageCallback){
 					  if(operarr[i]=="delete"){ //删除
 						  html+='  <a style="text-decoration:none" onclick="'+id+'_delete('+JSON.stringify(parm).replace(/"/g,"'")+')" class="ml-5"  href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a>';
 					  }
+					  
+					  //html+='<a style="text-decoration:none"  href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe615;</i></a>';
 					  if(operarr[i].indexOf("saleon")!=-1){ //上架
 						  var key=operarr[i].split(":")[1].split("=")[0];
 						  var value=operarr[i].split(":")[1].split("=")[1];
@@ -418,6 +420,15 @@ function setTableList(id,pageInfo,pageCallback){
 						  var value=operarr[i].split(":")[1].split("=")[1];
 						  if(item[key]==value){
 							  html+='  <a style="text-decoration:none" onclick="'+id+'_saleoff('+JSON.stringify(parm).replace(/"/g,"'")+')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a>';
+						  }
+						  
+					  }
+					  if(operarr[i].indexOf("refundok")!=-1){ //确定退款
+						  
+						  var key=operarr[i].split(":")[1].split("=")[0];
+						  var value=operarr[i].split(":")[1].split("=")[1];
+						  if(item[key]==value){
+							  html+='  <a style="text-decoration:none" onclick="'+id+'_refundok('+JSON.stringify(parm).replace(/"/g,"'")+')" href="javascript:;" title="确定退款"><i class="Hui-iconfont">&#xe615;</i></a>';
 						  }
 						  
 					  }

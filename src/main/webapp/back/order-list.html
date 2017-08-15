@@ -88,7 +88,6 @@ function getAllOrderList(pageSize,currentPage){
 			   currentPage:currentPage
 			   },
 		   success:function(res){
-			   console.log(res);
 			   if(res.errcode=="0"){
 				   setTableList("orderList",res.pageInfo,function(pageSize,currentPage){
 					   getAllOrderList(pageSize,currentPage);
