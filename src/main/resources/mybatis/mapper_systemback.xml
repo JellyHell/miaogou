@@ -113,4 +113,15 @@
     <select id="getDictionaryData" parameterType="Map" resultType="Map">
      select * from sys_dictionary_data where dicCode=#{dicCode}
     </select>
+    
+    <select id="getrefundList" parameterType="Map" resultType="Map">
+     select `out_refund_no`,
+			`transaction_id`,
+			 total_fee/100 total_fee,
+			 refund_fee/100 refund_fee,
+			`refund_id`,
+			`reason`,
+			`errmsg`,
+			`state` from mg_refund 
+    </select>
 </mapper>

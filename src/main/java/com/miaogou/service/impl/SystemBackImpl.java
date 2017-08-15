@@ -324,6 +324,26 @@ public class SystemBackImpl implements ISystemBackService{
 				return retMap;
 		}
 
+		@Override
+		@Transactional
+		public Map<String, Object> getrefundList(int pageSize, int currentPage) {
+			
+            Map<String,Object> retMap=new HashMap<String,Object>();
+			
+            PageHelper.startPage(currentPage,pageSize);
+			
+			List<Map<String,Object>> li=systembackDao.getrefundList();
+			
+			PageInfo<Map<String,Object>> pageInfo = new PageInfo<Map<String,Object>>(li);
+			
+			
+			
+			retMap.put("errcode", "0");
+			retMap.put("errmsg", "ok");
+			retMap.put("pageInfo", pageInfo);
+			return retMap;
+		}
+
 
 		
 		

@@ -74,6 +74,29 @@ public class SystembackController {
 	}
 	
 	/**
+	 * 获取退款列表
+	 * @param pageSize
+	 * @param currentPage
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getrefundList", method = RequestMethod.GET)
+	public Map<String, Object> getrefundList(int pageSize,int currentPage,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		try {
+			retMap=systembackService.getrefundList(pageSize,currentPage);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
+	}
+	
+	/**
 	 * 添加商品
 	 * @param sku
 	 * @param goods_name

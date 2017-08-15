@@ -28,6 +28,8 @@ public interface ISystemBackService {
 
 	Map<String, Object> getDictionaryData(String dicCode) throws Exception;
 
+	Map<String, Object> getrefundList(int pageSize, int currentPage);
+
 	
 
 

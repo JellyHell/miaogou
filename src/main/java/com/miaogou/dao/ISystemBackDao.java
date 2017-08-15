@@ -41,5 +41,7 @@ public interface ISystemBackDao {
 
 	List<Map<String, Object>> getDictionaryData(Map<String, String> pa);
 
+	List<Map<String, Object>> getrefundList();
+
 
 }
