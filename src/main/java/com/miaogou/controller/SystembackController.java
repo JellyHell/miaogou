@@ -190,6 +190,12 @@ public class SystembackController {
 		
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/loginout", method = RequestMethod.GET)
+	public void loginout(HttpServletRequest request,HttpServletResponse response){
+		request.getSession().removeAttribute("loginInfo");
+	}
+	
 	/**
 	 * 商品 删除
 	 * @param goods_code
