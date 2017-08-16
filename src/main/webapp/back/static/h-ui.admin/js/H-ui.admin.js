@@ -524,11 +524,14 @@ function do_transform(id,obj,value){
 	   if(type=="status"){
 		  return "<td><span class='label label-"+strToJson($(obj).attr("rule"))[value]+" radius'>"+transform_content(obj,value)+"</span></td>";
 	   }else if(type=="tableDetailes"){
+		   
 		   var column=$(obj).attr("column");
+		   console.log(column);
 		   if(value==undefined) return "<td></td>";
-		   var temp=JSON.stringify(value).replace(/\s+/g,"").replace(/"/g,"'");
+		   var co=JSON.stringify(column).replace(/"/g,"'");
+		   var va=JSON.stringify(value).replace(/\s+/g,"").replace(/"/g,"'");
 		   var title=($(obj).attr("title")==undefined?"列表信息":("'"+$(obj).attr("title")+"'"));
-		   return '<td class="maincolor"><a onclick=showtableDetails('+JSON.stringify(column).replace(/"/g,"'")+','+temp+','+title+') >查看</a></td>';
+		   return '<td class="maincolor"><a co='+column+' t='+va+' ti='+title+' onclick=showtableDetails(this) >查看</a></td>';
 	    }else{
 		  var content=transform_content(obj,value); 
 		  return "<td>"+(content==undefined?"":content)+"</td>";
@@ -541,8 +544,10 @@ function transform_content(obj,value){
 function strToJson(str){ 
 	return (new Function("return " + str))(); 
 } 
-function showtableDetails(column,list,title){
-	column=strToJson(column); 
+function showtableDetails(obj){
+	var column=strToJson($(obj).attr("co"));
+	var list=strToJson($(obj).attr("t"));
+	var title=$(obj).attr("ti");
 	var html='<table  class="table table-border table-bordered table-hover table-bg table-sort table-striped">'+
 				'<thead>'+
 				'	<tr class="text-c">';
