@@ -82,6 +82,8 @@ public interface IUserService {
 
 	Map<String, Object> findGoodsBykey(String key, int pageSize, int pageNum) throws Exception;
 
+	int updateFreundto1(Map<String, Object> req_inforesultMap);
+
 
 
 }

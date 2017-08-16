@@ -624,6 +624,13 @@ public class UserImpl implements IUserService{
 			
 			return userDao.updateFreundto0(pa);
 		}
+		
+		@Override
+		@Transactional
+		public int updateFreundto1(Map<String, Object> pa) {
+			
+			return userDao.updateFreundto1(pa);
+		}
 
 		@Override
 		@Transactional

@@ -104,6 +104,8 @@ public interface IUserDao {
 
 	int isOrderPayed(Map<String, Object> pa);
 
+	int updateFreundto1(Map<String, Object> pa);
+
 
 
 }

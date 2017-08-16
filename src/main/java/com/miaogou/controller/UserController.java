@@ -937,6 +937,67 @@ public class UserController {
 	}
 	
 	/**
+	 * 退款通知
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 * @throws DocumentException
+	 */
+	@ResponseBody
+	@RequestMapping(value = "pay/refund/notify_url",produces={"application/xml;chrset=UTF-8"}, method = RequestMethod.POST)
+	public void refundnotifyaction(
+			HttpServletRequest request,HttpServletResponse response) throws IOException, DocumentException{
+		NotifyRet ret=new NotifyRet();
+		
+		response.setHeader("Content-type", "text/plain;charset=UTF-8");
+		
+		InputStream inStream = request.getInputStream();
+        int _buffer_size = 1024;
+        if (inStream != null) {
+            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+            byte[] tempBytes = new byte[_buffer_size];
+            int count = -1;
+            while ((count = inStream.read(tempBytes, 0, _buffer_size)) != -1) {
+                outStream.write(tempBytes, 0, count);
+            }
+            tempBytes = null;
+            outStream.flush();
+            //将流转换成字符串
+            String result = new String(outStream.toByteArray(), "UTF-8");
+            //将字符串解析成XML
+            Document doc = DocumentHelper.parseText(result);
+            //将XML格式转化成MAP格式数据
+            Map<String, Object> resultMap = XmlUtils.Dom2Map(doc);
+            
+            System.out.println("退款回调函数返回的原始数据==============================================");
+            System.out.println(result);
+            
+            
+            if("SUCCESS".equals(resultMap.get("return_code"))){
+            	String req_info=(String) resultMap.get("req_info");
+            	
+            	//解密
+            	req_info=PayUtil.refundDecode(req_info,key);
+            	
+            	//将字符串解析成XML
+                Document req_infodoc = DocumentHelper.parseText(req_info);
+                //将XML格式转化成MAP格式数据
+                Map<String, Object> req_inforesultMap = XmlUtils.Dom2Map(req_infodoc);
+                
+                if("SUCCESS".equals(req_inforesultMap.get("refund_status"))){
+                	UserService.updateFreundto1(req_inforesultMap);
+                }
+            }
+            
+            
+        }else{
+        	ret.setReturn_code("FAIL");
+        	ret.setReturn_msg("获取数据为空");
+        }
+    	response.getWriter().write(NotifyRetToXml(ret));
+	}
+	
+	/**
 	 * 查询订单状态  (用于支付完成后立马查询使用)
 	 * 该接口提供所有微信支付订单的查询，商户可以通过查询订单接口主动查询订单状态，完成下一步的业务逻辑。
 	 *	 需要调用查询接口的情况：
@@ -1109,8 +1170,8 @@ public class UserController {
 	 * @throws FileNotFoundException 
 	 */
 	@ResponseBody
-	@RequestMapping(value = "pay/refund", method = RequestMethod.GET)
-	public Map<String, Object> refund(String out_refund_no,
+	@RequestMapping(value = "back/pay/refund", method = RequestMethod.GET)
+	public Map<String, Object> refund(String out_refund_no,String refund_fee,
 			HttpServletRequest request,HttpServletResponse response) throws Exception{
 		
 		 Map<String,Object> retMap=new HashMap<String,Object>();
@@ -1153,7 +1214,7 @@ public class UserController {
 			
 			pa.put("transaction_id", refund_info.get("transaction_id"));//微信订单号
 			pa.put("total_fee", refund_info.get("total_fee"));   //订单金额
-			pa.put("refund_fee", refund_info.get("refund_fee"));  //退款金额
+			pa.put("refund_fee", (int)(Float.parseFloat(refund_fee)*100));  //退款金额
 			pa.put("op_user_id", mch_id);  //操作员帐号, 默认为商户号
 			
 			//生成签名
@@ -1392,7 +1453,7 @@ public class UserController {
 		
 		if(ret.getReturn_msg()!=null)
 			 bu.append("<return_msg><![CDATA["+ret.getReturn_msg()+"]]></return_msg>");
-		
+		bu.append("</xml>");
 		return bu.toString();  
 	}
 	
@@ -1408,6 +1469,6 @@ public class UserController {
         return in2b;  
     } 
 	public static void main(String[] args) throws Exception {
-		
+		System.out.println((int)(Float.parseFloat("0.01")*100));
 	}
 }

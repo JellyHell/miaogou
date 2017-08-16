@@ -304,6 +304,10 @@
       update mg_refund set state='0',refund_id=#{refund_id} where out_refund_no=#{out_refund_no}
     </update>
     
+    <update id="updateFreundto1" parameterType="Map">
+      update mg_refund set state='1' ,errmsg='' where out_refund_no=#{out_refund_no}
+    </update>
+    
     <insert id="insertintoRefund" parameterType="Map">
      INSERT INTO `mg_refund` (`out_refund_no`, `transaction_id`, `total_fee`, `refund_fee`,  `reason`, `state`) 
      VALUES (#{out_refund_no},

@@ -2,6 +2,7 @@ package com.miaogou.util;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -165,9 +166,32 @@ public class PayUtil {
     			return pa.get("sign").equals(stringSignTemp);    
 		
 	}
-	public static void main(String[] args) {
-		String t="dwedwed#";
-		System.out.println(t.substring(0, t.length()-1));
+    
+    /**
+     * base64解码
+     * @param str
+     * @return
+     */
+    public static String decode64(String str){    
+    	   byte[] bt = null;    
+    	   try {    
+    	       sun.misc.BASE64Decoder decoder = new sun.misc.BASE64Decoder();    
+    	       bt = decoder.decodeBuffer( str );    
+    	   } catch (IOException e) {    
+    	       e.printStackTrace();    
+    	   }    
+    	   
+    	  return new String(bt);    
+    }    
+	
+	public static String refundDecode(String req_info, String key) {
+		//req_info=decode64(req_info);
+		key=MD5Utils.getMD5(key);
+		return SymmetricEncoder.AESDncode(key, req_info);
 	}
 	
+	public static void main(String[] args) {
+		String t="dwedwed#";
+		System.out.println(MD5Utils.getMD5("chengyanfangweichunchun346520456"));
+	}
 }

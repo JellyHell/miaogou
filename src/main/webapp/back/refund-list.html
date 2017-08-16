@@ -29,7 +29,7 @@
      <i class="Hui-iconfont">&#xe67f;</i> 
                 首页 <span class="c-gray en">&gt;</span> 
                 订单管理 <span class="c-gray en">&gt;</span> 
-                退款管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+                退款管理 <a class="btn btn-success radius r" id="reload" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
      <i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
@@ -105,7 +105,7 @@ function refundList_pageSizeChange(pageSize){
 
 //确定申请退款
 function refundList_refundok(item){
-	var html='<form  method="post" class="form form-horizontal" id="form-article-add">'+
+	var html='<form action="pay/refund"  method="get" class="form form-horizontal" id="form-article-add">'+
 			'<div class="cl" style="display:none">'+
 			 '	<label class="form-label col-xs-5 col-sm-3"><span class="c-red">*</span></label>'+
 			 '	<div class="formControls col-xs-7 col-sm-8">'+
@@ -115,7 +115,7 @@ function refundList_refundok(item){
 	         '<div class="cl" style="box-sizing: border-box;margin-top: 15px;">'+
 			 '	<label class="form-label col-xs-5 col-sm-3"><span class="c-red">*</span>总金额：</label>'+
 			 '	<div class="formControls col-xs-7 col-sm-8">'+
-			 '		<input type="text" class="input-text" value="'+item.total_fee+'" readonly=true placeholder="" id="total_fee" name="total_fee">'+
+			 '		<input type="text" class="input-text" value="'+item.total_fee+'" readonly=true placeholder="" id="total_fee" >'+
 			'	</div>'+
 			'</div>'+
 			'<div class="cl" style="box-sizing: border-box;margin-top: 15px;">'+
@@ -140,7 +140,6 @@ function refundList_refundok(item){
 		  area: ['500px', '200px'],
 		  anim: 2,
 		  content: html, //iframe的url，no代表不显示滚动条
-		  
 		});
 	
 	$("#form-article-add").validate({
@@ -148,7 +147,7 @@ function refundList_refundok(item){
 			refund_fee:{
 				required:true,
 				number:true,
-				range:[0,"#total_fee"]
+				range:[0,item.total_fee]
 			}
 		},
 		messages:{
@@ -156,11 +155,31 @@ function refundList_refundok(item){
 				range:"退款金额 必须介于0 和 总金额之间"
 			}
 		},
-		onkeyup:true,
+		onkeyup:false,
 		focusCleanup:true,
 		success:"valid",
 		submitHandler:function(form){
-			console.log(1);
+			$(form).ajaxSubmit({
+				success: function(data){
+					console.log(data);
+					if(data.errcode=="0"){
+						layer.msg('提交申请成功','',function(){
+							layer.closeAll();
+							window.location.reload();
+						});
+					}else{
+						layer.msg(data.errmsg,'',function(){
+							layer.closeAll();
+							window.location.reload();
+						});
+					}
+					
+				},
+                error: function(XmlHttpRequest, textStatus, errorThrown){
+					layer.msg('error!',{icon:2});
+					window.location.reload();
+				}
+			});
 			
 			
 		}
