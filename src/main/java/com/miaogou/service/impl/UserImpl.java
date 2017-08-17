@@ -76,6 +76,7 @@ public class UserImpl implements IUserService{
 			retMap.put("errcode", "0");
 	        retMap.put("errmsg", "OK");
 	        retMap.put("userId", userId);
+	        retMap.put("openId", openid);
 	      
 			return retMap;
 		}

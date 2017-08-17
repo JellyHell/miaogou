@@ -167,6 +167,42 @@ public class UserController {
 	}
 	
 	/**
+	 * 根据登陆 的code获取openid
+	 * @param code  登陆获取的
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "sns/jscode2session", method = RequestMethod.GET)
+	public Map<String, Object> jscode2session(String code,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		try {
+			
+			String url=jscode2session.replace("APPID", appid).replace("SECRET", secret).replace("JSCODE", code);
+			JSONObject obj=HttpRequestUtil.httpRequest(url, "GET", null);
+			
+			if(!obj.has("errcode")){
+				
+				//获取接口返回的openid 
+				String openid=obj.getString("openid");
+				retMap.put("errcode", "0");
+				retMap.put("errmsg", "OK");
+				retMap.put("openId", openid);
+				
+			}else{
+				retMap.put("errcode", obj.getInt("errcode"));
+				retMap.put("errmsg", obj.getString("errmsg"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
+	}
+	
+	/**
 	 * 根据商品分类查询相对应的商品列表（分页）
 	 * @param goodsClass 商品分类code
 	 * @param pageSize 每页大小
