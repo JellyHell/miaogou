@@ -7,7 +7,7 @@
 			SELECT
 			a.goods_code,
 			a.goods_name,
-			a.goods_class,
+			d.value goods_class,
 			a.price,
 			a.iconImg,
 			a.sale,
@@ -29,6 +29,7 @@
 			mg_goods a
 		LEFT JOIN mg_goodsdetails b ON a.goods_code = b.goods_code
 		LEFT JOIN mg_attachment c ON a.goods_code = c.tabCode
+		left join sys_dictionary_data d on a.goods_class=d.code and d.dicCode='goodsClass'
 		
 		<where>
 		   <if test="key!=null and key!=''"> 
