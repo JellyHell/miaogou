@@ -74,10 +74,10 @@
 			    <div class="dashed" style="padding-right: 20px;padding-top: 20px;padding-bottom: 20px;">
 			      <div class="specItem" style="margin-bottom: 15px;">
 				      <input type="text" style="width:24%" class="input-text" value="" placeholder="请填写SKU" id="sku" name="sku">
-				      <input type="text" style="width:24%;margin-left: 15px" class="input-text" value="" placeholder="请填写价格" id="price" name="price">
-				      <span class="btn-upload form-group" style="width:43%">
+				      <input type="text" style="width:24%" class="input-text" value="" placeholder="请填写规格名称" id="spec_name" name="spec_name">
+				      <input type="text" style="width:24%;" class="input-text" value="" placeholder="请填写价格" id="price" name="price">
+				      <span class="btn-upload form-group" style="width:22%">
 						<input class="input-text upload-url" type="text" name="iconImg" id="iconImg" placeholder="请选择图片" readonly nullmsg="请添加附件！" style="width:100px">
-						  <a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
 						<input type="file" accept="image/*"  name="iconImgfile" class="input-file">
 					 </span>
 					 <i class="Hui-iconfont" style="cursor: pointer;" onclick="delSpecItem(this)">&#xe6e2;</i> 
@@ -256,17 +256,8 @@ function gotoGoodsList(){
 }
 
 function addSpec(obj){
-	var html= '<div class="specItem" style="margin-bottom: 15px;">'+
-			  '  <input type="text" style="width:24%" class="input-text" value="" placeholder="请填写SKU" id="sku" name="sku">'+
-			  '  <input type="text" style="width:24%;margin-left: 15px" class="input-text" value="" placeholder="请填写价格" id="price" name="price">'+
-			  '  <span class="btn-upload form-group" style="width:43%">'+
-			  '		<input class="input-text upload-url" type="text" name="iconImg" id="iconImg" placeholder="请选择图片" readonly nullmsg="请添加附件！" style="width:100px">'+
-			  '		  <a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>'+
-			  '		<input type="file" accept="image/*"  name="iconImgfile" class="input-file">'+
-			  '	 </span>'+
-			  '	 <i class="Hui-iconfont" style="cursor: pointer;" onclick="delSpecItem(this)">&#xe6e2;</i>'+
-			'</div>';
-	$(obj).parent().before(html);
+	
+	$(obj).parent().before($(".specItem").eq(0).prop("outerHTML"));
 }
 
 function delSpecItem(obj){
