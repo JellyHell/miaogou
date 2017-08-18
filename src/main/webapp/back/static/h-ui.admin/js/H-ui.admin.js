@@ -398,7 +398,7 @@ function setTableList(id,pageInfo,pageCallback){
 				  html+="<td>";
 				  for(var i=0;i<operarr.length;i++){
 					  if(operarr[i]=="edit"){  //编辑
-						  console.log(JSON.stringify(parm).replace(/"/g,"'"));
+						 // console.log(JSON.stringify(parm).replace(/"/g,"'"));
 						  html+='  <a style="text-decoration:none" onclick="'+id+'_edit('+JSON.stringify(parm).replace(/"/g,"'")+')" class="ml-5"  href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>';
 					  }
 					  if(operarr[i]=="delete"){ //删除
@@ -526,7 +526,6 @@ function do_transform(id,obj,value){
 	   }else if(type=="tableDetailes"){
 		   
 		   var column=$(obj).attr("column");
-		   console.log(column);
 		   if(value==undefined) return "<td></td>";
 		   var co=JSON.stringify(column).replace(/"/g,"'");
 		   var va=JSON.stringify(value).replace(/\s+/g,"").replace(/"/g,"'");
