@@ -560,7 +560,12 @@ function showtableDetails(obj){
 			for(var i=0;i<list.length;i++){
 				html+="<tr>"
 					$.each(column,function(key,values){  
-					     html+='<td>'+list[i][key]+'</td>';
+						 if(key=="url"){
+							 html+="<td  href='javascript:;'><img onclick='img_show(\""+list[i][key]+"\")' style='width:100px;height:100px;cursor:pointer;' src="+list[i][key]+" ></td>";  
+						 }else{
+							 html+='<td>'+list[i][key]+'</td>';
+						 }
+					     
 					  });
 				html+="</tr>"
 			}

@@ -23,14 +23,12 @@
 				'#',
 				c.url,
 				'#',
-				IFNULL(c.isBigImg, '0')
-			) imglist
+				IFNULL(c.isBigImg, '0')) imglist
 		FROM
 			mg_goods a
 		LEFT JOIN mg_goodsdetails b ON a.goods_code = b.goods_code
 		LEFT JOIN mg_attachment c ON a.goods_code = c.tabCode
 		left join sys_dictionary_data d on a.goods_class=d.code and d.dicCode='goodsClass'
-		
 		<where>
 		   <if test="key!=null and key!=''"> 
 		    and a.goods_name like CONCAT(CONCAT('%',#{key}),'%')
@@ -129,5 +127,8 @@
 			`reason`,
 			`errmsg`,
 			`state` from mg_refund 
+    </select>
+    <select id="getGoodsSpecList" parameterType="Map" resultType="Map">
+     select goods_code,sku,spec_name,price,url from mg_goods_spec where goods_code=#{goods_code}
     </select>
 </mapper>

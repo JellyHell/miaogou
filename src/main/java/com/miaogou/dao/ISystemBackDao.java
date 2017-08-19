@@ -45,5 +45,7 @@ public interface ISystemBackDao {
 
 	int inserIntoGoodsSpec(Map<String, String> pa);
 
+	List<Map<String, String>> getGoodsSpecList(Map<String, String> pa);
+
 
 }

@@ -41,13 +41,11 @@
 			<tr class="text-c">
 				<!-- <th ><input type="checkbox" name="" value=""></th> -->
 				<th style="display: none" parm=true code="goods_code">商品编码</th>
-				<th code="sku" width="100px;">sku</th>
 				<th code="goods_name" width="100px;">商品名称</th>
 				<th code="goods_class" >商品类别</th>
-				<th code="price" >价格</th>
 				<th code="iconImg" width="100px;" isimg=true>图标</th>
-				<th code="bigImg" width="100px;" isimg=true>大图</th>
 				<th code="imglist"  isimgarr=true >图片列表</th>
+				<th code="speclist" type="tableDetailes" title="规格详情" column="{sku:'sku',spec_name:'规格名称','price':'价格',url:'图片'}" >规格详情</th>
 				<th code="brand">品牌</th>
 				<th code="firstBrand" style="display: none">第一品牌</th>
 				<th code="secondBrand" style="display: none">第二品牌</th>
@@ -101,6 +99,7 @@
 			   currentPage:currentPage
 			   },
 		   success:function(res){
+			   console.log(res);
 			   if(res.errcode=="0"){
 				   setTableList("goodsList",res.pageInfo,function(pageSize,currentPage){
 					   getAllGoodsList("",pageSize,currentPage);

@@ -51,13 +51,13 @@ public class SystemBackImpl implements ISystemBackService{
 			List<Map<String,Object>> li=systembackDao.getGoodsList(pa);
 			
 			PageInfo<Map<String,Object>> pageInfo = new PageInfo<Map<String,Object>>(li);
-	        long total = pageInfo.getTotal(); //获取总条数
-	        int pages=pageInfo.getPages(); //获取总页数
 			
 			//解析出图片列表
 			
 			if(li!=null&&li.size()>0){
 				for(int i=0;i<li.size();i++){
+					
+					//图片列表
 					String imglist=(String) li.get(i).get("imglist");
 					String[] imgListarr=imglist.split(",");
 					
@@ -79,9 +79,13 @@ public class SystemBackImpl implements ISystemBackService{
 						   
 						  }
 					      li.get(i).put("imglist", arr);
+					      
+					    //规格列表
+					    pa.put("goods_code", (String) li.get(i).get("goods_code"));
+					    List<Map<String,String>> specList=systembackDao.getGoodsSpecList(pa);
+						li.get(i).put("speclist", specList);
+							   }
 					   }
-				}
-			
 			
 			retMap.put("errcode", "0");
 			retMap.put("errmsg", "ok");
