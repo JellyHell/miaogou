@@ -33,7 +33,7 @@ public interface IUserService {
 
 	Map<String, Object> getWishList(String openId, int pageSize, int pageNum) throws Exception;
 
-	Map<String, Object> addToShoppingCart(String userId, String goodsCode,
+	Map<String, Object> addToShoppingCart(String userId, String goodsCode,String sku,
 			String goodsNum) throws Exception;
 
 	Map<String, Object> getShoppingCartList(String userId) throws Exception;
@@ -60,7 +60,7 @@ public interface IUserService {
 
 	int updateOrderState(String prepay_id);
 
-	Map<String, Object> reduce1FromShoppingCart(String userId, String goodsCode) throws Exception;
+	Map<String, Object> reduce1FromShoppingCart(String userId, String goodsCode,String sku) throws Exception;
 
 	Map<String, Object> delFromShoppingCart(String code) throws Exception;
     /**

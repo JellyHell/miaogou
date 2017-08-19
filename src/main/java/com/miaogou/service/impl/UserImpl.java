@@ -15,6 +15,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.miaogou.dao.ISystemBackDao;
 import com.miaogou.dao.IUserDao;
 import com.miaogou.service.IUserService;
 import com.miaogou.util.FastdfsUtils;
@@ -31,6 +32,9 @@ public class UserImpl implements IUserService{
    
 		@Resource
 	    IUserDao userDao;
+		
+		@Resource
+	    ISystemBackDao systembackDao;
 
 		@Override
 		@Transactional
@@ -359,13 +363,14 @@ public class UserImpl implements IUserService{
 		@Override
 		@Transactional
 		public Map<String, Object> addToShoppingCart(String userId,
-				String goodsCode, String goodsNum) throws Exception {
+				String goodsCode, String sku,String goodsNum) throws Exception {
             Map<String,Object> retMap=new HashMap<String,Object>();
 			
 			Map<String,Object> pa=new HashMap<String,Object>();
 			
 	        pa.put("userId", userId);
 	        pa.put("goodsCode", goodsCode);
+	        pa.put("sku", sku);
 	        pa.put("goodsNum", goodsNum);
 	        pa.put("state", "0");
 	        
@@ -439,17 +444,21 @@ public class UserImpl implements IUserService{
             Map<String,Object> retMap=new HashMap<String,Object>();
 			
 			Map<String,Object> pa=new HashMap<String,Object>();
+			Map<String,String> pa2=new HashMap<String,String>();
 			pa.put("goods_code", goods_code);
+			pa2.put("goods_code", goods_code);
 			
 			//details info 
 			Map<String,String> info=userDao.getGoodsInfo(pa);
+			
+			List<Map<String,String>> specList=systembackDao.getGoodsSpecList(pa2);
 			//bigimg
 			String bigImg=userDao.getgetBigImg(pa);
 			//img list
 			List<String> li=userDao.getImgList(pa);
 			
 			retMap.put("detailInfo", info);
-			retMap.put("bigImg", bigImg);
+			retMap.put("specList", specList);
 			retMap.put("imgList", li);
 			retMap.put("errcode", "0");
 		    retMap.put("errmsg", "OK");
@@ -473,6 +482,7 @@ public class UserImpl implements IUserService{
 			if(arr!=null&&arr.length()>0){
 				for(int i=0;i<arr.length();i++){
 					pa.put("goodsCode", arr.getJSONObject(i).getString("goodsCode"));
+					pa.put("sku", arr.getJSONObject(i).getString("sku"));
 					pa.put("goodsNum", arr.getJSONObject(i).getInt("goodsNum"));
 					if(userDao.createOrderGoods(pa)!=1) throw new Exception();
 				}
@@ -529,12 +539,13 @@ public class UserImpl implements IUserService{
 		@Override
 		@Transactional
 		public Map<String, Object> reduce1FromShoppingCart(String userId,
-				String goodsCode) throws Exception {
+				String goodsCode,String sku) throws Exception {
 			    Map<String,Object> retMap=new HashMap<String,Object>();
 				
 				Map<String,Object> pa=new HashMap<String,Object>();
 				pa.put("userId", userId);
 				pa.put("goodsCode", goodsCode);
+				pa.put("sku", sku);
 				
 				//查看该商品在购物车中的数量
 				int goodsNum=userDao.getGoodsNumInshoppingCart(pa);
@@ -598,6 +609,8 @@ public class UserImpl implements IUserService{
 							map.put("goodsNum",items[j].split("#")[1]);
 							map.put("iconImg",items[j].split("#")[2]);
 							map.put("goodsName",items[j].split("#")[3]);
+							map.put("sku",items[j].split("#")[4]);
+							map.put("spec_name",items[j].split("#")[5]);
 							goodslist.add(map);
 						}
 					}

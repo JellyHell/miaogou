@@ -647,7 +647,7 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "goods/addToShoppingCart", method = RequestMethod.POST)
 	public Map<String, Object> addToShoppingCart(
-			 String userId,String goodsCode,String goodsNum,HttpServletRequest request,HttpServletResponse response){
+			 String userId,String goodsCode,String sku,String goodsNum,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		
 		String openId=new String("");
@@ -661,7 +661,7 @@ public class UserController {
 		}
 		
 		try {
-			retMap=UserService.addToShoppingCart(userId,goodsCode,goodsNum);
+			retMap=UserService.addToShoppingCart(userId,goodsCode,sku,goodsNum);
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");
@@ -681,11 +681,11 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "goods/reduce1FromShoppingCart", method = RequestMethod.POST)
 	public Map<String, Object> reduce1FromShoppingCart(
-			 String userId,String goodsCode,HttpServletRequest request,HttpServletResponse response){
+			 String userId,String goodsCode,String sku,HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		
 		try {
-			retMap=UserService.reduce1FromShoppingCart(userId,goodsCode);
+			retMap=UserService.reduce1FromShoppingCart(userId,goodsCode,sku);
 		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("errcode", "-2");
@@ -800,10 +800,12 @@ public class UserController {
 									    "goods_detail": [
 									        {
 									            "goodsCode": "s_goods10001",
+									            "sku":"sku1",
 									            "goodsNum": 2
 									        },
 									        {
 									            "goodsCode": "s_goods10001",
+									            "sku":"sku2",
 									            "goodsNum": 3
 									        }
 									    ]

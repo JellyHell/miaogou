@@ -139,6 +139,7 @@
          <if test="code !=null and code !=''">code,</if>
          <if test="userId !=null and userId !=''">userId,</if>
          <if test="goodsCode !=null and goodsCode !=''">goodsCode,</if>
+         <if test="sku !=null and sku !=''">sku,</if>
          <if test="goodsNum !=null and goodsNum !=''">goodsNum,</if>
          <if test="code !=null and code !=''">createTime,</if>
          <if test="code !=null and code !=''">updateTime,</if>
@@ -148,6 +149,7 @@
          <if test="code !=null and code !=''">#{code},</if>
          <if test="userId !=null and userId !=''">#{userId},</if>
          <if test="goodsCode !=null and goodsCode !=''">#{goodsCode},</if>
+         <if test="sku !=null and sku !=''">#{sku},</if>
          <if test="goodsNum !=null and goodsNum !=''">#{goodsNum},</if>
          <if test="code !=null and code !=''">SYSDATE(),</if>
          <if test="code !=null and code !=''">SYSDATE(),</if>
@@ -156,12 +158,13 @@
     </insert>
     
     <select id="getShoppingCartList" parameterType="Map" resultType="Map">
-      select a.code,a.goodsCode,
+      select a.code,a.goodsCode,c.sku,c.spec_name,c.price,c.url goods_img,
              a.goodsNum,
-             b.goods_name,b.price,b.iconImg goods_img,
+             b.goods_name,
              DATE_FORMAT(a.createTime,'%Y-%c-%d %T') createTime,
              DATE_FORMAT(a.updateTime,'%Y-%c-%d %T') updateTime
        from mg_shoppingcart a left join mg_goods b on a.goodsCode=b.goods_code
+       left join mg_goods_spec c on a.sku=c.sku
         where userId=#{userId} and state='0'
     </select>
     
@@ -233,8 +236,8 @@
     </insert>
     
     <insert id="createOrderGoods" parameterType="Map">
-      INSERT INTO `mg_order_goods` (`out_trade_no`, `goodsCode`, `goodsNum`) 
-      VALUES (#{out_trade_no}, #{goodsCode}, #{goodsNum})
+      INSERT INTO `mg_order_goods` (`out_trade_no`, `goodsCode`,`sku` `goodsNum`) 
+      VALUES (#{out_trade_no}, #{goodsCode},#{sku}, #{goodsNum})
     </insert>
     <select id="modifytotlfee" parameterType="Map" resultType="java.lang.Integer">
       select count(1) from mg_order where out_trade_no=#{out_trade_no} and total_fee=#{total_fee}
@@ -260,22 +263,22 @@
     </update>
     
     <select id="isGoodsInShoppingCart" parameterType="Map" resultType="java.lang.Integer">
-     select  count(1) from mg_shoppingcart where userId=#{userId} and goodsCode=#{goodsCode}
+     select  count(1) from mg_shoppingcart where userId=#{userId} and goodsCode=#{goodsCode} and sku=#{sku}
     </select>
     
     <update id="updateShoppingCartGoodsNum" parameterType="Map">
       update mg_shoppingcart set goodsNum=goodsNum+#{goodsNum},updateTime=SYSDATE() where userId=#{userId} and goodsCode=#{goodsCode}
     </update>
     <select id="getGoodsNumInshoppingCart" parameterType="Map" resultType="java.lang.Integer">
-     select goodsNum from mg_shoppingcart where userId=#{userId} and goodsCode=#{goodsCode}
+     select goodsNum from mg_shoppingcart where userId=#{userId} and goodsCode=#{goodsCode} and sku=#{sku}
     </select>
     
     <update id="deletefromShopingByuserIdAndGoodsCode" parameterType="Map">
-      delete from mg_shoppingcart where userId=#{userId} and goodsCode=#{goodsCode}
+      delete from mg_shoppingcart where userId=#{userId} and goodsCode=#{goodsCode} and sku=#{sku}
     </update>
     
     <update id="reduce1FromShoppingCart" parameterType="Map">
-     update mg_shoppingcart set goodsNum=goodsNum-1,updateTime=SYSDATE() where userId=#{userId} and goodsCode=#{goodsCode}
+     update mg_shoppingcart set goodsNum=goodsNum-1,updateTime=SYSDATE() where userId=#{userId} and goodsCode=#{goodsCode} and sku=#{sku}
     </update>
     
     <update id="delFromShoppingCart" parameterType="Map">
@@ -286,10 +289,11 @@
      select a.out_trade_no,a.prepay_id,a.total_fee ,a.state,DATE_FORMAT(a.createTime,'%Y-%c-%d %T') createTime,
         TIMESTAMPDIFF(SECOND,SYSDATE(),date_add(a.createTime, interval 2 hour)) ttl,
 		b.name,b.phone,b.area,b.address,b.postCode,
-		GROUP_CONCAT(c.goodsCode,'#',c.goodsNum,'#',d.iconImg,'#',d.goods_name)  detail
+		GROUP_CONCAT(c.goodsCode,'#',c.goodsNum,'#',e.price,'#',d.goods_name,'#',c.sku,'#',e.spec_name)  detail
 		from mg_order a left join mg_order_delivery_address b on a.out_trade_no=b.out_trade_no
 		left join mg_order_goods c on a.out_trade_no=c.out_trade_no 
 		left join mg_goods d on c.goodsCode=d.goods_code
+		left join mg_goods_spec e on c.sku=e.sku 
 		where 
 		a.openId=(select openId from mg_wxUser where userId=#{userId})
 		and a.state=#{state}
