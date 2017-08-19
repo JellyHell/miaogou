@@ -131,4 +131,7 @@
     <select id="getGoodsSpecList" parameterType="Map" resultType="Map">
      select goods_code,sku,spec_name,price,url from mg_goods_spec where goods_code=#{goods_code}
     </select>
+    <select id="getSpecList" parameterType="Map" resultType="Map">
+      select * from mg_goods_spec from goods_code=#{goods_code}
+    </select>
 </mapper>

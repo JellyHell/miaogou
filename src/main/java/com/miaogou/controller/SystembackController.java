@@ -279,6 +279,11 @@ public class SystembackController {
 		
 	}
 	
+	/**
+	 * 登出
+	 * @param request
+	 * @param response
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/loginout", method = RequestMethod.GET)
 	public void loginout(HttpServletRequest request,HttpServletResponse response){
@@ -349,6 +354,25 @@ public class SystembackController {
 		return retMap;
 	}
 	
+	/**
+	 * 获取商品信息
+	 * @param goods_code
+	 * @param request
+	 * @param response
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getGoodsData", method = RequestMethod.GET)
+	public Map<String, Object> getGoodsData(String goods_code,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		try {
+			retMap=systembackService.getGoodsData(goods_code);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
+	}
 	public static void main(String[] args) throws Exception {
 		System.out.println(java.net.URLDecoder.decode("%E6%9B%B9%E5%90%8E%E7%BA%A2", "utf-8"));
 	}

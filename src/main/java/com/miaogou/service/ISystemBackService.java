@@ -31,6 +31,8 @@ public interface ISystemBackService {
 			String introduceUrl, String introducePrice, String introduce,
 			CommonsMultipartFile iconImgfile, CommonsMultipartFile[] imgListfile)throws Exception;
 
+	Map<String, Object> getGoodsData(String goods_code) throws Exception;
+
 	
 
 

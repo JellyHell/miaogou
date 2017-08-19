@@ -236,11 +236,14 @@ public class SystemBackImpl implements ISystemBackService{
 			Map<String,String> pa=new HashMap<String,String>();
 			pa.put("goods_code", goods_code);
 			
+			Map<String,Object> pa2=new HashMap<String,Object>();
+			pa2.put("goods_code", goods_code);
+			
 			
 			//先查询出图片列表  删除图片使用
 			List<Map<String,String>> li=systembackDao.getAttachmentBytabCode(pa);
 			//查询出  商品信息  删除图片使用
-			Map<String,String> goodsItem=systembackDao.getGoodsItem(pa);
+			Map<String,String> goodsItem=systembackDao.getGoodsItem(pa2);
 			
 			
 			//删除数据表 1 mg_attachemnt
@@ -368,6 +371,39 @@ public class SystemBackImpl implements ISystemBackService{
 			retMap.put("errcode", "0");
 			retMap.put("errmsg", "ok");
 			retMap.put("pageInfo", pageInfo);
+			return retMap;
+		}
+
+		@Override
+		@Transactional
+		public Map<String, Object> getGoodsData(String goods_code)
+				throws Exception {
+			Map<String,Object> retMap=new HashMap<String,Object>();
+				
+			Map<String,Object> pa=new HashMap<String,Object>();
+		    pa.put("goods_code", goods_code);
+		    
+		    /**
+		     * 获取mg_goods表中的信息
+		     */
+		    Map<String,String> goodsInfo=systembackDao.getGoodsItem(pa);
+		    
+		    /**
+		     * 获取规格列表
+		     */
+		    List<Map<String,String>> specList=systembackDao.getSpecList(pa);
+		    
+		    /**
+		     * 获取图片列表
+		     */
+		    List<Map<String,String>> imgList=userDao.getAttachmentList(pa);
+		    
+		    retMap.put("errcode", "0");
+			retMap.put("errmsg", "ok");
+			retMap.put("goodsInfo", goodsInfo);
+			retMap.put("specList", specList);
+			retMap.put("imgList", imgList);
+		    
 			return retMap;
 		}
 

@@ -607,7 +607,8 @@ public class UserImpl implements IUserService{
 							Map<String,String> map=new HashMap<String,String>();
 							map.put("goodsCode",items[j].split("#")[0]);
 							map.put("goodsNum",items[j].split("#")[1]);
-							map.put("iconImg",items[j].split("#")[2]);
+							map.put("price",items[j].split("#")[2]);
+							map.put("iconImg",items[j].split("#")[6]);
 							map.put("goodsName",items[j].split("#")[3]);
 							map.put("sku",items[j].split("#")[4]);
 							map.put("spec_name",items[j].split("#")[5]);

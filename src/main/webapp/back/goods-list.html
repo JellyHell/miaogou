@@ -100,7 +100,6 @@
 			   currentPage:currentPage
 			   },
 		   success:function(res){
-			   console.log(res);
 			   if(res.errcode=="0"){
 				   setTableList("goodsList",res.pageInfo,function(pageSize,currentPage){
 					   getAllGoodsList("",pageSize,currentPage);
@@ -123,7 +122,8 @@
    
    //编辑
    function goodsList_edit(item){
-	   console.log(item);
+	   
+	   layer_show('编辑商品','goods-edit.html?goods_code='+item.goods_code,'','510');
    }
    //删除
    function goodsList_delete(item){

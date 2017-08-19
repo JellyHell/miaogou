@@ -25,7 +25,7 @@ public interface ISystemBackDao {
 
 	List<Map<String, String>> getAttachmentBytabCode(Map<String, String> pa);
 
-	Map<String, String> getGoodsItem(Map<String, String> pa);
+	Map<String, String> getGoodsItem(Map<String, Object> pa);
 
 	int attachemntDelBytabCode(Map<String, String> pa);
 
@@ -47,5 +47,6 @@ public interface ISystemBackDao {
 
 	List<Map<String, String>> getGoodsSpecList(Map<String, String> pa);
 
+	List<Map<String, String>> getSpecList(Map<String, Object> pa);
 
 }

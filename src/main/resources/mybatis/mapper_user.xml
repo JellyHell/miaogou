@@ -289,7 +289,7 @@
      select a.out_trade_no,a.prepay_id,a.total_fee ,a.state,DATE_FORMAT(a.createTime,'%Y-%c-%d %T') createTime,
         TIMESTAMPDIFF(SECOND,SYSDATE(),date_add(a.createTime, interval 2 hour)) ttl,
 		b.name,b.phone,b.area,b.address,b.postCode,
-		GROUP_CONCAT(c.goodsCode,'#',c.goodsNum,'#',e.price,'#',d.goods_name,'#',c.sku,'#',e.spec_name)  detail
+		GROUP_CONCAT(c.goodsCode,'#',c.goodsNum,'#',e.price,'#',d.goods_name,'#',c.sku,'#',e.spec_name,'#',e.url)  detail
 		from mg_order a left join mg_order_delivery_address b on a.out_trade_no=b.out_trade_no
 		left join mg_order_goods c on a.out_trade_no=c.out_trade_no 
 		left join mg_goods d on c.goodsCode=d.goods_code
