@@ -205,7 +205,7 @@ public class SystembackController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/addGoods", method = RequestMethod.POST)
-	public Map<String, Object> addGoods(String goods_name,String goods_class,String sale,
+	public Map<String, Object> addGoods(String goods_name,String goods_class,String sale,String price,
 			                            String[] spec_sku,String [] spec_name,String []spec_price,
 			                            String brand,String firstBrand,String secondBrand,
 			                            String introduceUrl,String introducePrice,String introduce,
@@ -216,7 +216,7 @@ public class SystembackController {
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		try {
 			
-			retMap=systembackService.addGoods(goods_name,goods_class,sale,spec_sku,spec_name,spec_price,specImgfile,
+			retMap=systembackService.addGoods(goods_name,goods_class,sale,price,spec_sku,spec_name,spec_price,specImgfile,
 					                brand,firstBrand,secondBrand,
 					           introduceUrl,introducePrice,introduce,iconImgfile,imgListfile);
 			

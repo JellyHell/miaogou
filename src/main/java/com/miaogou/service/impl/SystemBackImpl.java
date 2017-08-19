@@ -96,7 +96,7 @@ public class SystemBackImpl implements ISystemBackService{
 		@Override
 		@Transactional
 		public Map<String, Object> addGoods(String goods_name, String goods_class,
-				String sale, String[] spec_sku, String[] spec_name,
+				String sale, String price,String[] spec_sku, String[] spec_name,
 				String[] spec_price, CommonsMultipartFile[] specImgfile,
 				String brand, String firstBrand, String secondBrand,
 				String introduceUrl, String introducePrice, String introduce,
@@ -121,6 +121,7 @@ public class SystemBackImpl implements ISystemBackService{
 			pa.put("goods_name", goods_name);
 			pa.put("goods_class", goods_class);
 			pa.put("sale", sale);
+			pa.put("price", price);
 			pa.put("brand", brand);
 			pa.put("firstBrand", firstBrand);
 			pa.put("secondBrand", secondBrand);

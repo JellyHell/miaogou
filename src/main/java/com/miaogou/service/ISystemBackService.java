@@ -25,7 +25,7 @@ public interface ISystemBackService {
 	Map<String, Object> getrefundList(int pageSize, int currentPage);
 
 	Map<String, Object> addGoods(String goods_name, String goods_class,
-			String sale, String[] spec_sku, String[] spec_name,
+			String sale, String price,String[] spec_sku, String[] spec_name,
 			String[] spec_price, CommonsMultipartFile[] specImgfile,
 			String brand, String firstBrand, String secondBrand,
 			String introduceUrl, String introducePrice, String introduce,
