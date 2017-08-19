@@ -236,7 +236,7 @@
     </insert>
     
     <insert id="createOrderGoods" parameterType="Map">
-      INSERT INTO `mg_order_goods` (`out_trade_no`, `goodsCode`,`sku` `goodsNum`) 
+      INSERT INTO `mg_order_goods` (`out_trade_no`, `goodsCode`,`sku`, `goodsNum`) 
       VALUES (#{out_trade_no}, #{goodsCode},#{sku}, #{goodsNum})
     </insert>
     <select id="modifytotlfee" parameterType="Map" resultType="java.lang.Integer">
