@@ -43,5 +43,7 @@ public interface ISystemBackDao {
 
 	List<Map<String, Object>> getrefundList();
 
+	int inserIntoGoodsSpec(Map<String, String> pa);
+
 
 }

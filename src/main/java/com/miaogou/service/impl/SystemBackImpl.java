@@ -20,6 +20,7 @@ import com.miaogou.dao.IUserDao;
 import com.miaogou.service.ISystemBackService;
 import com.miaogou.util.FastdfsUtils;
 import com.miaogou.util.MD5Utils;
+import com.miaogou.util.StringUtil;
 
 /**
  * 
@@ -90,22 +91,32 @@ public class SystemBackImpl implements ISystemBackService{
 
 		@Override
 		@Transactional
-		public Map<String, Object> addGoods(String sku,String goods_name, String price,
-				String goods_class,String sale, String brand, String firstBrand,
-				String secondBrand, String introduceUrl, String introducePrice,
-				String introduce, CommonsMultipartFile iconImgfile,
-				CommonsMultipartFile bigImgfile,
-				CommonsMultipartFile[] imgListfile) throws Exception {
+		public Map<String, Object> addGoods(String goods_name, String goods_class,
+				String sale, String[] spec_sku, String[] spec_name,
+				String[] spec_price, CommonsMultipartFile[] specImgfile,
+				String brand, String firstBrand, String secondBrand,
+				String introduceUrl, String introducePrice, String introduce,
+				CommonsMultipartFile iconImgfile, CommonsMultipartFile[] imgListfile) throws Exception {
 			
 			Map<String,Object> retMap=new HashMap<String,Object>();
+			
+			/**
+			 * 1 先进行简单的判断 sku数组不能重复   数字大小必须一致
+			 */
+			
+			if(!StringUtil.checkRepeat(spec_sku)){
+				retMap.put("errcode", "-3");
+				retMap.put("errmsg", "SKU不能重复");
+				return retMap;
+			}
+			
+			
 			Map<String,String> pa=new HashMap<String,String>();
 			String code="s_goods"+userDao.nextval("s_goods");
 			pa.put("goods_code", code);
-			pa.put("sku", sku);
 			pa.put("goods_name", goods_name);
 			pa.put("goods_class", goods_class);
 			pa.put("sale", sale);
-			pa.put("price", price);
 			pa.put("brand", brand);
 			pa.put("firstBrand", firstBrand);
 			pa.put("secondBrand", secondBrand);
@@ -113,14 +124,20 @@ public class SystemBackImpl implements ISystemBackService{
 			pa.put("introducePrice", "".equals(introducePrice)?"0":introducePrice);
 			pa.put("introduce", introduce);
 			
-			//判断sku是否重复
-			if(systembackDao.SkuExits(pa)>0) {
-				retMap.put("errcode", "-3");
-				retMap.put("errmsg", "SKU不能重复");
-				return retMap;
+			/**
+			 * 2判断数据库中sku是否重复
+			 */
+			for(String sku:spec_sku){
+				pa.put("sku", sku);
+				if(systembackDao.SkuExits(pa)>0) {
+					retMap.put("errcode", "-3");
+					retMap.put("errmsg", "SKU不能重复");
+					return retMap;
+				}
 			}
-			
-			//上传图标  并插入mg_goods表
+			/**
+			 * 3上传图标  并插入mg_goods表
+			 */
 			if(iconImgfile!=null){
 					String filename=iconImgfile.getOriginalFilename();
 					String [] arr=FastdfsUtils.uploadFile(iconImgfile.getBytes(), filename.substring(filename.indexOf(".")+1), null);
@@ -135,30 +152,35 @@ public class SystemBackImpl implements ISystemBackService{
 					}
 				
 			}
-			//插入细表
+			/**
+			 * 4插入细表
+			 */
 			if(systembackDao.inserIntoGoodsDetails(pa)!=1) throw new Exception("插入数据库表失败!");
 			
 			
-			//上传大图 并插入附件表
-			if(bigImgfile!=null){
-				String filename=bigImgfile.getOriginalFilename();
-				String [] arr=FastdfsUtils.uploadFile(bigImgfile.getBytes(), filename.substring(filename.indexOf(".")+1), null);
+			/**
+			 * 5 插入规格表
+			 */
+			
+			for(int i=0;i<spec_sku.length;i++){
+				//上传相应的规格图片
+				String filename=specImgfile[i].getOriginalFilename();
+				String [] arr=FastdfsUtils.uploadFile(specImgfile[i].getBytes(), filename.substring(filename.indexOf(".")+1), null);
 				
 				if(arr!=null&&arr.length==3){
 					
-					String attaCode="s_atta"+userDao.nextval("s_atta");
-					pa.put("code", attaCode);
-					pa.put("tabCode", code);
+					
+					pa.put("sku", spec_sku[i]);
+					pa.put("spec_name", spec_name[i]);
+					pa.put("price", spec_price[i]);
 					pa.put("url", arr[2]);
-					pa.put("groupName", arr[0]);
-					pa.put("remoteName", arr[1]);
+					pa.put("group", arr[0]);
+					pa.put("remote", arr[1]);
 					
-					if(systembackDao.inserIntoAttachmentbigImg(pa)!=1) throw new Exception("插入数据库表失败!");
-					
-				}else{
-					throw new Exception("上传icon图片失败");
+					if(systembackDao.inserIntoGoodsSpec(pa)!=1) throw new Exception("插入数据库表失败!");
 				}
-		      }
+			}
+			
 			
 			//上传图片列表
 			if(imgListfile!=null&&imgListfile.length>0){

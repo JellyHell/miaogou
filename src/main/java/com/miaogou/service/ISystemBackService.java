@@ -10,12 +10,6 @@ public interface ISystemBackService {
 
 	Map<String, Object> getGoodsList(String key, int pageSize, int currentPage);
 
-	Map<String, Object> addGoods(String sku,String goods_name, String price,
-			String goods_class,String sale, String brand, String firstBrand,
-			String secondBrand, String introduceUrl, String introducePrice,
-			String introduce,  CommonsMultipartFile iconImgfile,
-			CommonsMultipartFile bigImgfile, CommonsMultipartFile[] imgListfile) throws Exception;
-
 	boolean userExists(String username);
 
 	boolean passwordRight(String username, String password);
@@ -29,6 +23,13 @@ public interface ISystemBackService {
 	Map<String, Object> getDictionaryData(String dicCode) throws Exception;
 
 	Map<String, Object> getrefundList(int pageSize, int currentPage);
+
+	Map<String, Object> addGoods(String goods_name, String goods_class,
+			String sale, String[] spec_sku, String[] spec_name,
+			String[] spec_price, CommonsMultipartFile[] specImgfile,
+			String brand, String firstBrand, String secondBrand,
+			String introduceUrl, String introducePrice, String introduce,
+			CommonsMultipartFile iconImgfile, CommonsMultipartFile[] imgListfile)throws Exception;
 
 	
 

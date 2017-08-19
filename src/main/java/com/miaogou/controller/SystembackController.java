@@ -205,18 +205,20 @@ public class SystembackController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/addGoods", method = RequestMethod.POST)
-	public Map<String, Object> addGoods(String sku,String goods_name,String price,String goods_class,String sale,
+	public Map<String, Object> addGoods(String goods_name,String goods_class,String sale,
+			                            String[] spec_sku,String [] spec_name,String []spec_price,
 			                            String brand,String firstBrand,String secondBrand,
 			                            String introduceUrl,String introducePrice,String introduce,
 			                            @RequestParam("iconImgfile") CommonsMultipartFile iconImgfile,
-			                            @RequestParam("bigImgfile") CommonsMultipartFile bigImgfile,
+			                            @RequestParam("specImgFile") CommonsMultipartFile[] specImgfile,
 			                            @RequestParam("imgListfile") CommonsMultipartFile[] imgListfile,
 			                          HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> retMap=new HashMap<String,Object>();
 		try {
 			
-			retMap=systembackService.addGoods(sku,goods_name,price,goods_class,sale,brand,firstBrand,secondBrand,
-					           introduceUrl,introducePrice,introduce,iconImgfile,bigImgfile,imgListfile);
+			retMap=systembackService.addGoods(goods_name,goods_class,sale,spec_sku,spec_name,spec_price,specImgfile,
+					                brand,firstBrand,secondBrand,
+					           introduceUrl,introducePrice,introduce,iconImgfile,imgListfile);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

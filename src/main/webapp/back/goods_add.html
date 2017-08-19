@@ -19,7 +19,7 @@
 <link href="lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
 <style>
  .dashed{
-   border:1px dashed #000;
+   border:1px dashed #ddd;
    text-align: right;
    padding-left: 15px;
    padding-right: 15px;
@@ -34,12 +34,12 @@
 <body>
 <div class="page-container">
 	<form action="SystemBack/addGoods" method="post" class="form form-horizontal" id="form-article-add">
-	    <div class="row cl">
+	    <!-- <div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>SKU：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder="" id="sku" name="sku">
 			</div>
-		</div>
+		</div> -->
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
@@ -73,12 +73,12 @@
 			<div class="formControls col-xs-8 col-sm-9" >
 			    <div class="dashed" style="padding-right: 20px;padding-top: 20px;padding-bottom: 20px;">
 			      <div class="specItem" style="margin-bottom: 15px;">
-				      <input type="text" style="width:24%" class="input-text" value="" placeholder="请填写SKU" id="sku" name="sku">
+				      <input type="text" style="width:24%" class="input-text" value="" placeholder="请填写SKU" id="spec_sku" name="spec_sku">
 				      <input type="text" style="width:24%" class="input-text" value="" placeholder="请填写规格名称" id="spec_name" name="spec_name">
-				      <input type="text" style="width:24%;" class="input-text" value="" placeholder="请填写价格" id="price" name="price">
+				      <input type="text" style="width:24%;" class="input-text" value="" placeholder="请填写价格" id="spec_price" name="spec_price">
 				      <span class="btn-upload form-group" style="width:22%">
-						<input class="input-text upload-url" type="text" name="iconImg" id="iconImg" placeholder="请选择图片" readonly nullmsg="请添加附件！" style="width:100px">
-						<input type="file" accept="image/*"  name="iconImgfile" class="input-file">
+						<input class="input-text upload-url" type="text" name="spec_Img" id="spec_Img" placeholder="请选择图片" readonly nullmsg="请添加附件！" style="width:100px">
+						<input type="file" accept="image/*"  name="specImgFile" class="input-file">
 					 </span>
 					 <i class="Hui-iconfont" style="cursor: pointer;" onclick="delSpecItem(this)">&#xe6e2;</i> 
 				 </div>
@@ -137,7 +137,7 @@
 				</span>
 			</div>
 		</div>
-	    <div class="row cl">
+	    <!-- <div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">大图：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<span class="btn-upload form-group">
@@ -146,7 +146,7 @@
 				<input type="file" accept="image/*"  name="bigImgfile" class="input-file">
 				</span>
 			</div>
-		</div> 
+		</div>  -->
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">图片列表：</label>
 			<div class="formControls col-xs-8 col-sm-9">
@@ -192,13 +192,19 @@ $(function(){
 
 $("#form-article-add").validate({
 	rules:{
-		sku:{
-			required:true
-		},
 		goods_name:{
 			required:true
 		},
-		price:{
+		goods_class:{
+			required:true
+		},
+		spec_sku:{
+			required:true
+		},
+		spec_name:{
+			required:true
+		},
+		spec_price:{
 			required:true,
 			number:true
 		},
@@ -217,10 +223,10 @@ $("#form-article-add").validate({
 		iconImg:{
 			required:true
 		},
-		bigImg:{
+		imgList:{
 			required:true
 		},
-		imgList:{
+		spec_Img:{
 			required:true
 		}
 	},
