@@ -279,5 +279,19 @@ function delSpecItem(obj){
 	if($("div.specItem").length<=1) return;
 	$(obj).parent().remove();
 }
+
+function getSkuSeq(goods_class){
+	var seq="";
+	$.ajax({
+		url:"SystemBack/getSkuSeq",
+		type:"get",
+		async:false,
+		data:{goods_class:goods_class},
+		success:function(res){
+			seq=res.seq;
+		}
+	});
+	return seq;
+}
 </script>
 </html>

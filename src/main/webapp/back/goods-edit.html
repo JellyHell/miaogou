@@ -57,7 +57,7 @@
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>上架状态：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<span class="select-box">
-				<select name="sale" class="select">
+				<select name="sale" id="sale" class="select">
 					<option value="on">上架</option>
 					<option value="off">下架</option>
 				</select>
@@ -178,16 +178,37 @@
 <script>
 
 $(function(){
+	
+	initGoodsClass();
 	getGoodsData(GetQueryString("goods_code"));
 });
 
+//初始化商品类别
+function initGoodsClass(){
+	$.ajax({
+		url:"SystemBack/getDictionaryData",
+		type:"get",
+		data:{dicCode:'goodsClass'},
+	    success:function(res){
+	    	$.each(res.data,function(index,item){
+	    		$("#goods_class").append("<option value='"+item.code+"'>"+item.value+"</option>");
+	    	})
+	    }
+	});
+	
+}
+
+//获取所编辑的内容 并进行设置
 function getGoodsData(goods_code){
 	$.ajax({
 		url:"SystemBack/getGoodsData",
 		data:{goods_code:goods_code},
 		type:"get",
 		success:function(res){
-			
+			$("#goods_name").val(res.goodsInfo.goods_name);
+			$("#goods_class option[value='"+res.goodsInfo.goods_class+"']").attr("selected",true);
+			$("#sale option[value='"+res.goodsInfo.sale+"']").attr("selected",true);
+			$("#price").val(res.goodsInfo.price);
 		}
 	});
 }

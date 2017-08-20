@@ -326,4 +326,9 @@
     <select id="isOrderPayed" parameterType="Map" resultType="java.lang.Integer">
      select count(1) from mg_order where out_trade_no=#{out_trade_no} and transaction_id is not null
     </select> 
+    <insert id="insertintoSeq" parameterType="Map" >
+     INSERT INTO `sequence` (`name`, `current_value`, `increment`) 
+     VALUES (#{name}, '10000', '1');
+
+    </insert>
 </mapper>
