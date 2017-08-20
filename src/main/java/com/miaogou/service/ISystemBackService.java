@@ -33,6 +33,8 @@ public interface ISystemBackService {
 
 	Map<String, Object> getGoodsData(String goods_code) throws Exception;
 
+	Map<String, Object> getSkuSeq(String goods_class);
+
 	
 
 

@@ -373,6 +373,26 @@ public class SystembackController {
 		}
 		return retMap;
 	}
+	/**
+	 * 获取sku序列
+	 * @param goods_class
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getSkuSeq", method = RequestMethod.GET)
+	public Map<String, Object> getSkuSeq(String goods_class,HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		try {
+			retMap=systembackService.getSkuSeq(goods_class);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
+	}
 	public static void main(String[] args) throws Exception {
 		System.out.println(java.net.URLDecoder.decode("%E6%9B%B9%E5%90%8E%E7%BA%A2", "utf-8"));
 	}

@@ -106,6 +106,8 @@ public interface IUserDao {
 
 	int updateFreundto1(Map<String, Object> pa);
 
+	void insertintoSeq(Map<String, Object> pa);
+
 
 
 }

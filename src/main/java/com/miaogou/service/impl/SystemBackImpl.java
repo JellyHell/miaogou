@@ -407,6 +407,26 @@ public class SystemBackImpl implements ISystemBackService{
 			return retMap;
 		}
 
+		@Override
+		@Transactional
+		public Map<String, Object> getSkuSeq(String goods_class) {
+			Map<String,Object> retMap=new HashMap<String,Object>();
+			
+			Map<String,Object> pa=new HashMap<String,Object>();
+		    pa.put("name", goods_class);
+		    
+		    //查看是否有该序列
+		    String seq=userDao.nextval(goods_class);
+		    if("0".equals(seq)){
+		    	userDao.insertintoSeq(pa);
+		    }
+		    retMap.put("errcode", "0");
+			retMap.put("errmsg", "ok");
+			retMap.put("seq", goods_class.toUpperCase()+userDao.nextval(goods_class));
+		    
+		    return retMap;
+		}
+
 
 		
 		
