@@ -79,7 +79,7 @@
 			<div class="formControls col-xs-8 col-sm-9" >
 			    <div class="dashed" style="padding-right: 20px;padding-top: 20px;padding-bottom: 20px;">
 			      <div class="specItem" style="margin-bottom: 15px;">
-				      <input type="text" style="width:24%" class="input-text" value="" placeholder="请填写SKU" id="spec_sku" name="spec_sku">
+				      <input type="text" style="width:24%" class="input-text" value="" placeholder="" disabled id="spec_sku" name="spec_sku">
 				      <input type="text" style="width:24%" class="input-text" value="" placeholder="请填写规格名称" id="spec_name" name="spec_name">
 				      <input type="text" style="width:24%;" class="input-text" value="" placeholder="请填写价格" id="spec_price" name="spec_price">
 				      <span class="btn-upload form-group" style="width:22%">
@@ -183,9 +183,24 @@
 <script>
 
 $(function(){
+	//初始化商品类别列表
+	initGoodsClassOption();
+	//初始化时获取第一个商品类别的sku序列
+	$("#spec_sku").val(getSkuSeq($("#goods_class option:selected").val()));
+	//商品类别变化时  将增加的类别重新获取其sku序列
+	$("#goods_class").change(function(){
+		var goods_class=$(this).find("option:selected").val();
+		$(".specItem").each(function(){
+			$(this).find("#spec_sku").val(getSkuSeq(goods_class));
+		});
+	});
+});
+
+function initGoodsClassOption(){
 	$.ajax({
 		url:"SystemBack/getDictionaryData",
 		type:"get",
+		async:false,
 		data:{dicCode:'goodsClass'},
 	    success:function(res){
 	    	$.each(res.data,function(index,item){
@@ -193,8 +208,7 @@ $(function(){
 	    	})
 	    }
 	});
-});
-
+}
 
 $("#form-article-add").validate({
 	rules:{
@@ -273,6 +287,7 @@ function gotoGoodsList(){
 
 function addSpec(obj){
 	$(obj).parent().before($(".specItem").eq(0).prop("outerHTML"));
+	$(".specItem:last").find("#spec_sku").val(getSkuSeq($("#goods_class option:selected").val()));
 }
 
 function delSpecItem(obj){
