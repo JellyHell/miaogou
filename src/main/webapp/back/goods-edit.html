@@ -75,13 +75,16 @@
 			<div class="formControls col-xs-8 col-sm-9" >
 			    <div class="dashed" style="padding-right: 20px;padding-top: 20px;padding-bottom: 20px;">
 			      <div class="specItem" style="margin-bottom: 15px;">
-				      <input type="text" style="width:24%" class="input-text" value="" placeholder="请填写SKU" id="spec_sku" name="spec_sku">
+				      <input type="text" style="width:24%" class="input-text" readonly value="" placeholder="请填写SKU" id="spec_sku" name="spec_sku">
 				      <input type="text" style="width:24%" class="input-text" value="" placeholder="请填写规格名称" id="spec_name" name="spec_name">
 				      <input type="text" style="width:24%;" class="input-text" value="" placeholder="请填写价格" id="spec_price" name="spec_price">
-				      <span class="btn-upload form-group" style="width:22%">
-						<input class="input-text upload-url" type="text" name="spec_Img" id="spec_Img" placeholder="请选择图片" readonly nullmsg="请添加附件！" style="width:100px">
-						<input type="file" accept="image/*"  name="specImgFile" class="input-file">
-					 </span>
+				      <span class="btn-upload form-group" style="width:22%;height:100px;">
+						<img src="http://123.207.40.218:8080/group1/M00/00/03/CodDhlmX8K2ACg-xAACcxh9ZX0M48.jpeg" style="position:absolute;left:0;top:0;width:100px;height: 100px;">
+					   
+					       <span class="layui-layer-imgtit" style="position: absolute;left: 0px;bottom: 0px;padding-left: 40%;background: rgba(0,0,0,0.4);">
+					        <i class="Hui-iconfont" style="cursor: pointer;" >&#xe6e2;</i>
+					       </span>
+					  </span>
 					 <i class="Hui-iconfont" style="cursor: pointer;" onclick="delSpecItem(this)">&#xe6e2;</i> 
 				 </div>
 				 <div style="margin-right: 77px;margin-top: 20px;">
@@ -205,14 +208,34 @@ function getGoodsData(goods_code){
 		data:{goods_code:goods_code},
 		type:"get",
 		success:function(res){
-			$("#goods_name").val(res.goodsInfo.goods_name);
-			$("#goods_class option[value='"+res.goodsInfo.goods_class+"']").attr("selected",true);
-			$("#sale option[value='"+res.goodsInfo.sale+"']").attr("selected",true);
-			$("#price").val(res.goodsInfo.price);
+			setData(res);
 		}
 	});
 }
 
+function setData(res){
+	console.log(res);
+	$("#goods_name").val(res.goodsInfo.goods_name);
+	$("#goods_class option[value='"+res.goodsInfo.goods_class+"']").attr("selected",true);
+	$("#sale option[value='"+res.goodsInfo.sale+"']").attr("selected",true);
+	$("#price").val(res.goodsInfo.price);
+	
+	//设置规格
+	var html="";
+	$.each(res.specList,function(index,item){
+		var t=$(".specItem").prop("outerHTML");
+		console.log(item);
+		$(t).find("#spec_sku").val(item.sku);
+		$(t).find("#spec_name").val(item.spec_name);
+		$(t).find("#spec_price").val(item.price);
+		$(t).find("img").attr("src",item.url);
+		html+=t;
+	});
+	
+	//$("div.specItem").remove();
+	//$("div.dashed").prepend(html);
+	
+}
 function addSpec(obj){
 	$(obj).parent().before($(".specItem").eq(0).prop("outerHTML"));
 }
