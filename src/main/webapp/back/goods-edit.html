@@ -22,6 +22,9 @@
     text-align:center;
     background: rgba(0,0,0,0.4);
     width: 100%;
+    cursor: default;
+ }
+ .divhide{
     display: none;
  }
  .bottomShade i{
@@ -99,8 +102,8 @@
 				      <input type="text" style="width:24%" class="input-text" value="" placeholder="请填写规格名称" id="spec_name" name="spec_name">
 				      <input type="text" style="width:24%;" class="input-text" value="" placeholder="请填写价格" id="spec_price" name="spec_price">
 				      <div class="btn-upload form-group" style="width:22%;height:100px;">
-						   <img class="specImg" src="http://123.207.40.218:8080/group1/M00/00/03/CodDhlmX8K2ACg-xAACcxh9ZX0M48.jpeg" >
-					       <div class="layui-layer-imgtit bottomShade" >
+						   <img class="specImg" >
+					       <div class="layui-layer-imgtit bottomShade divhide" >
 					         <i class="Hui-iconfont" >&#xe6e2;</i>
 					       </div> 
 					  </div>
@@ -198,11 +201,28 @@
 <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> 
 </body>
 <script>
-
+var html='<span class="btn-upload form-group" style="width:22%">'+
+		  '<input class="input-text upload-url" type="text" name="spec_Img" id="spec_Img" placeholder="请选择图片" readonly nullmsg="请添加附件！" style="width:100px">'+
+		  '<input type="file" accept="image/*"  name="specImgFile" class="input-file">'+
+		'</span>';
 $(function(){
-	
+	//获取商品类别列表
 	initGoodsClass();
+	//获取该商品的基本信息
 	getGoodsData(GetQueryString("goods_code"));
+	//绑定图片hover事件
+	$("div.dashed").delegate(".specItem .btn-upload","mouseenter mouseleave",function(){
+	     $(this).find(".bottomShade").toggleClass("divhide");
+	});
+	
+	//删除图片事件
+	$("div.dashed").delegate(".specItem .btn-upload i","click",function(){
+		$(this).parents(".btn-upload").hide();
+		$(this).parents(".btn-upload").after(html);	
+		$(this).parents(".btn-upload").remove();
+	});
+	
+	
 });
 
 //初始化商品类别
@@ -228,6 +248,7 @@ function getGoodsData(goods_code){
 		type:"get",
 		success:function(res){
 			setData(res);
+			
 		}
 	});
 }
@@ -240,24 +261,20 @@ function setData(res){
 	$("#price").val(res.goodsInfo.price);
 	
 	//设置规格
-	var html="";
-	$.each(res.specList,function(index,item){
-		html+='<div class="specItem" style="margin-bottom: 15px;">'+
-	      '<input type="text" style="width:24%" class="input-text" readonly value="'+item.sku+'" placeholder="请填写SKU" id="spec_sku" name="spec_sku">'+
-  '<input type="text" style="width:24%" class="input-text" value="'+item.spec_name+'" placeholder="请填写规格名称" id="spec_name" name="spec_name">'+
-  '<input type="text" style="width:24%;" class="input-text" value="'+item.price+'" placeholder="请填写价格" id="spec_price" name="spec_price">'+
-  '<div class="btn-upload form-group" style="width:22%;height:100px;">'+
-		'   <img class="specImg" src="'+item.url+'" >'+
-	    '   <div class="layui-layer-imgtit bottomShade" >'+
-	     '    <i class="Hui-iconfont" >&#xe6e2;</i>'+
-	     '  </div> '+
-	  '</div>'+
-	 '<i class="Hui-iconfont" style="cursor: pointer;" onclick="delSpecItem(this)">&#xe6e2;</i> '+
-'</div>';
+	for(var i=0;i<res.specList.length-1;i++){
+		$("div.dashed").prepend($(".specItem").eq(0).prop("outerHTML"));
+	}
+	
+	$(".specItem").each(function(index,item){
+		$(this).find("#spec_sku").val(res.specList[index].sku);
+		$(this).find("#spec_name").val(res.specList[index].spec_name);
+		$(this).find("#spec_price").val(res.specList[index].price);
+		$(this).find("img").attr("src",res.specList[index].url);
 	});
 	
-	//$("div.specItem").remove();
-	$("div.dashed").prepend(html);
+	
+	
+	
 	
 }
 function addSpec(obj){
