@@ -382,11 +382,12 @@ public class SystemBackImpl implements ISystemBackService{
 				
 			Map<String,Object> pa=new HashMap<String,Object>();
 		    pa.put("goods_code", goods_code);
+		    pa.put("tabCode", goods_code);
 		    
 		    /**
 		     * 获取mg_goods表中的信息
 		     */
-		    Map<String,String> goodsInfo=systembackDao.getGoodsItem(pa);
+		    Map<String,String> goodsInfo=systembackDao.getGoodsItem2(pa);
 		    
 		    /**
 		     * 获取规格列表

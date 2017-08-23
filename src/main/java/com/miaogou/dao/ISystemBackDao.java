@@ -49,4 +49,6 @@ public interface ISystemBackDao {
 
 	List<Map<String, String>> getSpecList(Map<String, Object> pa);
 
+	Map<String, String> getGoodsItem2(Map<String, Object> pa);
+
 }

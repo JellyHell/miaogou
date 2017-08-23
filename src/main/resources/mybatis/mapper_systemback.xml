@@ -89,6 +89,9 @@
 	<select id="getGoodsItem" parameterType="Map" resultType="Map">
 	 select * from mg_goods where goods_code=#{goods_code}
 	</select>
+	<select id="getGoodsItem2" parameterType="Map" resultType="Map">
+	 select * from mg_goods a left join mg_goodsdetails b on a.goods_code=b.goods_code where a.goods_code=#{goods_code}
+	</select>
 	<update id="attachemntDelBytabCode" parameterType="Map">
 	 delete from mg_attachment where tabCode=#{goods_code}
 	</update>

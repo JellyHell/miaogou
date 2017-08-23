@@ -149,7 +149,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">商品说明：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="introduce" cols="" rows="" class="textarea"  placeholder="" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" ></textarea>
+				<textarea name="introduce" id="introduce" cols="" rows="" class="textarea"  placeholder="" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" ></textarea>
 				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
 			</div>
 		</div>
@@ -157,11 +157,15 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">图标：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<span class="btn-upload form-group">
-				<input class="input-text upload-url" type="text" name="iconImg" id="iconImg" readonly nullmsg="请添加附件！" style="width:200px">
+				<div class="btn-upload form-group iconImg" style="width: 100px;height: 100px;">
+				<img id="iconImg" style="width: 100px;height: 100px;"  >
+				<!-- <input class="input-text upload-url" type="text" name="iconImg" id="iconImg" readonly nullmsg="请添加附件！" style="width:200px">
 				<a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
-				<input type="file" accept="image/*"  name="iconImgfile" class="input-file">
-				</span>
+				<input type="file" accept="image/*"  name="iconImgfile" class="input-file"> -->
+				<div class="bottomShade divhide" style="height: 30px;">
+				  <i class="Hui-iconfont" >&#xe6e2;</i>
+				</div>
+				</div>
 			</div>
 		</div>
 	    <!-- <div class="row cl">
@@ -176,12 +180,15 @@
 		</div>  -->
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">图片列表：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<span class="btn-upload form-group">
-				<input class="input-text upload-url" type="text" name="imgList" id="imgList" readonly nullmsg="请添加附件！" style="width:200px">
-				<a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
-				<input type="file" accept="image/*" multiple name="imgListfile" class="input-file">
-				</span>
+			<div class="formControls col-xs-8 col-sm-9 imgListDiv">
+				<div class="btn-upload form-group imgList" style="width: 100px;height: 100px;margin-bottom: 10px;margin-left: 5px;">
+				<img id="iconImg" style="width: 100px;height: 100px;"  >
+						<div class="bottomShade divhide" style="height: 30px;">
+					  <i class="Hui-iconfont" >&#xe6e2;</i>
+					</div>
+				</div>
+				<div><img id="ImgPr" width="120" height="120" /></div>
+                <input type="file" id="up" />
 			</div>
 		</div>
 		<div class="row cl">
@@ -201,10 +208,16 @@
 <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> 
 </body>
 <script>
-var html='<span class="btn-upload form-group" style="width:22%">'+
-		  '<input class="input-text upload-url" type="text" name="spec_Img" id="spec_Img" placeholder="请选择图片" readonly nullmsg="请添加附件！" style="width:100px">'+
-		  '<input type="file" accept="image/*"  name="specImgFile" class="input-file">'+
-		'</span>';
+var html='<div class="btn-upload form-group" style="width:22%">'+
+            '<div><img class="divhide" id="specImg" style="width:100px;height:100px;"><div>'+
+			'<a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>'+
+			 '<input type="file" accept="image/*" id="specImgFile"  name="specImgFile" class="input-file">'+
+		'</div>';
+		
+var html2='<div class="btn-upload form-group">'+
+			'<a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>'+
+			'<input type="file" accept="image/*"  name="iconImgfile" class="input-file">'+
+			'</div>';
 $(function(){
 	//获取商品类别列表
 	initGoodsClass();
@@ -220,9 +233,31 @@ $(function(){
 		$(this).parents(".btn-upload").hide();
 		$(this).parents(".btn-upload").after(html);	
 		$(this).parents(".btn-upload").remove();
+		$(this).parent().find("img").uploadPreview({ Img: "specImg", Width: 100, Height: 100 });
 	});
 	
+	//iconImg hover 事件显示删除按钮
+	$("div.iconImg").hover(function(){
+		$(this).find(".bottomShade").show();
+	},function(){
+		$(this).find(".bottomShade").hide();
+	});
 	
+	//iconImg 删除
+	$("div.iconImg .bottomShade i").click(function(){
+		$(this).parents(".iconImg").hide();
+		$(this).parents(".iconImg").after(html2);
+		$(this).parents(".iconImg").remove();
+	});
+	
+	//imgList hover事件
+	$("div.imgListDiv").delegate(".imgList","mouseenter mouseleave",function(){
+	     $(this).find(".bottomShade").toggleClass("divhide");
+	});
+	//delete 
+	$("div.imgListDiv").delegate(".imgList i","click",function(){
+	     $(this).parents(".imgList").remove();
+	});
 });
 
 //初始化商品类别
@@ -248,7 +283,6 @@ function getGoodsData(goods_code){
 		type:"get",
 		success:function(res){
 			setData(res);
-			
 		}
 	});
 }
@@ -259,6 +293,13 @@ function setData(res){
 	$("#goods_class option[value='"+res.goodsInfo.goods_class+"']").attr("selected",true);
 	$("#sale option[value='"+res.goodsInfo.sale+"']").attr("selected",true);
 	$("#price").val(res.goodsInfo.price);
+	$("#brand").val(res.goodsInfo.brand);
+	$("#firstBrand").val(res.goodsInfo.firstBrand);
+	$("#secondBrand").val(res.goodsInfo.secondBrand);
+	$("#introduceUrl").val(res.goodsInfo.introduceUrl);
+	$("#introducePrice").val(res.goodsInfo.introducePrice);
+	$("#introduce").val(res.goodsInfo.introduce);
+	$("#iconImg").attr("src",res.goodsInfo.iconImg);
 	
 	//设置规格
 	for(var i=0;i<res.specList.length-1;i++){
@@ -272,6 +313,15 @@ function setData(res){
 		$(this).find("img").attr("src",res.specList[index].url);
 	});
 	
+	//设置大图列表
+	
+	for(var i=0;i<res.imgList.length-1;i++){
+		$("div.imgListDiv").prepend($(".imgList").eq(0).prop("outerHTML"));
+	}
+	
+	$(".imgList").each(function(index,item){
+		$(this).find("img").attr("src",res.imgList[index].url);
+	});
 	
 	
 	
