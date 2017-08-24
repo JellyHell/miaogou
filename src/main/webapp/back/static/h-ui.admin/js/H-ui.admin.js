@@ -32,7 +32,8 @@ $("#up").uploadPreview({ Img: "ImgPr", Width: 120, Height: 120, ImgType: ["gif",
 jQuery.fn.extend({
     uploadPreview: function (opts) {
     	console.log(1);
-        var _self = this,
+        var _self = this;
+        console.log($(this).prop("outerHTML"));
             _this = $(this);
         opts = jQuery.extend({
             Img: "ImgPr",
@@ -53,6 +54,7 @@ jQuery.fn.extend({
             return url
         };
         _this.change(function () {
+        	console.log(1);
             if (this.value) {
                 if (!RegExp("\.(" + opts.ImgType.join("|") + ")$", "i").test(this.value.toLowerCase())) {
                     alert("选择文件错误,图片类型必须是" + opts.ImgType.join("，") + "中的一种");
@@ -61,6 +63,7 @@ jQuery.fn.extend({
                 }
                 if ($.support.msie) {
                     try {
+                    	console.log(opts.Img);
                         $("#" + opts.Img).attr('src', _self.getObjectURL(this.files[0]))
                     } catch (e) {
                         var src = "";
@@ -131,6 +134,19 @@ function getskincookie(){
 		var hrefRes=hrefStr.substring(0,hrefStr.lastIndexOf('skin/'))+'skin/'+v+'/skin.css';
 		$("#skin").attr("href",hrefRes);
 	}
+}
+
+function getSelectFileUrl(obj){
+	var file=obj.files[0];
+	var url = null;
+    if (window.createObjectURL != undefined) {
+        url = window.createObjectURL(file)
+    } else if (window.URL != undefined) {
+        url = window.URL.createObjectURL(file)
+    } else if (window.webkitURL != undefined) {
+        url = window.webkitURL.createObjectURL(file)
+    }
+  return url;
 }
 /*菜单导航*/
 function Hui_admin_tab(obj){
