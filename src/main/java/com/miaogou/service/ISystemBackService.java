@@ -35,6 +35,15 @@ public interface ISystemBackService {
 
 	Map<String, Object> getSkuSeq(String goods_class);
 
+	Map<String, Object> editGoods(String goods_code,String goods_name, String goods_class,
+			String sale, String price, String[] spec_sku, String[] spec_name,
+			String[] spec_price, String[] uploadedImg, String brand,
+			String firstBrand, String secondBrand, String introduceUrl,
+			String introducePrice, String introduce, String iconImgUploaded,
+			String[] uploadedBigImg, CommonsMultipartFile iconImgfile,
+			CommonsMultipartFile[] specImgfile,
+			CommonsMultipartFile[] imgListfile) throws Exception;
+
 	
 
 
