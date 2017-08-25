@@ -284,7 +284,7 @@ public class SystemBackImpl implements ISystemBackService{
 				pa.put("spec_name", spec_name[i]);
 				pa.put("price", spec_price[i]);
 				
-				if(!"".equals(uploadedImg[i])){
+				if(uploadedImg!=null&&uploadedImg.length>0&&!"".equals(uploadedImg[i])){
 					pa.put("url", uploadedImg[i]);
 				}else{
 					String[] arr=FastdfsUtils.uploadImgFile(specImgfile[spec++]);
