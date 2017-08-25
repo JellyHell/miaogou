@@ -227,6 +227,34 @@ public class SystembackController {
 		}
 		return retMap;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/editGoods", method = RequestMethod.POST)
+	public Map<String, Object> editGoods(String goods_code,String goods_name,String goods_class,String sale,String price,
+			                            String[] spec_sku,String [] spec_name,String []spec_price,String []uploadedImg,
+			                            String brand,String firstBrand,String secondBrand,
+			                            String introduceUrl,String introducePrice,String introduce,
+			                            String iconImgUploaded,String []uploadedBigImg,
+			                            @RequestParam(required=false,value="iconImgfile") CommonsMultipartFile iconImgfile,
+			                            @RequestParam(required=false,value="specImgFile") CommonsMultipartFile[] specImgfile,
+			                            @RequestParam(required=false,value="imgListfile") CommonsMultipartFile[] imgListfile,
+			                          HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> retMap=new HashMap<String,Object>();
+		try {
+			
+			System.out.println(111);
+			retMap=systembackService.editGoods(goods_code,goods_name,goods_class,sale,price,spec_sku,spec_name,
+					                spec_price,uploadedImg,
+					                brand,firstBrand,secondBrand,
+					           introduceUrl,introducePrice,introduce,iconImgUploaded,
+					           uploadedBigImg,iconImgfile,specImgfile,imgListfile);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retMap.put("errcode", "-2");
+			retMap.put("errmsg", "系统异常请稍后重试!");
+		}
+		return retMap;
+	}
 	/**
 	 * login
 	 * @param request

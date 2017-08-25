@@ -12,6 +12,7 @@ import org.csource.fastdfs.ProtoCommon;
 import org.csource.fastdfs.StorageClient;
 import org.csource.fastdfs.TrackerClient;
 import org.csource.fastdfs.TrackerServer;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 public class FastdfsUtils {
 	
@@ -156,6 +157,23 @@ public class FastdfsUtils {
 	      if (trackerServer != null)
 	        trackerServer.close();
 	    }
+	  }
+	  
+	  /**
+	   * 上传图片
+	   * @param file
+	   * @return  [0] group  [1] remote  [2] url
+ 	   * @throws Exception
+	   */
+	  public static String[] uploadImgFile(CommonsMultipartFile file) throws Exception{
+		  String filename=file.getOriginalFilename();
+			String [] arr=FastdfsUtils.uploadFile(file.getBytes(), filename.substring(filename.indexOf(".")+1), null);
+			
+			if(arr!=null&&arr.length==3){
+				return arr;
+			}else{
+				throw new Exception("上传icon图片失败");
+			}
 	  }
 public static void main(String[] args) throws FileNotFoundException, IOException, Exception {
 	

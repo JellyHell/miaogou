@@ -51,4 +51,12 @@ public interface ISystemBackDao {
 
 	Map<String, String> getGoodsItem2(Map<String, Object> pa);
 
+	int updateMgGoods(Map<String, String> pa);
+
+	int updateMgGoodsDetails(Map<String, String> pa);
+
+	int delgoodsSpec(Map<String, String> pa);
+
+	int delAttachment(Map<String, String> pa);
+
 }

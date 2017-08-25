@@ -137,4 +137,34 @@
     <select id="getSpecList" parameterType="Map" resultType="Map">
       select * from mg_goods_spec where goods_code=#{goods_code}
     </select>
+    <update id="updateMgGoods" parameterType="Map">
+      UPDATE mg_goods
+	 <trim prefix="set" suffixOverrides=",">
+		 <if test="goods_class!=null and  goods_class!=''">goods_class=#{goods_class},</if>
+		 <if test="price!=null and  price!=''">price=#{price},</if>
+		 <if test="sale!=null and  sale!=''">sale=#{sale},</if>
+		 <if test="iconImg!=null and  iconImg!=''">iconImg=#{iconImg},</if>
+		 <if test="group!=null  and group!=''">`group`=#{group},</if>
+		 <if test="remote!=null  and remote!=''">remote=#{remote},</if>
+	 </trim>
+	 WHERE goods_code=#{goods_code}
+    </update>
+    <update id="updateMgGoodsDetails" parameterType="Map">
+    UPDATE mg_goodsdetails
+	 <trim prefix="set" suffixOverrides=",">
+		 <if test="brand !=null and  brand !=''">brand=#{brand},</if>
+		 <if test="firstBrand !=null and  firstBrand !=''">firstBrand=#{firstBrand},</if>
+		 <if test="secondBrand !=null and  secondBrand !=''">secondBrand=#{secondBrand},</if>
+		 <if test="introduceUrl !=null and  introduceUrl !=''">introduceUrl=#{introduceUrl},</if>
+		 <if test="introducePrice !=null and  introducePrice !=''">introducePrice=#{introducePrice},</if>
+		 <if test="introduce !=null and  introduce !=''">introduce=#{introduce},</if>
+	 </trim>
+	 WHERE goods_code=#{goods_code}
+    </update>
+    <update id="delgoodsSpec" parameterType="Map">
+     delete from mg_goods_spec where goods_code=#{goods_code}
+    </update>
+    <update id="delAttachment" parameterType="Map">
+     delete from mg_attachment where tabCode=#{goods_code}
+    </update>
 </mapper>

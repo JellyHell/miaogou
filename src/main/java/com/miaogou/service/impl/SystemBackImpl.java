@@ -211,7 +211,120 @@ public class SystemBackImpl implements ISystemBackService{
 			retMap.put("errmsg", "ok");
 			return retMap;
 		}
-
+		/**
+		 * 编辑商品
+		 */
+		@Override
+		@Transactional
+		public Map<String, Object> editGoods(String goods_code,String goods_name,
+				String goods_class, String sale, String price,
+				String[] spec_sku, String[] spec_name, String[] spec_price,
+				String[] uploadedImg, String brand, String firstBrand,
+				String secondBrand, String introduceUrl, String introducePrice,
+				String introduce, String iconImgUploaded,
+				String[] uploadedBigImg, 
+				CommonsMultipartFile iconImgfile,
+				CommonsMultipartFile[] specImgfile,
+				CommonsMultipartFile[] imgListfile) throws Exception {
+           Map<String,Object> retMap=new HashMap<String,Object>();
+			
+			/**
+			 * 1 先进行简单的判断 sku数组不能重复   数字大小必须一致
+			 */
+			
+			if(!StringUtil.checkRepeat(spec_sku)){
+				retMap.put("errcode", "-3");
+				retMap.put("errmsg", "SKU不能重复");
+				return retMap;
+			}
+			
+			
+			Map<String,String> pa=new HashMap<String,String>();
+			pa.put("goods_code", goods_code);
+			pa.put("goods_name", goods_name);
+			pa.put("goods_class", goods_class);
+			pa.put("sale", sale);
+			pa.put("price", price);
+			pa.put("brand", brand);
+			pa.put("firstBrand", firstBrand);
+			pa.put("secondBrand", secondBrand);
+			pa.put("introduceUrl", introduceUrl);
+			pa.put("introducePrice", "".equals(introducePrice)?"0":introducePrice);
+			pa.put("introduce", introduce);
+			
+			
+			/**
+			 * 3更新主表
+			 */
+			if(iconImgfile!=null){
+				String[] arr=FastdfsUtils.uploadImgFile(iconImgfile);
+				pa.put("iconImg", arr[2]);
+				pa.put("group", arr[0]);
+				pa.put("remote", arr[1]);
+			}
+			if(systembackDao.updateMgGoods(pa)!=1) throw new Exception("插入数据库表失败!");
+			
+			
+			/**
+			 * 3 更新细表
+			 */
+			
+			if(systembackDao.updateMgGoodsDetails(pa)!=1) throw new Exception("插入数据库表失败!");
+			
+			/**
+			 * 4更新规格表
+			 */
+			//删除前先查询   保存最后在fastdfs中删除
+			
+			//先删除
+			if(systembackDao.delgoodsSpec(pa)<=0) throw new Exception("删除失败!");
+			int spec=0;
+			for(int i=0;i<spec_sku.length;i++){
+				pa.put("sku", spec_sku[i]);
+				pa.put("spec_name", spec_name[i]);
+				pa.put("price", spec_price[i]);
+				
+				if(!"".equals(uploadedImg[i])){
+					pa.put("url", uploadedImg[i]);
+				}else{
+					String[] arr=FastdfsUtils.uploadImgFile(specImgfile[spec++]);
+					pa.put("url", arr[2]);
+					pa.put("group", arr[0]);
+					pa.put("rempte", arr[1]);
+				}
+				if(systembackDao.inserIntoGoodsSpec(pa)!=1) throw new Exception("插入数据库表失败!");
+			}
+			
+			/**
+			 * 4 更新大图列表
+			 */
+			//上传图片列表
+			if(imgListfile!=null&&imgListfile.length>0){
+				//先删除
+				if(systembackDao.delAttachment(pa)<=0) throw new Exception("delete数据库表失败!");
+				
+				for(int i=0;i<imgListfile.length;i++){
+					    String[] arr =FastdfsUtils.uploadImgFile(imgListfile[i]);
+						
+						String attaCode="s_atta"+userDao.nextval("s_atta");
+						pa.put("code", attaCode);
+						pa.put("tabCode", goods_code);
+						pa.put("url", arr[2]);
+						pa.put("groupName", arr[0]);
+						pa.put("remoteName", arr[1]);
+						
+						if(systembackDao.inserIntoAttachment(pa)!=1) throw new Exception("插入数据库表失败!");
+					
+				}
+			}
+			
+			
+			retMap.put("errcode", "0");
+			retMap.put("errmsg", "ok");
+			return retMap;
+		}
+		
+		
 		@Override
 		@Transactional
 		public boolean userExists(String username) {
@@ -427,6 +540,8 @@ public class SystemBackImpl implements ISystemBackService{
 		    
 		    return retMap;
 		}
+
+		
 
 
 		

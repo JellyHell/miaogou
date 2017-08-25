@@ -148,6 +148,23 @@ function getSelectFileUrl(obj){
     }
   return url;
 }
+
+function getSelectFileUrlArr(obj){
+	var arr=[];
+	for(var i=0;i<obj.files.length;i++){
+		var file=obj.files[i];
+		var url = null;
+	    if (window.createObjectURL != undefined) {
+	        url = window.createObjectURL(file)
+	    } else if (window.URL != undefined) {
+	        url = window.URL.createObjectURL(file)
+	    } else if (window.webkitURL != undefined) {
+	        url = window.webkitURL.createObjectURL(file)
+	    }
+	    arr.push(url);
+	}
+  return arr;
+}
 /*菜单导航*/
 function Hui_admin_tab(obj){
 	var bStop = false,
