@@ -497,7 +497,7 @@ $("#form-article-add").validate({
 		$(form).ajaxSubmit({
 				success: function(data){
 					if(data.errcode=="0"){
-						layer.msg('添加成功!');
+						layer.msg('修改成功!');
 						gotoGoodsList();
 					}else{
 						layer.msg(data.errmsg,{icon:2});
