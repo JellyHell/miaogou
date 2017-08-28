@@ -428,13 +428,15 @@ public class SystemBackImpl implements ISystemBackService{
 					   for(int j=0;j<imgListarr.length;j++){
 						   String goods_code=imgListarr[j].split("##")[0];
 						   String sku=imgListarr[j].split("##")[1];
-						   String goods_name=imgListarr[j].split("##")[2];
-						   String goods_num=imgListarr[j].split("##")[3];
+						   String spec_name=imgListarr[j].split("##")[2];
+						   String goods_name=imgListarr[j].split("##")[3];
+						   String goods_num=imgListarr[j].split("##")[4];
 						   
 						   
 						    	JSONObject obj=new JSONObject();
 						    	obj.put("goods_code", goods_code);
 						    	obj.put("sku", sku);
+						    	obj.put("spec_name", spec_name);
 						    	obj.put("goods_name", goods_name);
 						    	obj.put("goods_num", goods_num);
 						    	arr.add(obj);
